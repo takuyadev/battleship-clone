@@ -1,4 +1,4 @@
-interface IShip_Props {
+export interface IShip_Props {
   height: number
 }
 

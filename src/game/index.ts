@@ -5,6 +5,11 @@
   // Marked from 1-10 on Rows
 // 
 
+// We can set the game up by saying:
+  // -1 === Shot and out
+  // 0 === nothing there
+  // 1 === Still up and running
+
 // Game starts when user requests a first render of the game
 
 // The player is allowed to shoot once it's their turn
@@ -23,11 +28,12 @@
   // The ship cannot overflow the board
   // The ship has individual traits (height)
 
-import Board from "./class/Board";
-import BOARD_SIZE from './data/board_size.json'
+import Board, { IBoard, IBoard_Props } from "./class/Board";
 
-export const startGame = () => {
+export const startGame = (settings: IBoard_Props ): void => {
+  const {columns, rows} = settings
+  const playerBoard: IBoard = new Board({ columns, rows });
+  const opponentBoard: IBoard = new Board({ columns, rows });
   
-
-  return;
+  console.log(playerBoard, opponentBoard)
 };

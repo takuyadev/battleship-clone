@@ -1,4 +1,4 @@
-interface IGame_Props {
+export interface IGame_Props {
   board: any[];
   playerBoard: any[];
   opponentBoard: any[];

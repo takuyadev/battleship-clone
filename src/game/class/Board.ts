@@ -1,23 +1,28 @@
-interface IBoard_Props {
+export interface IBoard {
+  board: any[]
+}
+
+export interface IBoard_Props {
   columns: number;
   rows: number;
 }
 
 class Board {
-  columns: number;
-  rows: number;
+  board: any[];
 
   constructor({ columns, rows }: IBoard_Props) {
-    this.columns = columns;
-    this.rows = rows;
+    this.board = Array.from({ length: rows }, () => Array(columns).fill(0));
   }
 
   // Uses Array.from to shallow copy; not copy reference
-  getBoard() {
-    return Array.from({ length: this.rows }, (e) => Array(this.columns).fill(0));
+  startBoard() {
+    return this.board;
+  }
+
+  // Updates board based on the opponents decision
+  updateBoard() {
+    return this.board;
   }
 }
 
 export default Board;
-
-
