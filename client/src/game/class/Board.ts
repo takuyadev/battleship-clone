@@ -20,8 +20,8 @@ class Board {
   }
 
   // Updates board based on the opponents decision
-  updateBoard() {
-    return this.board;
+  updateBoard(x:number, y:number) {
+    this.board[x][y] = -1
   }
 }
 
