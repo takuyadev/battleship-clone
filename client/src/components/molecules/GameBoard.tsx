@@ -5,22 +5,8 @@ import { IPlayer } from "../../interfaces/IBoard";
 
 interface IGameBoard_Props {
   board: IPlayer;
-  updateTile(): () => {};
+  onClick: (x: number, y: number) => void;
 }
-
-const GameBoard = ({ board, updateTile }: IGameBoard_Props) => {
-  return (
-    <Board>
-      {board &&
-        board.board.map((arr, x) => {
-          const row = arr.map((num, y) => {
-            return <Button onClick={() => updateTile("player", x, y)}>{num}</Button>;
-          });
-          return <div>{row}</div>;
-        })}
-    </Board>
-  );
-};
 
 /*
   BOARD LEGEND
@@ -29,5 +15,20 @@ const GameBoard = ({ board, updateTile }: IGameBoard_Props) => {
   -1 === ship was not there, and has been hit
   -2 === ship was there, and has been hit
 */
+
+const GameBoard = ({ board, onClick }: IGameBoard_Props) => {
+  return (
+    <Board>
+      {board &&
+        board.board.map((arr, x) => (
+          <div>
+            {arr.map((num, y) => (
+              <Button onClick={() => onClick(x, y)}>{num}</Button>
+            ))}
+          </div>
+        ))}
+    </Board>
+  );
+};
 
 export default GameBoard;

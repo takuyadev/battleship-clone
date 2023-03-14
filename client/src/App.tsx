@@ -5,16 +5,13 @@ import { GameContext } from "./context/GameContext";
 function App(): JSX.Element {
   const { boards, updateTile, initializeBoard } = useContext(GameContext);
 
+  // Initialize board on startup
   useEffect(() => {
-    console.log(boards);
-
     initializeBoard();
   }, []);
 
-    useEffect(() => {
-      console.log(boards);
-
-    }, [boards]);
+  // useEffect(() => {
+  // }, [boards]);
 
   return <div>{boards && <GameScreen updateTile={updateTile} boards={boards} />}</div>;
 }

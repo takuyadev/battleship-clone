@@ -2,7 +2,14 @@ import { useState, createContext } from "react";
 import { IBoard } from "../interfaces/IBoard";
 import { generateBoard, markTile } from "../utils/board";
 
-const GameContext = createContext({});
+// Context Typing
+interface IGameContext {
+  boards: IBoard;
+  updateTile: (player: "player" | "opponent", x: number, y: number) => void;
+  initializeBoard: () => void;
+}
+
+const GameContext = createContext<IGameContext>({});
 
 // Default player data
 const PLAYER_DATA = {
@@ -26,15 +33,8 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
       return;
     }
 
-    if (player === "player") {
-      const playerBoard = markTile(boards[player].board, x, y);
-      setBoards((prev) => ({ ...prev, player: { username: prev.player.username, board: playerBoard } }));
-    }
-
-    if (player === "opponent") {
-      const opponentBoard = markTile(boards[player].board, x, y);
-      setBoards((prev) => ({ ...prev, opponent: { username: prev.opponent.username, board: opponentBoard } }));
-    }
+    const playerBoard = markTile(boards[player].board, x, y);
+    setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board: playerBoard } }));
   };
 
   // Initializes the board with a 10x10 grid
@@ -51,7 +51,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
     });
   };
 
-  return <GameContext.Provider value={{ boards, updateTile, setBoards, initializeBoard }}>{children}</GameContext.Provider>;
+  return <GameContext.Provider value={{ boards, updateTile, initializeBoard }}>{children}</GameContext.Provider>;
 };
 
 export { GameContext, GameContextProvider };
