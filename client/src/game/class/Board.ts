@@ -1,27 +1,35 @@
 export interface IBoard {
-  board: any[]
+  username: string;
+  board: number[][];
 }
 
 export interface IBoard_Props {
-  columns: number;
+  username: string;
   rows: number;
+  columns: number;
 }
 
 class Board {
-  board: any[];
+  username: string;
+  board: number[][];
 
-  constructor({ columns, rows }: IBoard_Props) {
-    this.board = Array.from({ length: rows }, () => Array(columns).fill(0));
+  constructor({ username, rows, columns }: IBoard_Props) {
+    // Uses Array.from to shallow copy; not copy reference
+    this.username = username;
+    this.board = Array.from({ length: columns }, () => Array(rows).fill(0));
   }
 
-  // Uses Array.from to shallow copy; not copy reference
+  updateUsername(username: string) {
+    this.username = username;
+  }
+
   startBoard() {
     return this.board;
   }
 
   // Updates board based on the opponents decision
-  updateBoard(x:number, y:number) {
-    this.board[x][y] = -1
+  markTile({ x, y }: { x: number; y: number }) {
+    this.board[x][y] = -1;
   }
 }
 

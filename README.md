@@ -37,3 +37,7 @@ After installing on your machine, run:
 * Node + Express.js
 * TypeScript
 * Socket.io
+
+## Journal
+
+Prime focus of this project was using OOP for tracking game state, creating new pieces, tracking player data, etc.

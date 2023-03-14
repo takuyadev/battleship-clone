@@ -1,0 +1,14 @@
+{
+  "player": [
+    {
+      "username": "Player 1",
+      "columns": 10,
+      "rows": 10
+    },
+    {
+      "username": "Player 2",
+      "columns": 10,
+      "rows": 10
+    }
+  ]
+}

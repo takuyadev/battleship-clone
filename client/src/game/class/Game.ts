@@ -1,22 +1,23 @@
+import { IBoard } from "./Board";
+
 export interface IGame_Props {
-  board: any[];
-  playerBoard: any[];
-  opponentBoard: any[];
-  isTurn: boolean;
+  playerData: IBoard;
+  opponentData: IBoard;
 }
 
 class Game {
-  board: any[];
-  playerBoard: any[];
-  opponentBoard: any[];
-
+  playerData: IBoard;
+  opponentData: IBoard;
   isTurn: boolean;
 
-  constructor({ board, isTurn, playerBoard, opponentBoard }: IGame_Props) {
-    this.board = board;
-    this.playerBoard = playerBoard;
-    this.opponentBoard = opponentBoard;
-    this.isTurn = isTurn;
+  constructor({ playerData, opponentData }: IGame_Props) {
+    this.playerData = playerData;
+    this.opponentData = opponentData;
+    this.isTurn = true;
+  }
+
+  updateTurn() {
+    this.isTurn = !this.isTurn;
   }
 }
 
