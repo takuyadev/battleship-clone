@@ -1,11 +1,12 @@
 interface IButton_Props {
+  className: string;
   children: React.ReactNode;
   onClick: () => void;
 }
 
-const Button = ({ onClick, children }: IButton_Props) => {
+const Button = ({ className, onClick, children }: IButton_Props) => {
   return (
-    <button className={`w-8 h-8 bg-red-500`} onClick={onClick}>
+    <button className={`${className} w-12 h-12 bg-green-100  duration-200 hover:bg-green-500`} onClick={onClick}>
       {children}
     </button>
   );

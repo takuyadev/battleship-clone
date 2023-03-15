@@ -48,7 +48,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
   const [boards, setBoards] = useState<IGame>(PLAYER_DATA);
   const [isTurn, setIsTurn] = useState(true);
   const [messages, setMessages] = useState<Messages>([]);
-  const [checkWinner, setCheckWinner] = useState<boolean>(false);
+  const [checkWinner, setCheckWinner] = useState<boolean | null>(null);
 
   // Initializes the board with a 10x10 grid
   const initializeBoard = () => {
@@ -77,6 +77,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
     const updatedBoard = attackTile(board, x, y);
     setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board: updatedBoard } }));
     setIsTurn((prev) => !prev);
+    setMessages((prev) => [...prev, `${player} attacked ${x} ${y}`]);
   };
 
   // Updates the specific tile targetted by the player
@@ -126,20 +127,27 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
         };
 
         const [x, y] = callback();
+
+        // setTimeout(() => {
         enemyAttack(x, y);
+        // }, 3000);
       }
     }, [isTurn]);
 
   // Listen to game state
   const listenGameState = () =>
     useEffect(() => {
-      if (!isBoardLose(boards.player.board)) {
+      if (isBoardLose(boards.player.board) === false) {
         setCheckWinner(true);
+        console.log("hello")
+        setMessages((prev) => [...prev, `opponent wins`]);
       }
 
-      if (!isBoardLose(boards.opponent.board)) {
+      if (isBoardLose(boards.opponent.board) === false) {
         setCheckWinner(false);
+        setMessages((prev) => [...prev, `player wins`]);
       }
+
     }, [boards]);
 
   return (

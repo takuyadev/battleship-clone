@@ -5,7 +5,7 @@ interface IBoard_Props {
 }
 
 const Board = ({ children }: IBoard_Props): JSX.Element => {
-  return <div>{children}</div>;
+  return <div className="overflow-hidden rounded-lg">{children}</div>;
 };
 
 export default Board;

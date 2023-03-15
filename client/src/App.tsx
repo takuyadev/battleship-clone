@@ -1,6 +1,7 @@
 import GameScreen from "./components/organisms/GameScreen";
 import { useContext, useEffect } from "react";
 import { GameContext } from "./context/GameContext";
+import { Message } from "./components/atoms/Message";
 
 const BOARD_1 = [
   [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -29,7 +30,7 @@ const BOARD_2 = [
 ];
 
 function App(): JSX.Element {
-  const { boards, isTurn, checkWinner,listenGameState,listenToComputer, playerAttack, enemyAttack, updateBoard, initializeBoard } =
+  const { boards, isTurn, messages, checkWinner,listenGameState,listenToComputer, playerAttack, enemyAttack, updateBoard, initializeBoard } =
     useContext(GameContext);
 
   // Initialize board on startup
@@ -45,8 +46,7 @@ function App(): JSX.Element {
 
   return (
     <div>
-      {boards && <GameScreen playerAttack={playerAttack} enemyAttack={enemyAttack} boards={boards} />}
-      {checkWinner && checkWinner ? "player" : "opponent"}
+      {boards && <GameScreen playerAttack={playerAttack} enemyAttack={enemyAttack} boards={boards} messages={messages} />}
     </div>
   );
 }

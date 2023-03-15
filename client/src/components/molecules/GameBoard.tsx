@@ -24,7 +24,7 @@ const GameBoard = ({ board, onClick }: IGameBoard_Props) => {
         board.map((arr, x) => (
           <div>
             {arr.map((num, y) => (
-              <Button onClick={() => onClick(x, y)}>{num}</Button>
+              <Button className={`${num  === -1 ? "bg-red-200" : "bg-green-200"}`}onClick={() => onClick(x, y)}>{num}</Button>
             ))}
           </div>
         ))}
