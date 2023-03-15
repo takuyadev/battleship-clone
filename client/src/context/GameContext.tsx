@@ -1,12 +1,32 @@
-import { useState, createContext } from "react";
-import { IBoard } from "../interfaces/IBoard";
-import { generateBoard, markTile } from "../utils/board";
+import { useState, useEffect, createContext } from "react";
+import { IGame } from "../models/interfaces/IGame";
+import {
+  IBoard,
+  DisplayBoard,
+  InitializeBoard,
+  PlayerSelection,
+  UpdateBoard,
+  AttackTile,
+  Messages,
+} from "../models/types/Game";
+import { generateBoard, checkTile, attackTile, formatBoard, isBoardWin as isBoardLose } from "../utils/board";
+import { selectMove } from "../utils/ai";
 
 // Context Typing
 interface IGameContext {
-  boards: IBoard;
-  updateTile: (player: "player" | "opponent", x: number, y: number) => void;
-  initializeBoard: () => void;
+  boards: IGame;
+  isTurn: boolean;
+  checkWinner: boolean;
+  messages: Messages;
+  setMessages: React.Dispatch<React.SetStateAction<Messages>>;
+  setIsTurn: React.Dispatch<React.SetStateAction<boolean>>;
+  initializeBoard: InitializeBoard;
+  playerAttack: AttackTile;
+  enemyAttack: AttackTile;
+  updateBoard: UpdateBoard;
+  displayBoard: DisplayBoard;
+  listenGameState: () => void;
+  listenToComputer: () => void;
 }
 
 const GameContext = createContext<IGameContext>({});
@@ -25,17 +45,10 @@ const PLAYER_DATA = {
 
 // Set provider for game
 const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
-  const [boards, setBoards] = useState<IBoard>(PLAYER_DATA);
-
-  // Updates the specific tile targetted by the player
-  const updateTile = (player: "player" | "opponent", x: number, y: number) => {
-    if (!boards) {
-      return;
-    }
-
-    const playerBoard = markTile(boards[player].board, x, y);
-    setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board: playerBoard } }));
-  };
+  const [boards, setBoards] = useState<IGame>(PLAYER_DATA);
+  const [isTurn, setIsTurn] = useState(true);
+  const [messages, setMessages] = useState<Messages>([]);
+  const [checkWinner, setCheckWinner] = useState<boolean>(false);
 
   // Initializes the board with a 10x10 grid
   const initializeBoard = () => {
@@ -51,7 +64,105 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
     });
   };
 
-  return <GameContext.Provider value={{ boards, updateTile, initializeBoard }}>{children}</GameContext.Provider>;
+  // Actaul attack algorithm to mark and update board
+  const attack = (player: PlayerSelection, x: number, y: number): void => {
+    const { board } = boards[player];
+
+    // If tile has already been clicked, don't give turn
+    if (!checkTile(board, x, y)) {
+      return;
+    }
+
+    // After check, update board based on hit
+    const updatedBoard = attackTile(board, x, y);
+    setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board: updatedBoard } }));
+    setIsTurn((prev) => !prev);
+  };
+
+  // Updates the specific tile targetted by the player
+  const playerAttack = (x: number, y: number): boolean => {
+    if (isTurn) {
+      attack("opponent", x, y);
+      return true;
+    }
+    return false;
+  };
+
+  // Updates the specific tile targetted by the opponent
+  const enemyAttack = (x: number, y: number): boolean => {
+    if (!isTurn) {
+      attack("player", x, y);
+      return true;
+    }
+    return false;
+  };
+
+  // Update entire board based on board and player name provided
+  const updateBoard = (board: IBoard, player: PlayerSelection): void => {
+    setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board } }));
+  };
+
+  // If given player name and boolean value, show or hide map location
+  const displayBoard = (player: PlayerSelection, isShow: boolean): IBoard => {
+    return formatBoard(boards[player].board, isShow);
+  };
+
+  // Listen to game state
+  const listenToComputer = () =>
+    useEffect(() => {
+      // Recurses callback until the checked tile returns true
+      if (!isTurn) {
+        // Callback
+        const callback = (): number[] => {
+          const [x, y] = selectMove();
+
+          // If tile is checked return false, and recurse
+          if (!checkTile(boards.player.board, x, y)) {
+            return callback();
+          }
+
+          // return x, y on true
+          return [x, y];
+        };
+
+        const [x, y] = callback();
+        enemyAttack(x, y);
+      }
+    }, [isTurn]);
+
+  // Listen to game state
+  const listenGameState = () =>
+    useEffect(() => {
+      if (!isBoardLose(boards.player.board)) {
+        setCheckWinner(true);
+      }
+
+      if (!isBoardLose(boards.opponent.board)) {
+        setCheckWinner(false);
+      }
+    }, [boards]);
+
+  return (
+    <GameContext.Provider
+      value={{
+        boards,
+        isTurn,
+        checkWinner,
+        messages,
+        listenToComputer,
+        listenGameState,
+        setMessages,
+        setIsTurn,
+        updateBoard,
+        displayBoard,
+        playerAttack,
+        enemyAttack,
+        initializeBoard,
+      }}
+    >
+      {children}
+    </GameContext.Provider>
+  );
 };
 
 export { GameContext, GameContextProvider };

@@ -1,16 +1,25 @@
-import { IBoard } from "../../interfaces/IBoard";
+import { IGame } from "../../models/interfaces/IGame";
+import { AttackTile } from "../../models/types/Game";
 import GameBoard from "../molecules/GameBoard";
+import { formatBoard } from "../../utils/board";
 
 interface IGameScreen_Props {
-  boards: IBoard;
-  updateTile: (player: "player" | "opponent", x: number, y: number) => void;
+  boards: IGame;
+  playerAttack: AttackTile,
+  enemyAttack: AttackTile
 }
 
-const GameScreen = ({ boards, updateTile }: IGameScreen_Props) => {
+const GameScreen = ({ boards, playerAttack, enemyAttack}: IGameScreen_Props) => {
   return (
     <div className="flex gap-8">
-      <GameBoard onClick={(x: number, y: number) => updateTile("player", x, y)} board={boards.player} />
-      <GameBoard onClick={(x: number, y: number) => updateTile("opponent", x, y)} board={boards.opponent} />
+      <GameBoard
+        onClick={(x: number, y: number) => enemyAttack(x, y)}
+        board={formatBoard(boards.player.board, true)}
+      />
+      <GameBoard
+        onClick={(x: number, y: number) => playerAttack(x, y)}
+        board={formatBoard(boards.opponent.board, false)}
+      />
     </div>
   );
 };
