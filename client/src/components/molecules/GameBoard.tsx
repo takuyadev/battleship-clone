@@ -1,9 +1,9 @@
 // ? TypeScript Interfaces
 import Button from "../atoms/Button";
 import Board from "../atoms/Board";
-import { IPlayer } from "../../models/interfaces/IGame";
+import { IPlayer } from "../../models/interfaces";
 import { formatBoard } from "../../utils/board";
-import { IBoard } from "../../models/types/Game";
+import { IBoard } from "../../models/types";
 
 interface IGameBoard_Props {
   board: IBoard;
@@ -22,9 +22,15 @@ const GameBoard = ({ board, onClick }: IGameBoard_Props) => {
     <Board>
       {board &&
         board.map((arr, x) => (
-          <div>
+          <div key={x}>
             {arr.map((num, y) => (
-              <Button className={`${num  === -1 ? "bg-red-200" : "bg-green-200"}`}onClick={() => onClick(x, y)}>{num}</Button>
+              <Button
+                key={y}
+                className={`${num === -1 ? "bg-red-200" : "bg-green-200"}`}
+                onClick={() => onClick(x, y)}
+              >
+                {num}
+              </Button>
             ))}
           </div>
         ))}

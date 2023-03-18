@@ -1,0 +1,29 @@
+import { IPieces } from "./interfaces";
+
+export type IBoard = number[][];
+export type AttackTile = (x: number, y: number) => void;
+export type InitializeBoard = () => void;
+export type DisplayBoard = (player: PlayerSelection, isShow: boolean) => IBoard;
+export type PlayerSelection = "player" | "opponent";
+export type UpdateBoard = (board: IBoard, player: PlayerSelection) => void;
+export type Messages = string[];
+export type PlaceShip = (
+  board: IBoard,
+  pieces: IPieces[],
+  x: number,
+  y: number,
+  options: {
+    height: number;
+    isRotate: boolean;
+  }
+) => void;
+export type GetEditedBoard = (
+  board: IBoard,
+  x: number,
+  y: number,
+  options: {
+    height: number;
+    isRotate: boolean;
+    isRemove: boolean;
+  }
+) => IBoard;

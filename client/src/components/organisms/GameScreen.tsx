@@ -1,5 +1,5 @@
-import { IGame } from "../../models/interfaces/IGame";
-import { AttackTile, Messages } from "../../models/types/Game";
+import { IGame } from "../../models/interfaces";
+import { AttackTile, Messages } from "../../models/types";
 import GameBoard from "../molecules/GameBoard";
 import { formatBoard } from "../../utils/board";
 import { Log } from "../molecules/Log";

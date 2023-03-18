@@ -1,29 +1,35 @@
 import { useState, useEffect, createContext } from "react";
-import { IGame } from "../models/interfaces/IGame";
+import { IGame } from "../models/interfaces";
 import {
   IBoard,
   DisplayBoard,
   InitializeBoard,
   PlayerSelection,
-  UpdateBoard,
+  UpdateBoard as SetBoard,
   AttackTile,
   Messages,
-} from "../models/types/Game";
-import { generateBoard, checkTile, attackTile, formatBoard, isBoardWin as isBoardLose } from "../utils/board";
+} from "../models/types";
+import {
+  generateBoard,
+  checkTile,
+  attackTile,
+  formatBoard,
+  isBoardWin as isBoardLose,
+} from "../utils/board";
 import { selectMove } from "../utils/ai";
 
 // Context Typing
 interface IGameContext {
   boards: IGame;
   isTurn: boolean;
-  checkWinner: boolean;
+  checkWinner: boolean | null;
   messages: Messages;
   setMessages: React.Dispatch<React.SetStateAction<Messages>>;
   setIsTurn: React.Dispatch<React.SetStateAction<boolean>>;
   initializeBoard: InitializeBoard;
   playerAttack: AttackTile;
   enemyAttack: AttackTile;
-  updateBoard: UpdateBoard;
+  updateBoard: SetBoard;
   displayBoard: DisplayBoard;
   listenGameState: () => void;
   listenToComputer: () => void;
@@ -44,7 +50,11 @@ const PLAYER_DATA = {
 };
 
 // Set provider for game
-const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+const GameContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => {
   const [boards, setBoards] = useState<IGame>(PLAYER_DATA);
   const [isTurn, setIsTurn] = useState(true);
   const [messages, setMessages] = useState<Messages>([]);
@@ -75,7 +85,10 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
 
     // After check, update board based on hit
     const updatedBoard = attackTile(board, x, y);
-    setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board: updatedBoard } }));
+    setBoards((prev) => ({
+      ...prev,
+      [player]: { ...prev[player], board: updatedBoard },
+    }));
     setIsTurn((prev) => !prev);
     setMessages((prev) => [...prev, `${player} attacked ${x} ${y}`]);
   };
@@ -99,7 +112,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
   };
 
   // Update entire board based on board and player name provided
-  const updateBoard = (board: IBoard, player: PlayerSelection): void => {
+  const setBoard = (board: IBoard, player: PlayerSelection): void => {
     setBoards((prev) => ({ ...prev, [player]: { ...prev[player], board } }));
   };
 
@@ -127,10 +140,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
         };
 
         const [x, y] = callback();
-
-        // setTimeout(() => {
         enemyAttack(x, y);
-        // }, 3000);
       }
     }, [isTurn]);
 
@@ -139,7 +149,6 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
     useEffect(() => {
       if (isBoardLose(boards.player.board) === false) {
         setCheckWinner(true);
-        console.log("hello")
         setMessages((prev) => [...prev, `opponent wins`]);
       }
 
@@ -147,7 +156,6 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
         setCheckWinner(false);
         setMessages((prev) => [...prev, `player wins`]);
       }
-
     }, [boards]);
 
   return (
@@ -155,13 +163,13 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }): JSX.E
       value={{
         boards,
         isTurn,
-        checkWinner,
         messages,
+        checkWinner,
         listenToComputer,
         listenGameState,
         setMessages,
         setIsTurn,
-        updateBoard,
+        updateBoard: setBoard,
         displayBoard,
         playerAttack,
         enemyAttack,

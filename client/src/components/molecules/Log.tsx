@@ -1,4 +1,4 @@
-import { Messages } from "../../models/types/Game";
+import { Messages } from "../../models/types";
 import { Message } from "../atoms/Message";
 
 interface ILog {
