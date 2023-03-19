@@ -4,8 +4,8 @@ import GameScreen from "./components/organisms/GameScreen";
 import EditScreen from "./components/organisms/EditScreen";
 import { generateBoard, checkPlaceable, editBoard } from "./utils/board";
 import { IPieces } from "./models/interfaces";
-import { IBoard } from "./models/types";
-import { BOARD, SHIP_PIECES } from "./utils/constants";
+import { BoardOptions, IBoard } from "./models/types";
+import { BOARD, SHIP_PIECES } from "./utils/constants/constants";
 
 function App(): JSX.Element {
   const {
@@ -23,17 +23,14 @@ function App(): JSX.Element {
   const [shipHeight, setShipHeight] = useState(5);
   const [isRotate, setIsRotate] = useState(false);
   const [pieces, setPieces] = useState<IPieces[]>(SHIP_PIECES);
-
   // Place ship onto the board
+
   const placeShip = (
     board: IBoard,
     pieces: IPieces[],
     x: number,
     y: number,
-    options: {
-      height: number;
-      isRotate: boolean;
-    }
+    options: BoardOptions
   ) => {
     let newPieces = [...pieces];
     const { height, isRotate } = options;
@@ -51,7 +48,7 @@ function App(): JSX.Element {
       const oldCoords = pieces[index].coordinates;
 
       // Remove ship off board based on previous coordinates
-      let removeBoard = editBoard(board, oldCoords.x, oldCoords.y, {
+      let removeBoard = editBoard(board, {x: oldCoords.x, y:oldCoords.y}, {
         height: height,
         isRotate: isRotate,
         isRemove: true,

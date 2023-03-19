@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useReducer } from "react";
 import { IGame } from "../models/interfaces";
 import {
   IBoard,
@@ -37,6 +37,8 @@ interface IGameContext {
 
 const GameContext = createContext<IGameContext>({});
 
+
+
 // Default player data
 const PLAYER_DATA = {
   player: {
@@ -49,12 +51,19 @@ const PLAYER_DATA = {
   },
 };
 
+const reducer = (state, action) => {
+
+}
+
+
 // Set provider for game
 const GameContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
+  const [state, dispatch] = useReducer(reducer, null)
+
   const [boards, setBoards] = useState<IGame>(PLAYER_DATA);
   const [isTurn, setIsTurn] = useState(true);
   const [messages, setMessages] = useState<Messages>([]);
@@ -93,14 +102,14 @@ const GameContextProvider = ({
     setMessages((prev) => [...prev, `${player} attacked ${x} ${y}`]);
   };
 
-  // Updates the specific tile targetted by the player
-  const playerAttack = (x: number, y: number): boolean => {
-    if (isTurn) {
-      attack("opponent", x, y);
-      return true;
-    }
-    return false;
-  };
+  // // Updates the specific tile targetted by the player
+  // const playerAttack = (x: number, y: number): boolean => {
+  //   if (isTurn) {
+  //     attack("opponent", x, y);
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   // Updates the specific tile targetted by the opponent
   const enemyAttack = (x: number, y: number): boolean => {
