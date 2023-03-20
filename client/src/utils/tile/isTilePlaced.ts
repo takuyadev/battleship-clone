@@ -5,7 +5,7 @@ const { PLACED } = TILE;
 export const isTilePlaced = (board: IBoard, coords: Coordinates) => {
   const { x, y } = coords;
 
-  if (board[x][y] === PLACED) {
+  if (board[x][y] !== PLACED) {
     return false;
   }
 

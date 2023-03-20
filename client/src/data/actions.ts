@@ -1,6 +1,7 @@
-export const BOOLEAN_ACTIONS = {
+export const ONOFF_ACTIONS = {
   ON: "on",
   OFF: "off",
+  FLIP: "flip",
 };
 
 export const BOARD_ACTIONS = {

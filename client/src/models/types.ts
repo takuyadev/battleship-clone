@@ -7,6 +7,12 @@ export type BoardOptions = {
 };
 
 
+export type BoardActionType = {
+  type: string;
+  payload: { coords: { x: number; y: number }; mark: number };
+};
+
+
 export type IBoard = number[][];
 export type Coordinates = { x: number; y: number };
 export type AttackTile = (x: number, y: number) => void;

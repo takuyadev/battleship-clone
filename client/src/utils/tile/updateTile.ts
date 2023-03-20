@@ -8,6 +8,6 @@ export const updateTile = (
   const updatedBoard = [...board];
   const { x, y } = coords;
 
-  updatedBoard[x][y] === mark;
+  updatedBoard[x][y] = mark;
   return updatedBoard;
 };

@@ -1,7 +1,7 @@
 import { useReducer } from "react";
-import { BOOLEAN_ACTIONS } from "@data/actions";
+import { ONOFF_ACTIONS } from "@data/actions";
 
-const { ON, OFF } = BOOLEAN_ACTIONS;
+const { ON, OFF, FLIP } = ONOFF_ACTIONS;
 
 const reducer = (state: boolean, action: { type: string }) => {
   switch (action.type) {
@@ -9,6 +9,8 @@ const reducer = (state: boolean, action: { type: string }) => {
       return true;
     case OFF:
       return false;
+    case FLIP:
+      return !state;
     default:
       return state;
   }
@@ -16,7 +18,7 @@ const reducer = (state: boolean, action: { type: string }) => {
 
 const useOnOff = (initialValue: boolean) => {
   const [state, dispatch] = useReducer(reducer, initialValue);
-  return [state, dispatch];
+  return [state, dispatch] as const;
 };
 
 export { useOnOff };
