@@ -1,12 +1,10 @@
 import { useEffect, useReducer } from "react";
-import { generateBoard } from "../utils/board/board";
-import { updateTile, isTilePlaced } from "../utils/tile/tile";
+import { generateBoard, updateTile, isTilePlaced } from "@utils/index";
+import { IBoard } from "@models/types";
+import { TILE } from "@data/constants";
+import { BOARD_ACTIONS } from "@data/actions";
 
-import { IBoard } from "../models/types";
-import { TILE } from "../data/board";
-import { BOARD_ACTIONS } from "../data/actions";
-
-const { PLACED, EMPTY, MARKED_PLACED, MARKED_EMPTY } = TILE;
+const { MARKED_PLACED, MARKED_EMPTY } = TILE;
 const { UPDATE_TILE, ATTACK_TILE, INITIALIZE_BOARD } = BOARD_ACTIONS;
 
 const reducer = (state: IBoard, action) => {
@@ -29,10 +27,11 @@ const reducer = (state: IBoard, action) => {
 };
 
 const useBoard = ({ x, y }: { x: number; y: number }) => {
-  const [state, dispatch] = useReducer(reducer, generateBoard(x, y));
+  const [state, dispatch]: [IBoard, React.Dispatch<any>] = useReducer(reducer, generateBoard(x, y));
 
   useEffect(() => {
     console.log("Board updated!");
+    console.log(state)
   }, [state]);
 
   return [state, dispatch];

@@ -1,7 +1,7 @@
 import { useReducer } from "react";
-import { BOOLEAN_ACTION } from "@data/actions";
+import { BOOLEAN_ACTIONS } from "@data/actions";
 
-const { ON, OFF } = BOOLEAN_ACTION;
+const { ON, OFF } = BOOLEAN_ACTIONS;
 
 const reducer = (state: boolean, action: { type: string }) => {
   switch (action.type) {
