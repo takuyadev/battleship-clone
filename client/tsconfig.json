@@ -18,17 +18,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
     "baseUrl": "./src",
+    "jsx": "react-jsx",
     "paths": {
       "@assets/*": [
         "assets/*"
       ],
       "@components/*": [
         "components/*"
-      ],
-      "@context/*": [
-        "context/*"
       ],
       "@data/*": [
         "data/*"
@@ -43,7 +40,10 @@
         "utils/*"
       ],
       "@/*": [
-        "./*"
+        "/*"
+      ],
+      "@src/*": [
+        "src/*"
       ]
     }
   },
