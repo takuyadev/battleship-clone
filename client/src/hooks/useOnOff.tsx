@@ -1,5 +1,6 @@
 import { useReducer } from "react";
-import { BOOLEAN_ACTION } from "../utils/constants/actions";
+import { BOOLEAN_ACTION } from "@data/actions";
+
 const { ON, OFF } = BOOLEAN_ACTION;
 
 const reducer = (state: boolean, action: { type: string }) => {
@@ -13,10 +14,9 @@ const reducer = (state: boolean, action: { type: string }) => {
   }
 };
 
-
-const useBoolean = (initialValue: boolean) => {
+const useOnOff = (initialValue: boolean) => {
   const [state, dispatch] = useReducer(reducer, initialValue);
   return [state, dispatch];
 };
 
-export { useBoolean };
+export { useOnOff };

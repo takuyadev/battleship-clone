@@ -2,10 +2,10 @@ import { useState, useContext, useEffect } from "react";
 import { GameContext } from "./context/GameContext";
 import GameScreen from "./components/organisms/GameScreen";
 import EditScreen from "./components/organisms/EditScreen";
-import { generateBoard, checkPlaceable, editBoard } from "./utils/board";
+import { generateBoard, checkPlaceable, editBoard } from "./utils/board/board";
 import { IPieces } from "./models/interfaces";
 import { BoardOptions, IBoard } from "./models/types";
-import { BOARD, SHIP_PIECES } from "./utils/constants/constants";
+import { BOARD, SHIP_PIECES } from "./data/constants";
 
 function App(): JSX.Element {
   const {

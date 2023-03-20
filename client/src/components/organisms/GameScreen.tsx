@@ -1,7 +1,7 @@
 import { IGame } from "../../models/interfaces";
 import { AttackTile, Messages } from "../../models/types";
 import GameBoard from "../molecules/GameBoard";
-import { formatBoard } from "../../utils/board";
+import { formatBoard } from "../../utils/board/board";
 import { Log } from "../molecules/Log";
 
 interface IGameScreen_Props {

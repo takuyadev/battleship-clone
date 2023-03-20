@@ -1,10 +1,10 @@
 import { useEffect, useReducer } from "react";
-import { generateBoard } from "../utils/board";
-import { updateTile, isTilePlaced } from "../utils/tile";
+import { generateBoard } from "../utils/board/board";
+import { updateTile, isTilePlaced } from "../utils/tile/tile";
 
 import { IBoard } from "../models/types";
-import { TILE } from "../utils/constants/board";
-import { BOARD_ACTIONS } from "../utils/constants/actions";
+import { TILE } from "../data/board";
+import { BOARD_ACTIONS } from "../data/actions";
 
 const { PLACED, EMPTY, MARKED_PLACED, MARKED_EMPTY } = TILE;
 const { UPDATE_TILE, ATTACK_TILE, INITIALIZE_BOARD } = BOARD_ACTIONS;

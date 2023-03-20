@@ -15,8 +15,8 @@ import {
   attackTile,
   formatBoard,
   isBoardWin as isBoardLose,
-} from "../utils/board";
-import { selectMove } from "../utils/ai";
+} from "../utils/board/board";
+import { selectMove } from "../utils/ai/ai";
 
 // Context Typing
 interface IGameContext {
@@ -51,9 +51,7 @@ const PLAYER_DATA = {
   },
 };
 
-const reducer = (state, action) => {
 
-}
 
 
 // Set provider for game
@@ -70,37 +68,37 @@ const GameContextProvider = ({
   const [checkWinner, setCheckWinner] = useState<boolean | null>(null);
 
   // Initializes the board with a 10x10 grid
-  const initializeBoard = () => {
-    setBoards({
-      player: {
-        username: "Player 1",
-        board: generateBoard(10, 10),
-      },
-      opponent: {
-        username: "Player 2",
-        board: generateBoard(10, 10),
-      },
-    });
-  };
+  // const initializeBoard = () => {
+  //   setBoards({
+  //     player: {
+  //       username: "Player 1",
+  //       board: generateBoard(10, 10),
+  //     },
+  //     opponent: {
+  //       username: "Player 2",
+  //       board: generateBoard(10, 10),
+  //     },
+  //   });
+  // };
 
   // Actaul attack algorithm to mark and update board
-  const attack = (player: PlayerSelection, x: number, y: number): void => {
-    const { board } = boards[player];
+  // const attack = (player: PlayerSelection, x: number, y: number): void => {
+  //   const { board } = boards[player];
 
-    // If tile has already been clicked, don't give turn
-    if (!checkTile(board, x, y)) {
-      return;
-    }
+  //   // If tile has already been clicked, don't give turn
+  //   if (!checkTile(board, x, y)) {
+  //     return;
+  //   }
 
-    // After check, update board based on hit
-    const updatedBoard = attackTile(board, x, y);
-    setBoards((prev) => ({
-      ...prev,
-      [player]: { ...prev[player], board: updatedBoard },
-    }));
-    setIsTurn((prev) => !prev);
-    setMessages((prev) => [...prev, `${player} attacked ${x} ${y}`]);
-  };
+  //   // After check, update board based on hit
+  //   const updatedBoard = attackTile(board, x, y);
+  //   setBoards((prev) => ({
+  //     ...prev,
+  //     [player]: { ...prev[player], board: updatedBoard },
+  //   }));
+  //   setIsTurn((prev) => !prev);
+  //   setMessages((prev) => [...prev, `${player} attacked ${x} ${y}`]);
+  // };
 
   // // Updates the specific tile targetted by the player
   // const playerAttack = (x: number, y: number): boolean => {

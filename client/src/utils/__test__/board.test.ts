@@ -1,12 +1,12 @@
 import { assert } from "chai";
 import { describe, it } from "vitest";
-import { hideShips, isShipPlaceable } from "./board";
+import { hideShips, isShipPlaceable } from "../board/board";
 import {
   EMPTY_BOARD,
   SET_BOARD,
   ATTACKED_BOARD,
   HIDDEN_BOARD,
-} from "./constants/board";
+} from "../../data/board";
 
 describe("hideShips()", () => {
   it("should hide ships on the board", () => {

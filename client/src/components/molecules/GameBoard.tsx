@@ -2,7 +2,7 @@
 import Button from "../atoms/Button";
 import Board from "../atoms/Board";
 import { IPlayer } from "../../models/interfaces";
-import { formatBoard } from "../../utils/board";
+import { formatBoard } from "../../utils/board/board";
 import { IBoard } from "../../models/types";
 
 interface IGameBoard_Props {
