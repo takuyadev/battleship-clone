@@ -6,6 +6,7 @@ export type BoardOptions = {
   isRemove?: boolean;
 };
 
+
 export type IBoard = number[][];
 export type Coordinates = { x: number; y: number };
 export type AttackTile = (x: number, y: number) => void;

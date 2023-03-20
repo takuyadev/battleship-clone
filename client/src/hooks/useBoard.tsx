@@ -7,6 +7,10 @@ import { BOARD_ACTIONS } from "@data/actions";
 const { MARKED_PLACED, MARKED_EMPTY } = TILE;
 const { UPDATE_TILE, ATTACK_TILE, INITIALIZE_BOARD } = BOARD_ACTIONS;
 
+type ActionType =
+  | { type: "ACTION_TYPE_1"; payload: string }
+  | { type: "ACTION_TYPE_2"; payload: number };
+
 const reducer = (state: IBoard, action) => {
   const { x, y } = action.payload;
 
@@ -27,11 +31,11 @@ const reducer = (state: IBoard, action) => {
 };
 
 const useBoard = ({ x, y }: { x: number; y: number }) => {
-  const [state, dispatch]: [IBoard, React.Dispatch<any>] = useReducer(reducer, generateBoard(x, y));
+  const [state, dispatch] = useReducer(reducer, generateBoard(x, y));
 
   useEffect(() => {
     console.log("Board updated!");
-    console.log(state)
+    console.log(state);
   }, [state]);
 
   return [state, dispatch];
