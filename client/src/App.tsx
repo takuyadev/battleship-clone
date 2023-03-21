@@ -10,7 +10,7 @@ import { useState } from 'react';
 function App(): JSX.Element {
   const [isEdit, setIsEdit] = useOnOff(true);
   const [isRotated, setIsRotated] = useOnOff(false);
-  const [currentShip, setCurrentShip] = useState(5);
+  const [currentShipSize, setCurrentShipSize] = useState(5);
   const [playerBoard, setPlayerBoard] = useBoard({
     x: ROWS,
     y: COLUMNS,
@@ -19,48 +19,61 @@ function App(): JSX.Element {
 
   // Place ship while the game is in edit mode
   const placeShip = ({ x, y }: Coordinates) => {
+    // Check if ship can be placed onto the board
     const checkBoard = isShipPlaceable(
       playerBoard,
       { x, y },
-      { height: currentShip, isRotated }
+      { height: currentShipSize, isRotated }
     );
-    const shipIndex = currentShip - 1;
 
+    // If ship cannot be placed, don't do anything
     if (!checkBoard) {
       return false;
     }
 
-    if (playerShips[shipIndex].isPlaced) {
-      const { x: prevX, y: prevY } = playerShips[shipIndex].coordinates;
+    // Select current iteration of the ship to be replaced
+    const {
+      coordinates: prevCoords,
+      height: prevHeight,
+      isPlaced: prevIsPlaced,
+      isRotated: prevIsRotated,
+    } = playerShips[currentShipSize - 1];
+    
+    // If currently selected ship size has already been placed
+    if (prevIsPlaced) {
 
+      // Remove current iteration off the board
       setPlayerBoard({
         type: 'remove-ship',
         payload: {
-          coords: { x: prevX, y: prevY },
+          coords: prevCoords,
           options: {
-            height: playerShips[shipIndex].height,
-            isRotated: playerShips[shipIndex].isRotated,
+            height: prevHeight,
+            isRotated: prevIsRotated,
           },
         },
       });
 
+      // Edit rotation after ship has been removed
       setPlayerShips({
         type: 'rotate-ship',
-        payload: { height: currentShip, isRotated },
+        payload: { height: currentShipSize, isRotated },
       });
 
+      // Add ship to the board with new settings
       setPlayerBoard({
         type: 'add-ship',
         payload: {
           coords: { x, y },
-          options: { height: currentShip, isRotated },
+          options: { height: currentShipSize, isRotated },
         },
       });
 
+      // Update coordinates
       setPlayerShips({
         type: 'update-coordinates',
         payload: {
-          height: currentShip,
+          height: currentShipSize,
           coords: { x, y },
         },
       });
@@ -68,28 +81,31 @@ function App(): JSX.Element {
       return true;
     }
 
+    // Add new ship to board if no ship was placed
     setPlayerBoard({
       type: 'add-ship',
       payload: {
         coords: { x, y },
-        options: { height: currentShip, isRotated },
+        options: { height: currentShipSize, isRotated },
       },
     });
 
+    // Update ship positions and information
     setPlayerShips({
       type: 'update-placed',
-      payload: { height: currentShip },
+      payload: { height: currentShipSize },
     });
+
     setPlayerShips({
       type: 'update-coordinates',
-      payload: { height: currentShip, coords: { x, y } },
+      payload: { height: currentShipSize, coords: { x, y } },
     });
 
     return true;
   };
 
   const updateCurrentShip = (newShipHeight: number) => {
-    setCurrentShip(newShipHeight);
+    setCurrentShipSize(newShipHeight);
   };
 
   return (
@@ -109,7 +125,7 @@ function App(): JSX.Element {
       <button onClick={() => updateCurrentShip(4)}>4</button>
       <button onClick={() => updateCurrentShip(5)}>5</button>
 
-      {currentShip}
+      {currentShipSize}
       {isEdit && (
         <GameBoard
           board={playerBoard}
