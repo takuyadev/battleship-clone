@@ -1,6 +1,5 @@
-import { IBoard, Coordinates } from "@models/types";
-import { TILE } from "@data/constants";
-const { PLACED } = TILE;
+import { IBoard, Coordinates } from '@models/types';
+import { PLACED } from '@data/constants';
 
 export const isTilePlaced = (board: IBoard, coords: Coordinates) => {
   const { x, y } = coords;

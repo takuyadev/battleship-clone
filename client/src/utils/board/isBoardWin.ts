@@ -1,6 +1,5 @@
 import { IBoard } from "../../models/types";
-import { TILE } from "@data/constants";
-const { PLACED } = TILE;
+import { PLACED } from "@data/constants";
 
 export const isBoardWin = (board: IBoard): boolean => {
   for (const row of board) {

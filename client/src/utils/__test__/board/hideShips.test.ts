@@ -2,6 +2,7 @@ import { assert } from "chai";
 import { describe, it } from "vitest";
 import { hideShips } from "@utils/index";
 import * as data from "@data/defaults/boardDefault.json";
+
 const { EMPTY_BOARD, ATTACKED_BOARD, HIDDEN_BOARD, SET_BOARD } = data;
 
 describe("hideShips()", () => {

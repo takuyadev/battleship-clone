@@ -1,42 +1,92 @@
-import { useEffect, useReducer, useState } from "react";
-import { generateBoard, updateTile, isTilePlaced } from "@utils/index";
-import { Coordinates, IBoard, BoardActionType } from "@models/types";
-import { TILE } from "@data/constants";
-import { BOARD_ACTIONS } from "@data/actions";
+import { useEffect, useReducer } from 'react';
+import {
+  generateBoard,
+  updateTile,
+  isTilePlaced,
+  getSetBoard,
+} from '@utils/index';
+import {
+  Coordinates,
+  IBoard,
+  InitializeBoardType,
+  PlaceShipType,
+  UpdateTileType,
+  AttackTileType,
+} from '@models/types';
+import { ROWS, COLUMNS, MARKED_PLACED, MARKED_EMPTY } from '@data/constants';
+import { BoardOptions } from '@models/types';
 
-const { MARKED_PLACED, MARKED_EMPTY } = TILE;
-const { UPDATE_TILE, ATTACK_TILE, INITIALIZE_BOARD } = BOARD_ACTIONS;
+type PlaceShipAction = {
+  type: PlaceShipType;
+  payload: {
+    coords: Coordinates;
+    options: BoardOptions;
+  };
+};
 
-const reducer = (state: IBoard, action: BoardActionType) => {
-  const { x, y } = action.payload.coords;
-  const { mark } = action.payload;
+type UpdateTileAction = {
+  type: UpdateTileType;
+  payload: {
+    coords: Coordinates;
+    mark: number;
+  };
+};
 
-  switch (action.type) {
-    case INITIALIZE_BOARD:
-      return generateBoard(10, 10);
+type AttackTileAction = {
+  type: AttackTileType;
+  payload: {
+    coords: Coordinates;
+    mark: number;
+  };
+};
 
-    case UPDATE_TILE:
-      return updateTile(state, { x, y }, mark);
+type InitializeBoardAction = {
+  type: InitializeBoardType;
+  payload: null;
+};
 
-    case ATTACK_TILE:
+type BoardAction =
+  | PlaceShipAction
+  | UpdateTileAction
+  | InitializeBoardAction
+  | AttackTileAction;
+
+const reducer = (state: IBoard, { type, payload }: BoardAction) => {
+  switch (type) {
+    // Restart board
+    case 'initialize-board':
+      return generateBoard(ROWS, COLUMNS);
+
+    // Place ship based on location, and options (height) provided
+    case 'place-ship':
+      const updatedBoard = getSetBoard(state, payload.coords, payload.options);
+      return updatedBoard;
+
+    // Update tile based on coordinates provided and mark you want to add
+    case 'update-tile':
+      return updateTile(state, { x: payload.x, y: payload.y }, payload.mark);
+
+    // Attack selected player board's tile
+    case 'attack-tile':
+      const tile = [payload.x][payload.y];
+
       // If ship is already attacked, then don't change
-      if (state[x][y] === MARKED_PLACED || state[x][y] === MARKED_EMPTY) {
+      if (tile === MARKED_PLACED || tile === MARKED_EMPTY) {
         return state;
       }
 
       // If above check passes, check if tile has ship on it
-      const hitTile = isTilePlaced(state, { x, y })
+      const hitTile = isTilePlaced(state, { x: payload.x, y: payload.y })
         ? MARKED_PLACED
         : MARKED_EMPTY;
 
+      return updateTile(state, { x: payload.x, y: payload.y }, hitTile);
 
-      return updateTile(state, { x, y }, hitTile);
-
+    // Else, return default state
     default:
       return state;
   }
 };
-
 
 const useBoard = ({ x, y }: Coordinates) => {
   const [state, dispatch] = useReducer(reducer, generateBoard(x, y));

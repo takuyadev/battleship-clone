@@ -1,16 +1,20 @@
-export const TILE = {
+const TILE = {
   PLACED: 1,
   EMPTY: 0,
   MARKED_EMPTY: -1,
   MARKED_PLACED: -2,
 };
 
-export const BOARD_SIZE = {
+export const { PLACED, EMPTY, MARKED_EMPTY, MARKED_PLACED } = TILE;
+export const SHIPS_COUNT = 5;
+
+const BOARD_SIZE = {
   ROWS: 10,
   COLUMNS: 10,
 };
+export const { ROWS, COLUMNS } = BOARD_SIZE;
 
-export const PIECES = {
+const SHIPS = {
   S: {
     height: 1,
   },
@@ -27,3 +31,4 @@ export const PIECES = {
     height: 5,
   },
 };
+export const { S, M, L, XL, XXL } = SHIPS;

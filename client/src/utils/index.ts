@@ -1,5 +1,5 @@
 // Board Imports
-import { editBoard } from "./board/editBoard";
+import { getSetBoard } from "./board/getSetBoard";
 import { generateBoard } from "./board/generateBoard";
 import { isBoardWin } from "./board/isBoardWin";
 import { hideShips } from "./board/hideShips";
@@ -16,7 +16,7 @@ export {
   isBoardWin,
   updateTile,
   isTilePlaced,
-  editBoard,
+  getSetBoard,
   generateBoard,
   hideShips,
   isShipPlaceable,

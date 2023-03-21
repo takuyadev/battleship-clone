@@ -1,13 +1,9 @@
-import { IBoard, Coordinates } from "@models/types";
+import { IBoard, Coordinates, BoardOptions } from "@models/types";
 
-export const editBoard = (
+export const getSetBoard = (
   board: IBoard,
   coords: Coordinates,
-  options: {
-    height: number;
-    isRotate: boolean;
-    isRemove: boolean;
-  }
+  options: BoardOptions
 ) => {
   const { x, y } = coords;
   const { height, isRotate, isRemove } = options;
