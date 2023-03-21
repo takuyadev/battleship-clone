@@ -21,7 +21,6 @@ export type InitializeBoardType = 'initialize-board';
 export type UpdateBoardType = 'update-board';
 export type RotateBoardType = 'rotate-board';
 
-
 // ship Hooks
 export type UpdatePlacedType = 'update-placed';
 export type UpdateCoordinatesType = 'update-coordinates'
