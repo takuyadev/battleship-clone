@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 import { generateShips } from '@utils/board/generateShips';
-import { IPieces, ShipAction } from '@models/interfaces';
+import { IShips, ShipAction } from '@models/interfaces';
 import { SHIPS_COUNT } from '@data/constants';
 
-const reducer = (state: IPieces[], { type, payload }: ShipAction) => {
+const reducer = (state: IShips[], { type, payload }: ShipAction) => {
   let index = 0;
 
   if (payload?.height) {
@@ -22,6 +22,10 @@ const reducer = (state: IPieces[], { type, payload }: ShipAction) => {
       state[index].coordinates = payload.coords;
       return state;
 
+    case 'rotate-ship':
+      state[index].isRotated = payload.isRotated;
+      return state;
+
     default:
       return state;
   }
@@ -30,10 +34,6 @@ const reducer = (state: IPieces[], { type, payload }: ShipAction) => {
 const useShips = () => {
   const [state, dispatch] = useReducer(reducer, generateShips(SHIPS_COUNT));
 
-  useEffect(() => {
-    console.log(state)
-  }, [state])
-  
   return [state, dispatch] as const;
 };
 
