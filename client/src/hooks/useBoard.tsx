@@ -5,51 +5,9 @@ import {
   isTilePlaced,
   getSetBoard,
 } from '@utils/index';
-import {
-  Coordinates,
-  IBoard,
-  InitializeBoardType,
-  PlaceShipType,
-  UpdateTileType,
-  AttackTileType,
-} from '@models/types';
+import { Coordinates, IBoard } from '@models/types';
 import { ROWS, COLUMNS, MARKED_PLACED, MARKED_EMPTY } from '@data/constants';
-import { BoardOptions } from '@models/types';
-
-type PlaceShipAction = {
-  type: PlaceShipType;
-  payload: {
-    coords: Coordinates;
-    options: BoardOptions;
-  };
-};
-
-type UpdateTileAction = {
-  type: UpdateTileType;
-  payload: {
-    coords: Coordinates;
-    mark: number;
-  };
-};
-
-type AttackTileAction = {
-  type: AttackTileType;
-  payload: {
-    coords: Coordinates;
-    mark: number;
-  };
-};
-
-type InitializeBoardAction = {
-  type: InitializeBoardType;
-  payload: null;
-};
-
-type BoardAction =
-  | PlaceShipAction
-  | UpdateTileAction
-  | InitializeBoardAction
-  | AttackTileAction;
+import { BoardAction } from '@models/interfaces';
 
 const reducer = (state: IBoard, { type, payload }: BoardAction) => {
   switch (type) {
@@ -64,11 +22,11 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
 
     // Update tile based on coordinates provided and mark you want to add
     case 'update-tile':
-      return updateTile(state, { x: payload.x, y: payload.y }, payload.mark);
+      return updateTile(state, payload.coords, payload.mark);
 
     // Attack selected player board's tile
     case 'attack-tile':
-      const tile = [payload.x][payload.y];
+      const tile = [payload.coords.x][payload.coords.y];
 
       // If ship is already attacked, then don't change
       if (tile === MARKED_PLACED || tile === MARKED_EMPTY) {
@@ -76,11 +34,11 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
       }
 
       // If above check passes, check if tile has ship on it
-      const hitTile = isTilePlaced(state, { x: payload.x, y: payload.y })
+      const hitTile = isTilePlaced(state, payload.coords)
         ? MARKED_PLACED
         : MARKED_EMPTY;
 
-      return updateTile(state, { x: payload.x, y: payload.y }, hitTile);
+      return updateTile(state, payload.coords, hitTile);
 
     // Else, return default state
     default:

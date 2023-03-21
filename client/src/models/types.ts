@@ -20,5 +20,6 @@ export type InitializeBoardType = 'initialize-board';
 export type UpdateBoardType = 'update-board';
 
 // ship Hooks
-export type UpdateShipType = 'update-placed';
+export type UpdatePlacedType = 'update-placed';
+export type UpdateCoordinatesType = 'update-coordinates'
 export type initializeShipType = 'initialize-ships';

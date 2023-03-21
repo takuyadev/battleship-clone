@@ -67,7 +67,10 @@ type InitializeBoardAction = {
   payload: null;
 };
 
-export type ShipAction = InitializeShipsAction | UpdatePlacedAction;
+export type ShipAction =
+  | InitializeShipsAction
+  | UpdatePlacedAction
+  | UpdateCoordinatesAction;
 
 type InitializeShipsAction = {
   type: initializeShipType;

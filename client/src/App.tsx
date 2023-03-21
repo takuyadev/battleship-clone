@@ -10,7 +10,7 @@ import { useState } from 'react';
 function App(): JSX.Element {
   const [isEdit, setIsEdit] = useOnOff(true);
   const [isRotate, setIsRotate] = useOnOff(false);
-  const [height, setHeight] = useState(5);
+  const [currentShip, setCurrentShip] = useState(5);
   const [playerBoard, setPlayerBoard] = useBoard({
     x: ROWS,
     y: COLUMNS,
@@ -18,20 +18,25 @@ function App(): JSX.Element {
   const [playerShips, setPlayerShips] = useShips();
 
   const placeShip = ({ x, y }: Coordinates) => {
-    const checkBoard = isShipPlaceable({ x, y }, { height, isRotate });
+    const checkBoard = isShipPlaceable(
+      { x, y },
+      { height: currentShip, isRotate }
+    );
+    const shipIndex = currentShip - 1;
 
     if (!checkBoard) {
       return false;
     }
 
-    if (playerShips[height].isPlaced) {
-      const { x: prevX, y: prevY } = playerShips[height].coordinates;
+    if (playerShips[shipIndex].isPlaced) {
+      const { x: prevX, y: prevY } = playerShips[shipIndex].coordinates;
+      console.log(prevX, prevY);
 
       setPlayerBoard({
         type: 'place-ship',
         payload: {
           coords: { x: prevX, y: prevY },
-          options: { height, isRotate, isRemove: true },
+          options: { height: currentShip, isRotate, isRemove: true },
         },
       });
 
@@ -39,24 +44,38 @@ function App(): JSX.Element {
         type: 'place-ship',
         payload: {
           coords: { x, y },
-          options: { height, isRotate, isRemove: false },
+          options: { height: currentShip, isRotate, isRemove: false },
+        },
+      });
+
+      setPlayerShips({
+        type: 'update-coordinates',
+        payload: {
+          height: currentShip,
+          coords: { x, y },
         },
       });
 
       return true;
     }
 
-    // If board has space for selected ship, then update board
-    if (!checkBoard) {
-      setPlayerShips({ type: 'update-ship', payload: { height: height } });
-    }
+    setPlayerShips({
+      type: 'update-placed',
+      payload: { height: currentShip },
+    });
+    setPlayerShips({
+      type: 'update-coordinates',
+      payload: { height: currentShip, coords: { x, y } },
+    });
+
+    return true;
   };
 
   return (
     <div>
       <button onClick={() => setIsEdit({ type: 'flip' })}>asdfasdf</button>
       {isEdit ? 'true' : 'false'}
-      {height}
+      {currentShip}
       {isEdit && (
         <GameBoard
           board={playerBoard}

@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { generateShips } from '@utils/board/generateShips';
 import { IPieces, ShipAction } from '@models/interfaces';
 import { SHIPS_COUNT } from '@data/constants';
@@ -29,6 +29,11 @@ const reducer = (state: IPieces[], { type, payload }: ShipAction) => {
 
 const useShips = () => {
   const [state, dispatch] = useReducer(reducer, generateShips(SHIPS_COUNT));
+
+  useEffect(() => {
+    console.log(state)
+  }, [state])
+  
   return [state, dispatch] as const;
 };
 
