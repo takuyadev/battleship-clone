@@ -1,7 +1,7 @@
 # Battleship Clone
 
 ## Summary
-Battleship clone built using React.js + Vite + TypeScript Front-end, with Node.js + PostgreSQL + Socket.IO for server.
+Battleship clone built using React.js + Vite + TypeScript + React Router DOM, with multiplayer WebSocket implementation.
 
 ## Features
 * Drag and drop pieces
