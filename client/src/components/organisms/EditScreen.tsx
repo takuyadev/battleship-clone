@@ -1,5 +1,5 @@
 import React from "react";
-import { IBoard, GetEditedBoard, PlaceShip } from "../../models/types";
+import { IBoard } from "../../models/types";
 import GameBoard from "../molecules/GameBoard";
 
 interface IEditScreen_Props {
