@@ -1,16 +1,17 @@
 import {
+  AddShipType,
   IBoard,
   initializeShipType,
+  RemoveShipType,
   UpdateCoordinatesType,
   UpdatePlacedType,
-} from './types';
-import {
-  PlaceShipType,
+  RotateBoardType,
   UpdateTileType,
   AttackTileType,
   Coordinates,
   BoardOptions,
   InitializeBoardType,
+  RotateShipType,
 } from './types';
 
 // General interfaces
@@ -24,22 +25,33 @@ export interface IPlayer {
   board: IBoard;
 }
 
-export interface IPieces {
+export interface IShips {
   height: number;
   isPlaced: boolean;
+  isRotated: boolean;
   coordinates: { x: number; y: number };
 }
 
 // ? Action Types
 // useReducers action types
 export type BoardAction =
-  | PlaceShipAction
+  | AddShipAction
+  | RemoveShipAction
   | UpdateTileAction
   | InitializeBoardAction
-  | AttackTileAction;
+  | AttackTileAction
+  | RotateBoardAction;
 
-type PlaceShipAction = {
-  type: PlaceShipType;
+type AddShipAction = {
+  type: AddShipType;
+  payload: {
+    coords: Coordinates;
+    options: BoardOptions;
+  };
+};
+
+type RemoveShipAction = {
+  type: RemoveShipType;
   payload: {
     coords: Coordinates;
     options: BoardOptions;
@@ -67,10 +79,16 @@ type InitializeBoardAction = {
   payload: null;
 };
 
+type RotateBoardAction = {
+  type: RotateBoardType;
+  payload: null;
+};
+
 export type ShipAction =
   | InitializeShipsAction
   | UpdatePlacedAction
-  | UpdateCoordinatesAction;
+  | UpdateCoordinatesAction
+  | RotateShipAction;
 
 type InitializeShipsAction = {
   type: initializeShipType;
@@ -90,4 +108,9 @@ type UpdateCoordinatesAction = {
     height: number;
     coords: Coordinates;
   };
+};
+
+type RotateShipAction = {
+  type: RotateShipType;
+  payload: { height: number; isRotated: boolean };
 };

@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import {
   generateBoard,
   updateTile,
@@ -8,6 +8,8 @@ import {
 import { Coordinates, IBoard } from '@models/types';
 import { ROWS, COLUMNS, MARKED_PLACED, MARKED_EMPTY } from '@data/constants';
 import { BoardAction } from '@models/interfaces';
+import { rotateBoard } from '@utils/board/rotateBoard';
+import { useShips } from './useShips';
 
 const reducer = (state: IBoard, { type, payload }: BoardAction) => {
   switch (type) {
@@ -16,9 +18,23 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
       return generateBoard(ROWS, COLUMNS);
 
     // Place ship based on location, and options (height) provided
-    case 'place-ship':
-      const updatedBoard = getSetBoard(state, payload.coords, payload.options);
-      return updatedBoard;
+    case 'remove-ship':
+      const removedBoard = getSetBoard(state, payload.coords, {
+        ...payload.options,
+        isRemove: true,
+      });
+
+      return removedBoard;
+
+    case 'add-ship':
+      const addedBoard = getSetBoard(state, payload.coords, {
+        ...payload.options,
+        isRemove: false,
+      });
+      return addedBoard;
+
+    case 'rotate-board':
+      return rotateBoard(state);
 
     // Update tile based on coordinates provided and mark you want to add
     case 'update-tile':
@@ -47,13 +63,13 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
 };
 
 const useBoard = ({ x, y }: Coordinates) => {
-  const [state, dispatch] = useReducer(reducer, generateBoard(x, y));
+  const [board, dispatch] = useReducer(reducer, generateBoard(x, y));
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+  // useEffect(() => {
+  //   console.log(board);
+  // }, [board]);
 
-  return [state, dispatch] as const;
+  return [board, dispatch] as const;
 };
 
 export { useBoard };

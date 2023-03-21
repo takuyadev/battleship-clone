@@ -1,9 +1,9 @@
 // ? TypeScript Interfaces
-import Button from "../atoms/Button";
-import Board from "../atoms/Board";
-import { IBoard } from "../../models/types";
+import { IBoard } from '@models/types';
+import Board from '@components/atoms/Board';
+import GridButton from '@components/atoms/buttons/GridButton';
 
-interface IGameBoard_Props {
+interface IGridBoard_Props {
   board: IBoard;
   onClick: (x: number, y: number) => void;
 }
@@ -15,20 +15,22 @@ interface IGameBoard_Props {
   -2 === ship was there, and has been hit
 */
 
-const GameBoard = ({ board, onClick }: IGameBoard_Props) => {
+const GridBoard = ({ board, onClick }: IGridBoard_Props) => {
   return (
     <Board>
       {board &&
         board.map((arr, x) => (
           <div key={x}>
             {arr.map((num, y) => (
-              <Button
+              <GridButton
                 key={y}
-                className={`${num === -1 ? "bg-red-200" : "bg-green-200"}`}
+                className={`${
+                  num === -1 || num === -2 ? 'bg-red-200' : 'bg-green-200'
+                }`}
                 onClick={() => onClick(x, y)}
               >
                 {num}
-              </Button>
+              </GridButton>
             ))}
           </div>
         ))}
@@ -36,4 +38,4 @@ const GameBoard = ({ board, onClick }: IGameBoard_Props) => {
   );
 };
 
-export default GameBoard;
+export default GridBoard;
