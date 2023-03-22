@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import {
   AddShipType,
   IBoard,
@@ -32,8 +34,37 @@ export interface IShips {
   coordinates: { x: number; y: number };
 }
 
+export interface IConfig {
+  gameFormat: GameFormat;
+  boardSize: number;
+}
+
+export type GameFormat = 'local' | 'online' | 'computer' | string;
+
+// Context
+export interface IGameContext {
+  config: {
+    gameFormat: GameFormat;
+    boardSize: number;
+  };
+  playerBoard: IBoard;
+  setPlayerBoard: Dispatch<BoardAction>;
+  playerShips: IShips[];
+  setPlayerShips: Dispatch<ShipAction>;
+  showBoard: boolean;
+  setShowBoard: Dispatch<OnOffAction>;
+  setConfig: Dispatch<SetStateAction<IConfig>>;
+}
+
 // ? Action Types
 // useReducers action types
+
+export type OnOffAction = {
+  type: OnOffActionTypes;
+};
+
+type OnOffActionTypes = 'on' | 'off' | 'flip';
+
 export type BoardAction =
   | AddShipAction
   | RemoveShipAction

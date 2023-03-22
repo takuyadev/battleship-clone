@@ -5,7 +5,7 @@ import { Coordinates, IBoard } from '@models/types';
 import { useState } from 'react';
 import { IShips, ShipAction, BoardAction } from '@models/interfaces';
 import { IoMdRefreshCircle } from 'react-icons/io';
-import { FaArrowCircleLeft, FaExclamationCircle } from 'react-icons/fa';
+import { FaExclamationCircle } from 'react-icons/fa';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
 import Card from '@components/atoms/ui/Card';
@@ -103,7 +103,6 @@ const EditBoard = ({
     <div className='flex flex-col gap-8 items-center'>
       <GridBoard
         board={board}
-        isRotated={isRotated}
         onClick={(x: number, y: number) => placeShip({ x, y })}
       />
       <div className='flex flex-col gap-2 items-center'>

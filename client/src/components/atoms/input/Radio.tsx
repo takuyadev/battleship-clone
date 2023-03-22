@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import { ComponentProps } from 'react';
 
 interface IRadioButton_Props extends ComponentProps<'input'> {
   title: string;
@@ -6,7 +6,7 @@ interface IRadioButton_Props extends ComponentProps<'input'> {
   id: string;
 }
 
-const RadioButton = ({
+const Radio = ({
   title,
   description,
   id,
@@ -28,4 +28,4 @@ const RadioButton = ({
   );
 };
 
-export default RadioButton;
+export default Radio;

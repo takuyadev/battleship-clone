@@ -31,11 +31,10 @@
       "@hooks/*": ["hooks/*"],
       "@models/*": ["models/*"],
       "@utils/*": ["utils/*"],
-      "@/*": ["/*"],
       "@src/*": ["src/*"],
       "@pages/*": ["pages/*"],
-      "@play/*": ["play/*"],
-      "@homepage/*": ["homepage/*"]
+      "@context/*": ["context/*"],
+      "@/*": ["/*"]
     }
   },
   "include": ["src"],
