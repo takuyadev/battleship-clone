@@ -8,6 +8,8 @@ import { IoMdRefreshCircle } from 'react-icons/io';
 import { FaArrowCircleLeft, FaExclamationCircle } from 'react-icons/fa';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
+import Card from '@components/atoms/ui/Card';
+import IconButton from '@components/atoms/buttons/IconButton';
 
 interface IEdit_Board {
   board: IBoard;
@@ -109,29 +111,27 @@ const EditBoard = ({
             !isRotated && 'rotate-90'
           } text-indigo-500`}
         />
+
         <div className='flex gap-4 '>
-          <button
-            className='text-rose-500 duration-200 hover:scale-90'
+          <IconButton
+            className="text-rose-500"
+            icon={<FaExclamationCircle size={42} />}
             onClick={() => {
               setShips({ type: 'initialize-ships', payload: null });
               setBoard({ type: 'initialize-board', payload: null });
             }}
-          >
-            <FaExclamationCircle size={42} />
-          </button>
+          />
 
-          <button
-            className='text-indigo-500 duration-200 hover:rotate-90 hover:scale-90'
+          <IconButton
+            icon={<IoMdRefreshCircle size={48} />}
             onClick={() => {
               setIsRotated({ type: 'flip' });
             }}
-          >
-            <IoMdRefreshCircle size={48} />
-          </button>
+          />
         </div>
       </div>
 
-      <div className='flex gap-2 p-2 bg-indigo-50 rounded-lg'>
+      <Card>
         <ButtonIndicator
           onClick={() => setCurrentShipSize(1)}
           isPlaced={ships[0].isPlaced}
@@ -157,7 +157,7 @@ const EditBoard = ({
           isPlaced={ships[4].isPlaced}
           text={'5'}
         />
-      </div>
+      </Card>
     </div>
   );
 };

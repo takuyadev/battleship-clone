@@ -1,18 +1,18 @@
 interface IButton_Props extends React.ComponentProps<'button'> {
-  isRotated: boolean;
   text: string;
-  onClick: () => void;
-  icon?: React.ReactNode;
   status: number;
+  className?: string;
+  icon?: React.ReactNode;
 }
 
 const GridButton = ({
-  onClick,
   icon,
   text,
   status,
+  className,
   ...props
 }: IButton_Props) => {
+  // Depending on UI status,
   const selectClass = (status: number) => {
     if (status === 0) {
       return `bg-indigo-100 text-indigo-200 hover:bg-indigo-200 hover:text-indigo-500`;
@@ -31,8 +31,7 @@ const GridButton = ({
     <button
       className={`${selectClass(
         status
-      )} flex items-center justify-center text-sm w-10 h-10 font-body p-3 ease-out duration-200 font-bold hover:scale-110 rounded-lg shadow-inner hover:shadow-md`}
-      onClick={onClick}
+      )} ${className} flex items-center justify-center text-sm w-10 h-10 font-body p-3 ease-out duration-200 font-bold hover:scale-110 rounded-lg shadow-inner hover:shadow-md`}
       {...props}
     >
       {text && text}

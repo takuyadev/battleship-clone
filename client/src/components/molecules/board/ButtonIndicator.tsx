@@ -14,7 +14,7 @@ const ButtonIndicator = ({
   ...props
 }: IButtonIndicator_Props) => {
   return (
-    <div className='flex flex-col items-center gap-1'>
+    <div className='flex flex-col items-center '>
       <div
         className={`${
           isPlaced

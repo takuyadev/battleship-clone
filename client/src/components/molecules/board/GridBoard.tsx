@@ -30,7 +30,6 @@ const GridBoard = ({ board, isRotated, onClick }: IGridBoard_Props) => {
                 <GridButton
                   key={y}
                   text={tileName}
-                  isRotated={isRotated}
                   status={num}
                   onClick={() => onClick(x, y)}
                 />

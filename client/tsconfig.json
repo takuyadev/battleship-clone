@@ -45,8 +45,14 @@
       "@src/*": [
         "src/*"
       ],
-      "@fonts/*": [
-        "fonts/*"
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@play/*": [
+        "play/*"
+      ],
+      "@homepage/*": [
+        "homepage/*"
       ]
     }
   },
