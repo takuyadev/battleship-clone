@@ -5,7 +5,11 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ESNext"
+      "ESNext",
+      "es5",
+      "es6",
+      "dom",
+      "dom.iterable"
     ],
     "allowJs": false,
     "skipLibCheck": true,
@@ -21,44 +25,20 @@
     "baseUrl": "./src",
     "jsx": "react-jsx",
     "paths": {
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@data/*": [
-        "data/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@models/*": [
-        "models/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@/*": [
-        "/*"
-      ],
-      "@src/*": [
-        "src/*"
-      ],
-      "@pages/*": [
-        "pages/*"
-      ],
-      "@play/*": [
-        "play/*"
-      ],
-      "@homepage/*": [
-        "homepage/*"
-      ]
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
+      "@data/*": ["data/*"],
+      "@hooks/*": ["hooks/*"],
+      "@models/*": ["models/*"],
+      "@utils/*": ["utils/*"],
+      "@/*": ["/*"],
+      "@src/*": ["src/*"],
+      "@pages/*": ["pages/*"],
+      "@play/*": ["play/*"],
+      "@homepage/*": ["homepage/*"]
     }
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "./tsconfig.node.json"

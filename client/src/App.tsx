@@ -1,19 +1,27 @@
-import EditBoard from '@components/organisms/app/EditBoard';
-import { useBoard } from '@hooks/useBoard';
-import { useShips } from '@hooks/useShips';
-import { ROWS, COLUMNS } from '@data/constants';
 import { Outlet } from 'react-router-dom';
 import Header from '@components/organisms/_general/Header';
 import Footer from '@components/organisms/_general/Footer';
+import Wave from 'react-wavify';
 
 function App(): JSX.Element {
   return (
-    <div className="flex flex-col gap-12">
+    <div className='flex flex-col gap-12'>
       <Header />
-      <main>
+      <main className='z-10'>
         <Outlet />
       </main>
       <Footer />
+      <Wave
+        stroke='#eef2ff'
+        className='absolute bottom-0  z-0 w-screen h-1/2'
+        paused={false}
+        options={{
+          height: 10,
+          amplitude: 20,
+          speed: 0.15,
+          points: 3,
+        }}
+      />
     </div>
   );
 }

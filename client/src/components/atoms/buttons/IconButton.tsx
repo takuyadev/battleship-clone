@@ -1,4 +1,4 @@
-import { ComponentProps, ReactPropTypes } from 'react';
+import { ComponentProps } from 'react';
 
 interface IButton_Props extends ComponentProps<'button'> {
   icon: React.ReactNode;
@@ -15,5 +15,4 @@ const IconButton = ({ icon, className, ...props }: IButton_Props) => {
     </button>
   );
 };
-
 export default IconButton;

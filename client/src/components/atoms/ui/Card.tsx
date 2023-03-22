@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface ICard_Props {
   children: React.ReactNode;
   className?: string;

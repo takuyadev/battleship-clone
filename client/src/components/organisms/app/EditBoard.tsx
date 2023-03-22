@@ -16,6 +16,7 @@ interface IEdit_Board {
   setBoard: React.Dispatch<BoardAction>;
   ships: IShips[];
   setShips: React.Dispatch<ShipAction>;
+  boardSize: number;
 }
 
 const EditBoard = ({
@@ -23,6 +24,7 @@ const EditBoard = ({
   setBoard,
   ships,
   setShips,
+  boardSize,
 }: IEdit_Board): JSX.Element => {
   const [isRotated, setIsRotated] = useOnOff(false);
   const [currentShipSize, setCurrentShipSize] = useState(5);
@@ -114,11 +116,16 @@ const EditBoard = ({
 
         <div className='flex gap-4 '>
           <IconButton
-            className="text-rose-500"
+            className='text-rose-500'
             icon={<FaExclamationCircle size={42} />}
             onClick={() => {
               setShips({ type: 'initialize-ships', payload: null });
-              setBoard({ type: 'initialize-board', payload: null });
+              setBoard({
+                type: 'initialize-board',
+                payload: {
+                  boardSize,
+                },
+              });
             }}
           />
 

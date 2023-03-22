@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useReducer } from 'react';
 import {
   generateBoard,
   updateTile,
@@ -6,16 +6,15 @@ import {
   getSetBoard,
 } from '@utils/index';
 import { Coordinates, IBoard } from '@models/types';
-import { ROWS, COLUMNS, MARKED_PLACED, MARKED_EMPTY } from '@data/constants';
+import { MARKED_PLACED, MARKED_EMPTY } from '@data/constants';
 import { BoardAction } from '@models/interfaces';
 import { rotateBoard } from '@utils/board/rotateBoard';
-import { useShips } from './useShips';
 
 const reducer = (state: IBoard, { type, payload }: BoardAction) => {
   switch (type) {
     // Restart board
     case 'initialize-board':
-      return generateBoard(ROWS, COLUMNS);
+      return generateBoard(payload.boardSize, payload.boardSize);
 
     // Place ship based on location, and options (height) provided
     case 'remove-ship':
@@ -64,10 +63,6 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
 
 const useBoard = ({ x, y }: Coordinates) => {
   const [board, dispatch] = useReducer(reducer, generateBoard(x, y));
-
-  // useEffect(() => {
-  //   console.log(board);
-  // }, [board]);
 
   return [board, dispatch] as const;
 };

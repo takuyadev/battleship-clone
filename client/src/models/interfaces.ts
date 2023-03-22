@@ -76,7 +76,9 @@ type AttackTileAction = {
 
 type InitializeBoardAction = {
   type: InitializeBoardType;
-  payload: null;
+  payload: {
+    boardSize: number;
+  };
 };
 
 type RotateBoardAction = {
