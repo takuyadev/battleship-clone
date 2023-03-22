@@ -4,6 +4,10 @@ import { isShipPlaceable } from '@utils/index';
 import { Coordinates, IBoard } from '@models/types';
 import { useState } from 'react';
 import { IShips, ShipAction, BoardAction } from '@models/interfaces';
+import { IoMdRefreshCircle } from 'react-icons/io';
+import { FaArrowCircleLeft, FaExclamationCircle } from 'react-icons/fa';
+import { BsArrowLeftCircle } from 'react-icons/bs';
+import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
 
 interface IEdit_Board {
   board: IBoard;
@@ -23,7 +27,6 @@ const EditBoard = ({
 
   // Place ship while the game is in edit mode
   const placeShip = ({ x, y }: Coordinates) => {
-
     // Check if ship can be placed onto the board
     const checkBoard = isShipPlaceable(
       board,
@@ -93,25 +96,68 @@ const EditBoard = ({
   };
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          setIsRotated({ type: 'flip' });
-        }}
-      >
-        Rotate Board
-      </button>
-
-      <button onClick={() => setCurrentShipSize(1)}>1</button>
-      <button onClick={() => setCurrentShipSize(2)}>2</button>
-      <button onClick={() => setCurrentShipSize(3)}>3</button>
-      <button onClick={() => setCurrentShipSize(4)}>4</button>
-      <button onClick={() => setCurrentShipSize(5)}>5</button>
-
+    <div className='flex flex-col gap-8 items-center'>
       <GridBoard
         board={board}
+        isRotated={isRotated}
         onClick={(x: number, y: number) => placeShip({ x, y })}
       />
+      <div className='flex flex-col gap-2 items-center'>
+        <BsArrowLeftCircle
+          size={32}
+          className={`duration-200 ${
+            !isRotated && 'rotate-90'
+          } text-indigo-500`}
+        />
+        <div className='flex gap-4 '>
+          <button
+            className='text-rose-500 duration-200 hover:scale-90'
+            onClick={() => {
+              setShips({ type: 'initialize-ships', payload: null });
+              setBoard({ type: 'initialize-board', payload: null });
+            }}
+          >
+            <FaExclamationCircle size={42} />
+          </button>
+
+          <button
+            className='text-indigo-500 duration-200 hover:rotate-90 hover:scale-90'
+            onClick={() => {
+              setIsRotated({ type: 'flip' });
+            }}
+          >
+            <IoMdRefreshCircle size={48} />
+          </button>
+        </div>
+      </div>
+
+      <div className='flex gap-2 p-2 bg-indigo-50 rounded-lg'>
+        <ButtonIndicator
+          onClick={() => setCurrentShipSize(1)}
+          isPlaced={ships[0].isPlaced}
+          text={'1'}
+        />
+        <ButtonIndicator
+          onClick={() => setCurrentShipSize(2)}
+          isPlaced={ships[1].isPlaced}
+          text={'2'}
+        />
+        <ButtonIndicator
+          onClick={() => setCurrentShipSize(3)}
+          isPlaced={ships[2].isPlaced}
+          text={'3'}
+        />
+        <ButtonIndicator
+          onClick={() => setCurrentShipSize(4)}
+          isPlaced={ships[3].isPlaced}
+          text={'4'}
+        />
+        <ButtonIndicator
+          onClick={() => setCurrentShipSize(5)}
+          isPlaced={ships[4].isPlaced}
+          text={'5'}
+        />
+      </div>
     </div>
   );
 };

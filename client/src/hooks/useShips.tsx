@@ -1,4 +1,4 @@
-import {  useReducer } from 'react';
+import { useReducer } from 'react';
 import { generateShips } from '@utils/board/generateShips';
 import { IShips, ShipAction } from '@models/interfaces';
 import { SHIPS_COUNT } from '@data/constants';

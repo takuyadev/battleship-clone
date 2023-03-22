@@ -6,6 +6,7 @@ import { ROWS, COLUMNS } from '@data/constants';
 function App(): JSX.Element {
   const [playerBoard, setPlayerBoard] = useBoard({ x: ROWS, y: COLUMNS });
   const [playerShips, setPlayerShips] = useShips();
+  
   return (
     <div>
       <EditBoard

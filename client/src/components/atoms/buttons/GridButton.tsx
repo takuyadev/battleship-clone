@@ -1,13 +1,42 @@
-interface IButton_Props {
-  className: string;
-  children: React.ReactNode;
+interface IButton_Props extends React.ComponentProps<'button'> {
+  isRotated: boolean;
+  text: string;
   onClick: () => void;
+  icon?: React.ReactNode;
+  status: number;
 }
 
-const GridButton = ({ className, onClick, children }: IButton_Props) => {
+const GridButton = ({
+  onClick,
+  icon,
+  text,
+  status,
+  ...props
+}: IButton_Props) => {
+  const selectClass = (status: number) => {
+    if (status === 0) {
+      return `bg-indigo-100 text-indigo-200 hover:bg-indigo-200 hover:text-indigo-500`;
+    }
+
+    if (status === 1) {
+      return 'bg-indigo-300 hover:text-indigo-300 text-indigo-900 hover:bg-violet-900 hover:text-slate-300';
+    }
+
+    if (status === 1) {
+      return 'bg-indigo-300 hover:text-indigo-300 text-indigo-900 hover:bg-violet-900 hover:text-slate-300';
+    }
+  };
+
   return (
-    <button className={`${className} w-12 h-12 bg-green-100  duration-200 hover:bg-green-500`} onClick={onClick}>
-      {children}
+    <button
+      className={`${selectClass(
+        status
+      )} flex items-center justify-center text-sm w-10 h-10 font-body p-3 ease-out duration-200 font-bold hover:scale-110 rounded-lg shadow-inner hover:shadow-md`}
+      onClick={onClick}
+      {...props}
+    >
+      {text && text}
+      {icon && icon}
     </button>
   );
 };

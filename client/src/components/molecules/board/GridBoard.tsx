@@ -3,8 +3,11 @@ import { IBoard } from '@models/types';
 import Board from '@components/atoms/Board';
 import GridButton from '@components/atoms/buttons/GridButton';
 
+const ALPHABET = 'ABCDEFHIJK'.split('');
+
 interface IGridBoard_Props {
   board: IBoard;
+  isRotated: boolean;
   onClick: (x: number, y: number) => void;
 }
 /*
@@ -15,23 +18,24 @@ interface IGridBoard_Props {
   -2 === ship was there, and has been hit
 */
 
-const GridBoard = ({ board, onClick }: IGridBoard_Props) => {
+const GridBoard = ({ board, isRotated, onClick }: IGridBoard_Props) => {
   return (
-    <Board>
+    <Board size={board.length}>
       {board &&
         board.map((arr, x) => (
-          <div key={x}>
-            {arr.map((num, y) => (
-              <GridButton
-                key={y}
-                className={`${
-                  num === -1 || num === -2 ? 'bg-red-200' : 'bg-green-200'
-                }`}
-                onClick={() => onClick(x, y)}
-              >
-                {num}
-              </GridButton>
-            ))}
+          <div className="flex gap-2 justify-between">
+            {arr.map((num, y) => {
+              const tileName = ALPHABET[y] + (x + 1);
+              return (
+                <GridButton
+                  key={y}
+                  text={tileName}
+                  isRotated={isRotated}
+                  status={num}
+                  onClick={() => onClick(x, y)}
+                />
+              );
+            })}
           </div>
         ))}
     </Board>
