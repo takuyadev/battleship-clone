@@ -29,10 +29,13 @@ const GridBoard = ({ board, isTurn = false, onClick }: IGridBoard_Props) => {
               return (
                 <GridButton
                   key={y}
+                  className={`${isTurn ? 'pointer-events-none' : ''}`}
                   text={tileName}
                   status={num}
                   disabled={isTurn}
-                  onClick={() => onClick(x, y)}
+                  onClick={() => {
+                    console.log(x, y)
+                    onClick(x, y)}}
                 />
               );
             })}

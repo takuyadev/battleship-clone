@@ -21,13 +21,13 @@ const InputLabel = ({
     <div className="transition-all relative w-full">
       <Input
         {...props}
-        className="peer/input ease-out w-full pt-3 pb-1 px-[0.75em]"
+        className="peer/input ease-out w-full pt-5 pb-1 px-[0.75em]"
         name={name}
         placeholder={" "}
         id={htmlFor}
       />
       <Label
-        className="absolute transition-all translate-x-4 top-1 left-0 peer-placeholder-shown/input:top-4 peer-focus/input:top-1 peer-focus/input:text-teal-500"
+        className="absolute transition-all translate-x-4 top-2 left-0 peer-placeholder-shown/input:top-4 peer-focus/input:top-2 peer-focus/input:text-indigo-500"
         htmlFor={htmlFor}
       >
         {label}

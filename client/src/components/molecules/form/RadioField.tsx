@@ -5,6 +5,7 @@ type Options = {
   title: string;
   description: string;
   id: string;
+  icon: React.ReactNode
 };
 
 interface IRadio {
@@ -17,7 +18,7 @@ const RadioField = ({ onChange, name, options }: IRadio) => {
   return (
     <fieldset className="w-full">
       <ul className='grid w-full gap-4 md:grid-cols-3'>
-        {options.map(({ title, description, id }: Options, i) => {
+        {options.map(({ title, description, id, icon }: Options, i) => {
           return (
             <li key={i}>
               <Radio
@@ -30,6 +31,7 @@ const RadioField = ({ onChange, name, options }: IRadio) => {
                 name={name}
                 value={id}
                 id={id}
+                icon={icon}
               />
             </li>
           );

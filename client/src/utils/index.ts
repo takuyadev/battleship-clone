@@ -4,6 +4,7 @@ import { generateBoard } from "./board/generateBoard";
 import { isBoardWin } from "./board/isBoardWin";
 import { hideShips } from "./board/hideShips";
 import { isShipInBoundaries } from "./board/isShipInBoundaries";
+import { isAllShipsPlaced  } from "./board/isAllShipsPlaced";
 
 // Tile Imports
 import { isTilePlaced } from "./tile/isTilePlaced";
@@ -13,6 +14,7 @@ import { updateTile } from "./tile/updateTile";
 import { selectMove } from "./ai/selectMove";
 
 export {
+  isAllShipsPlaced,
   isBoardWin,
   updateTile,
   isTilePlaced,

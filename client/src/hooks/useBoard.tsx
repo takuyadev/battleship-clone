@@ -41,7 +41,10 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
 
     // Attack selected player board's tile
     case 'attack-tile':
-      const tile = [payload.coords.x][payload.coords.y];
+      const tile = state[payload.coords.x][payload.coords.y];
+
+      console.log(tile)
+
 
       // If ship is already attacked, then don't change
       if (tile === MARKED_PLACED || tile === MARKED_EMPTY) {
@@ -52,6 +55,7 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
       const hitTile = isTilePlaced(state, payload.coords)
         ? MARKED_PLACED
         : MARKED_EMPTY;
+
 
       return updateTile(state, payload.coords, hitTile);
 

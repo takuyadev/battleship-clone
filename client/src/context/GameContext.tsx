@@ -22,13 +22,22 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setPlayerBoard({
       type: 'initialize-board',
-      payload: { boardSize: Number(config.boardSize) },
+      payload: { boardSize: config.boardSize },
     });
     setOpponentBoard({
       type: 'initialize-board',
-      payload: { boardSize: Number(config.boardSize) },
+      payload: { boardSize: config.boardSize },
     });
-  }, [config.boardSize]);
+
+    setPlayerShips({
+      type: 'initialize-ships',
+      payload: null,
+    });
+    setOpponentShips({
+      type: 'initialize-ships',
+      payload: null,
+    });
+  }, [config]);
 
   return (
     <GameContext.Provider

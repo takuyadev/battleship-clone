@@ -1,7 +1,7 @@
 import EditBoard from '@components/organisms/app/EditBoard';
 import Button from '@components/atoms/buttons/Button';
 import { GameContext } from '@context/GameContext';
-import { useContext, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import ComputerBoard from '@components/organisms/app/ComputerBoard';
 import { isTilePlaced, selectMove } from '@utils/index';
@@ -18,6 +18,7 @@ const Computer = () => {
   } = useContext(GameContext);
   const [isEdit, setIsEdit] = useOnOff(true);
   const [isTurn, setIsTurn] = useOnOff(true);
+  const [lastMove, setLastMove] = useState({x: 0, y: 0})
 
   const onFinishEdit = () => {
     if (true /*configure condition when all pieces are placed*/) {
@@ -25,22 +26,7 @@ const Computer = () => {
     }
   };
 
-  useEffect(() => {
-    if (!isTurn) {
-      const callback = (): { x: number; y: number } => {
-        const [x, y] = selectMove();
-        if (isTilePlaced(playerBoard, { x, y })) {
-          return callback();
-        }
 
-        return { x, y };
-      };
-      const coords = callback();
-
-      setPlayerBoard({ type: 'attack-tile', payload: { coords } });
-      setIsTurn({ type: 'on' });
-    }
-  }, [opponentBoard]);
 
   return (
     <div>

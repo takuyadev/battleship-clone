@@ -10,7 +10,7 @@ const ComputerBoard = ({
   isTurn,
 }: IGameBoard) => {
   return (
-    <div className='flex gap-8'>
+    <div className='flex flex-col md:flex-row gap-8'>
       <GridBoard
         board={playerBoard}
         onClick={(x: number, y: number) => {

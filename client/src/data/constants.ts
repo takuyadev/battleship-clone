@@ -14,21 +14,31 @@ const BOARD_SIZE = {
 };
 export const { ROWS, COLUMNS } = BOARD_SIZE;
 
-const SHIPS = {
-  S: {
-    height: 1,
-  },
-  M: {
+// A Carrier, which is 5 tiles long
+// A Battleship, which is 4 tiles long
+// A Cruiser, which is 3 tiles long
+// A Submarine, which is 3 tiles long
+// A Destroyer, which is 2 tiles long
+
+export const SHIPS = [
+  {
+    name: 'Destroyer',
     height: 2,
   },
-  L: {
+  {
+    name: 'Submarine',
     height: 3,
   },
-  XL: {
+  {
+    name: 'Cruiser',
+    height: 3,
+  },
+  {
+    name: 'Battleship',
     height: 4,
   },
-  XXL: {
+  {
+    name: 'Carrier',
     height: 5,
   },
-};
-export const { S, M, L, XL, XXL } = SHIPS;
+];

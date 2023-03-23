@@ -26,3 +26,12 @@ export type UpdatePlacedType = 'update-placed';
 export type UpdateCoordinatesType = 'update-coordinates'
 export type initializeShipType = 'initialize-ships';
 export type RotateShipType = 'rotate-ship';
+
+
+// turn hooks
+export type PlayerTurnType = 'player-turn';
+export type OpponentTurnType = 'opponent-turn';
+export type OpponentAttackTurnType = 'opponent-attack-turn';
+export type PlayerAttackTurnType = 'player-attack-turn';
+export type FlipTurnsType = 'flip-turns';
+export type DisableBothType = 'disable-both';

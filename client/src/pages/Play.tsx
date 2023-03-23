@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import GameOptions from '@components/organisms/app/GameOptions';
 import { Outlet } from 'react-router-dom';
@@ -10,12 +10,18 @@ const Play = () => {
   const { config, setConfig } = useContext(GameContext);
   const navigate = useNavigate();
 
+  // On complete, clear options off the page
   const onComplete = () => {
     setShowOptions({ type: 'off' });
   };
 
+  // Reset options on page load back
   useEffect(() => {
-    console.log(config)
+    setShowOptions({ type: 'on' });
+  }, []);
+
+  // Navigate to selected page
+  useEffect(() => {
     if (!showOptions) {
       navigate(`/play/${config.gameFormat}`);
     }

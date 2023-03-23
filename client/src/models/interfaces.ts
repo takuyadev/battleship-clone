@@ -14,6 +14,12 @@ import {
   BoardOptions,
   InitializeBoardType,
   RotateShipType,
+  PlayerAttackTurnType,
+  PlayerTurnType,
+  OpponentTurnType,
+  OpponentAttackTurnType,
+  FlipTurnsType,
+  DisableBothType
 } from './types';
 
 // General interfaces
@@ -44,9 +50,21 @@ export interface IGameBoard {
   setPlayerBoard: Dispatch<BoardAction>;
   opponentBoard: IBoard;
   setOpponentBoard: Dispatch<BoardAction>;
-  isTurn: boolean;
-  setIsTurn: Dispatch<OnOffAction>
 }
+
+export interface ITurn {
+  player: {
+    isTurn: boolean;
+    isHide: boolean;
+  };
+
+  opponent: {
+    isTurn: boolean;
+    isHide: boolean;
+  };
+}
+
+
 
 export type GameFormat = 'local' | 'online' | 'computer' | string;
 
@@ -70,8 +88,38 @@ export interface IGameContext {
 }
 
 // ? Action Types
-// useReducers action types
+export type LocalBoardActions =
+  | PlayerTurnAction
+  | OpponentTurnAction
+  | FlipTurnsAction
+  | DisableBothAction
+  | OpponentAttackTurnAction
+  | PlayerAttackTurnAction;
 
+type PlayerTurnAction = {
+  type: PlayerTurnType;
+};
+
+export type OpponentTurnAction = {
+  type: OpponentTurnType;
+};
+
+export type FlipTurnsAction = {
+  type: FlipTurnsType;
+};
+
+export type DisableBothAction = {
+  type: DisableBothType;
+};
+
+export type PlayerAttackTurnAction = {
+  type: PlayerAttackTurnType;
+};
+export type OpponentAttackTurnAction = {
+  type: OpponentAttackTurnType;
+};
+
+// useReducers action types
 export type OnOffAction = {
   type: OnOffActionTypes;
 };
