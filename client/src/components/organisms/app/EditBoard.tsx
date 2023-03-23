@@ -143,7 +143,7 @@ const EditBoard = ({
             <ButtonIndicator
               onClick={() => setCurrentShipSize(ship.height)}
               isPlaced={ship.isPlaced}
-              text={"Ship"}
+              text={`${ship.name} (${ship.height})`}
             />
           );
         })}
