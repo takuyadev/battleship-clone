@@ -15,8 +15,8 @@ interface IRadio {
 
 const RadioField = ({ onChange, name, options }: IRadio) => {
   return (
-    <fieldset>
-      <ul className='grid w-full gap-6 md:grid-cols-3'>
+    <fieldset className="w-full">
+      <ul className='grid w-full gap-4 md:grid-cols-3'>
         {options.map(({ title, description, id }: Options, i) => {
           return (
             <li key={i}>

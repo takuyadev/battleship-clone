@@ -1,6 +1,7 @@
-import { useReducer } from "react";
+import { OnOffAction } from '@models/interfaces';
+import { useReducer } from 'react';
 
-const reducer = (state: boolean, action: { type: string }) => {
+const reducer = (state: boolean, action: OnOffAction) => {
   switch (action.type) {
     case 'on':
       return true;

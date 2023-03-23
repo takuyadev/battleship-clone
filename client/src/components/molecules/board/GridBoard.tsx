@@ -8,6 +8,7 @@ const ALPHABET = 'ABCDEFHIJK'.split('');
 interface IGridBoard_Props {
   board: IBoard;
   onClick: (x: number, y: number) => void;
+  isTurn?: boolean;
 }
 /*
   BOARD LEGEND
@@ -17,7 +18,7 @@ interface IGridBoard_Props {
   -2 === ship was there, and has been hit
 */
 
-const GridBoard = ({ board, onClick }: IGridBoard_Props) => {
+const GridBoard = ({ board, isTurn = false, onClick }: IGridBoard_Props) => {
   return (
     <Board size={board.length}>
       {board &&
@@ -30,6 +31,7 @@ const GridBoard = ({ board, onClick }: IGridBoard_Props) => {
                   key={y}
                   text={tileName}
                   status={num}
+                  disabled={isTurn}
                   onClick={() => onClick(x, y)}
                 />
               );

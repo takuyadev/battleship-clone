@@ -9,17 +9,17 @@ const GAMEFORMAT_OPTIONS = [
   {
     title: 'Local',
     description: 'Play Locally',
-    id: 'gameFormat-local',
+    id: 'local',
   },
   {
     title: 'Online',
     description: 'Play online',
-    id: 'gameFormat-online',
+    id: 'online',
   },
   {
-    title: 'Local',
+    title: 'Computer',
     description: 'Play against computer',
-    id: 'gameFormat-computer',
+    id: 'computer',
   },
 ];
 

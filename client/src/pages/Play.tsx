@@ -1,36 +1,29 @@
-import EditBoard from '@components/organisms/app/EditBoard';
-import { useShips } from '@hooks/useShips';
-import { useBoard } from '@hooks/useBoard';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import GameOptions from '@components/organisms/app/GameOptions';
-import { IConfig } from '@models/interfaces';
-
-const GAME_FORM: IConfig = {
-  gameFormat: '',
-  boardSize: 10,
-};
+import { Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { GameContext } from '@context/GameContext';
 
 const Play = () => {
-  const [playerBoard, setPlayerBoard] = useBoard({ x: 10, y: 10 });
-  const [playerShips, setPlayerShips] = useShips();
-  const [config, setConfig] = useState({ ...GAME_FORM });
-  const [showBoard, setShowBoard] = useOnOff(false);
+  const [showOptions, setShowOptions] = useOnOff(true);
+  const { config, setConfig } = useContext(GameContext);
+  const navigate = useNavigate();
 
   const onComplete = () => {
-    setShowBoard({ type: 'on' });
+    setShowOptions({ type: 'off' });
   };
 
   useEffect(() => {
-    setPlayerBoard({
-      type: 'initialize-board',
-      payload: { boardSize: config.boardSize },
-    });
-  }, [config]);
+    console.log(config)
+    if (!showOptions) {
+      navigate(`/play/${config.gameFormat}`);
+    }
+  }, [showOptions]);
 
   return (
     <div className='flex flex-col items-center justify-center w-full h-full'>
-      {!showBoard && (
+      {showOptions && (
         <GameOptions
           setConfig={setConfig}
           onComplete={onComplete}
@@ -38,15 +31,7 @@ const Play = () => {
         />
       )}
 
-      {showBoard && (
-        <EditBoard
-          board={playerBoard}
-          ships={playerShips}
-          setBoard={setPlayerBoard}
-          setShips={setPlayerShips}
-          boardSize={config.boardSize}
-        />
-      )}
+      {!showOptions && <Outlet />}
     </div>
   );
 };

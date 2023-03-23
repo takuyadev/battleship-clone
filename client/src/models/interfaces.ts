@@ -39,6 +39,15 @@ export interface IConfig {
   boardSize: number;
 }
 
+export interface IGameBoard {
+  playerBoard: IBoard;
+  setPlayerBoard: Dispatch<BoardAction>;
+  opponentBoard: IBoard;
+  setOpponentBoard: Dispatch<BoardAction>;
+  isTurn: boolean;
+  setIsTurn: Dispatch<OnOffAction>
+}
+
 export type GameFormat = 'local' | 'online' | 'computer' | string;
 
 // Context
@@ -51,6 +60,10 @@ export interface IGameContext {
   setPlayerBoard: Dispatch<BoardAction>;
   playerShips: IShips[];
   setPlayerShips: Dispatch<ShipAction>;
+  opponentBoard: IBoard;
+  setOpponentBoard: Dispatch<BoardAction>;
+  opponentShips: IShips[];
+  setOpponentShips: Dispatch<ShipAction>;
   showBoard: boolean;
   setShowBoard: Dispatch<OnOffAction>;
   setConfig: Dispatch<SetStateAction<IConfig>>;
@@ -101,7 +114,6 @@ type AttackTileAction = {
   type: AttackTileType;
   payload: {
     coords: Coordinates;
-    mark: number;
   };
 };
 

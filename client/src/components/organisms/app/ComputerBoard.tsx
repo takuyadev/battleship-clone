@@ -1,13 +1,39 @@
-interface IGameScreen_Props {
-  messages: string[];
-}
+import GridBoard from '@components/molecules/board/GridBoard';
+import { IGameBoard } from '@models/interfaces';
 
-const GameScreen = ({ messages }: IGameScreen_Props) => {
+const ComputerBoard = ({
+  playerBoard,
+  setPlayerBoard,
+  opponentBoard,
+  setOpponentBoard,
+  setIsTurn,
+  isTurn,
+}: IGameBoard) => {
   return (
-    <main>
-
-    </main>
+    <div className='flex gap-8'>
+      <GridBoard
+        board={playerBoard}
+        onClick={(x: number, y: number) => {
+          setPlayerBoard({
+            type: 'attack-tile',
+            payload: { coords: { x, y } },
+          });
+        }}
+        isTurn={true}
+      />
+      <GridBoard
+        board={opponentBoard}
+        onClick={(x: number, y: number) => {
+          setOpponentBoard({
+            type: 'attack-tile',
+            payload: { coords: { x, y } },
+          });
+          setIsTurn({ type: 'off' });
+        }}
+        isTurn={!isTurn}
+      />
+    </div>
   );
 };
 
-export default GameScreen;
+export default ComputerBoard;
