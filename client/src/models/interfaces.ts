@@ -19,7 +19,7 @@ import {
   OpponentTurnType,
   OpponentAttackTurnType,
   FlipTurnsType,
-  DisableBothType
+  DisableBothType,
 } from './types';
 
 // General interfaces
@@ -34,10 +34,17 @@ export interface IPlayer {
 }
 
 export interface IShips {
+  name: string;
   height: number;
   isPlaced: boolean;
   isRotated: boolean;
-  coordinates: { x: number; y: number };
+  hitCount: number;
+  coordinates: { x: number; y: number, isHit: boolean }[] | [];
+}
+
+export interface INewShip {
+  name: string;
+  height: number;
 }
 
 export interface IConfig {
@@ -50,6 +57,10 @@ export interface IGameBoard {
   setPlayerBoard: Dispatch<BoardAction>;
   opponentBoard: IBoard;
   setOpponentBoard: Dispatch<BoardAction>;
+  playerShips: IShips[];
+  setPlayerShips: Dispatch<ShipAction>;
+  opponentShips: IShips[];
+  setOpponentShips: Dispatch<ShipAction>;
 }
 
 export interface ITurn {
@@ -63,8 +74,6 @@ export interface ITurn {
     isHide: boolean;
   };
 }
-
-
 
 export type GameFormat = 'local' | 'online' | 'computer' | string;
 
@@ -181,11 +190,19 @@ export type ShipAction =
   | InitializeShipsAction
   | UpdatePlacedAction
   | UpdateCoordinatesAction
-  | RotateShipAction;
+  | RotateShipAction
+  | UpdateHitCountAction;
 
 type InitializeShipsAction = {
   type: initializeShipType;
   payload: null;
+};
+
+type UpdateHitCountAction = {
+  type: 'update-hitcount';
+  payload: {
+    coords: Coordinates;
+  };
 };
 
 type UpdatePlacedAction = {

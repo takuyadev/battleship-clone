@@ -6,32 +6,11 @@ const ComputerBoard = ({
   setPlayerBoard,
   opponentBoard,
   setOpponentBoard,
-  setIsTurn,
-  isTurn,
 }: IGameBoard) => {
   return (
     <div className='flex flex-col md:flex-row gap-8'>
-      <GridBoard
-        board={playerBoard}
-        onClick={(x: number, y: number) => {
-          setPlayerBoard({
-            type: 'attack-tile',
-            payload: { coords: { x, y } },
-          });
-        }}
-        isTurn={true}
-      />
-      <GridBoard
-        board={opponentBoard}
-        onClick={(x: number, y: number) => {
-          setOpponentBoard({
-            type: 'attack-tile',
-            payload: { coords: { x, y } },
-          });
-          setIsTurn({ type: 'off' });
-        }}
-        isTurn={!isTurn}
-      />
+      <GridBoard board={playerBoard} onClick={(x: number, y: number) => {}} />
+      <GridBoard board={opponentBoard} onClick={(x: number, y: number) => {}} />
     </div>
   );
 };

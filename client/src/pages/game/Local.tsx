@@ -24,9 +24,6 @@ const Local = () => {
   const onPlayerEdit = () => setIsEdit('opponent');
   const onOpponentEdit = () => setIsEdit('end');
 
-
-
-
   useEffect(() => {
     if (isEdit === 'player') {
       const condition = isAllShipsPlaced(playerShips);
@@ -97,7 +94,11 @@ const Local = () => {
       {isEdit === 'end' && (
         <LocalBoard
           playerBoard={playerBoard}
+          playerShips={playerShips}
           setPlayerBoard={setPlayerBoard}
+          setPlayerShips={setPlayerShips}
+          opponentShips={opponentShips}
+          setOpponentShips={setOpponentShips}
           opponentBoard={opponentBoard}
           setOpponentBoard={setOpponentBoard}
         />

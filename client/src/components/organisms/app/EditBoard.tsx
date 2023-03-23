@@ -64,7 +64,7 @@ const EditBoard = ({
       setBoard({
         type: 'remove-ship',
         payload: {
-          coords: prevCoords,
+          coords: prevCoords[0],
           options: {
             height: prevHeight,
             isRotated: prevIsRotated,
@@ -138,31 +138,15 @@ const EditBoard = ({
       </div>
 
       <Card>
-        <ButtonIndicator
-          onClick={() => setCurrentShipSize(1)}
-          isPlaced={ships[0].isPlaced}
-          text={'1'}
-        />
-        <ButtonIndicator
-          onClick={() => setCurrentShipSize(2)}
-          isPlaced={ships[1].isPlaced}
-          text={'2'}
-        />
-        <ButtonIndicator
-          onClick={() => setCurrentShipSize(3)}
-          isPlaced={ships[2].isPlaced}
-          text={'3'}
-        />
-        <ButtonIndicator
-          onClick={() => setCurrentShipSize(4)}
-          isPlaced={ships[3].isPlaced}
-          text={'4'}
-        />
-        <ButtonIndicator
-          onClick={() => setCurrentShipSize(5)}
-          isPlaced={ships[4].isPlaced}
-          text={'5'}
-        />
+        {ships.map((ship) => {
+          return (
+            <ButtonIndicator
+              onClick={() => setCurrentShipSize(ship.height)}
+              isPlaced={ship.isPlaced}
+              text={"Ship"}
+            />
+          );
+        })}
       </Card>
     </div>
   );

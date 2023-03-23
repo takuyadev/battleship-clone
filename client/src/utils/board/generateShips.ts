@@ -1,13 +1,13 @@
-import { IShips } from "@models/interfaces";
+import { IShips } from '@models/interfaces';
+import { INewShip } from '@models/interfaces';
 
-export const generateShips = (count: number): IShips[] => {
-  return new Array(count).fill(0).map((_item, i) => ({
-    height: i + 1,
+export const generateShips = (ships: INewShip[], count: number): IShips[] => {
+  return ships.map(({ name, height }) => ({
+    name: name,
+    height: height,
     isPlaced: false,
     isRotated: false,
-    coordinates: {
-      x: -1,
-      y: -1,
-    },
+    hitCount: 0,
+    coordinates: []
   }));
 };
