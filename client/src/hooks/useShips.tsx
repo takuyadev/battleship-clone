@@ -29,7 +29,6 @@ const reducer = (state: IShips[], { type, payload }: ShipAction) => {
 
     case 'update-hitcount':
       const newState = updateShipByCoords(state, payload.coords);
-      console.log("new", newState)
       return newState;
 
     case 'rotate-ship':

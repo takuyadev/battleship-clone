@@ -43,9 +43,6 @@ const reducer = (state: IBoard, { type, payload }: BoardAction) => {
     case 'attack-tile':
       const tile = state[payload.coords.x][payload.coords.y];
 
-      console.log(tile)
-
-
       // If ship is already attacked, then don't change
       if (tile === MARKED_PLACED || tile === MARKED_EMPTY) {
         return state;

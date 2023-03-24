@@ -34,7 +34,6 @@ const GridBoard = ({ board, isTurn = false, onClick }: IGridBoard_Props) => {
                   status={num}
                   disabled={isTurn}
                   onClick={() => {
-                    console.log(x, y)
                     onClick(x, y)}}
                 />
               );

@@ -42,3 +42,5 @@ export const SHIPS = [
     height: 5,
   },
 ];
+
+export const TURN_DELAY = 5;

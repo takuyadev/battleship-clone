@@ -1,6 +1,6 @@
 import GridBoard from '@components/molecules/board/GridBoard';
 import { useOnOff } from '@hooks/useOnOff';
-import { isShipPlaceable } from '@utils/index';
+import { isShipInBoundaries } from '@utils/index';
 import { Coordinates, IBoard } from '@models/types';
 import { useState } from 'react';
 import { IShips, ShipAction, BoardAction } from '@models/interfaces';
@@ -32,7 +32,7 @@ const EditBoard = ({
   // Place ship while the game is in edit mode
   const placeShip = ({ x, y }: Coordinates) => {
     // Check if ship can be placed onto the board
-    const checkBoard = isShipPlaceable(
+    const checkBoard = isShipInBoundaries(
       board,
       { x, y },
       { height: currentShipSize, isRotated }
@@ -138,9 +138,10 @@ const EditBoard = ({
       </div>
 
       <Card>
-        {ships.map((ship) => {
+        {ships.map((ship, i) => {
           return (
             <ButtonIndicator
+              key={i}
               onClick={() => setCurrentShipSize(ship.height)}
               isPlaced={ship.isPlaced}
               text={`${ship.name} (${ship.height})`}

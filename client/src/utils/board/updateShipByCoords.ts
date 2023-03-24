@@ -8,6 +8,7 @@ export const updateShipByCoords = (ships: IShips[], { x, y }: Coordinates) => {
       const { x: currX, y: currY } = coord;
 
       if (x === currX && y === currY && !coord.isHit) {
+        console.log(ship)
         ship.hitCount++;
         coord.isHit = true;
         return newShips;

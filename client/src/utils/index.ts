@@ -1,7 +1,7 @@
 // Board Imports
 import { getSetBoard } from "./board/getSetBoard";
 import { generateBoard } from "./board/generateBoard";
-import { isBoardWin } from "./board/isBoardWin";
+import { isBoardLose } from "./board/isBoardLose";
 import { hideShips } from "./board/hideShips";
 import { isShipInBoundaries } from "./board/isShipInBoundaries";
 import { isAllShipsPlaced  } from "./board/isAllShipsPlaced";
@@ -15,12 +15,12 @@ import { selectMove } from "./ai/selectMove";
 
 export {
   isAllShipsPlaced,
-  isBoardWin,
+  isBoardLose,
   updateTile,
   isTilePlaced,
   getSetBoard,
   generateBoard,
   hideShips,
-  isShipInBoundaries as isShipPlaceable,
+  isShipInBoundaries,
   selectMove,
 };

@@ -14,13 +14,13 @@ import {
   BoardOptions,
   InitializeBoardType,
   RotateShipType,
-  PlayerAttackTurnType,
   PlayerTurnType,
   OpponentTurnType,
-  OpponentAttackTurnType,
-  FlipTurnsType,
-  DisableBothType,
+  PlayerAttackType,
+  OpponentAttackType,
+  DisableBoardType,
 } from './types';
+
 
 // General interfaces
 export interface IGame {
@@ -63,18 +63,6 @@ export interface IGameBoard {
   setOpponentShips: Dispatch<ShipAction>;
 }
 
-export interface ITurn {
-  player: {
-    isTurn: boolean;
-    isHide: boolean;
-  };
-
-  opponent: {
-    isTurn: boolean;
-    isHide: boolean;
-  };
-}
-
 export type GameFormat = 'local' | 'online' | 'computer' | string;
 
 // Context
@@ -97,35 +85,40 @@ export interface IGameContext {
 }
 
 // ? Action Types
-export type LocalBoardActions =
+export type GameAction =
+  | PlayerAttackAction
+  | OpponentAttackAction
   | PlayerTurnAction
   | OpponentTurnAction
-  | FlipTurnsAction
-  | DisableBothAction
-  | OpponentAttackTurnAction
-  | PlayerAttackTurnAction;
+  | DisableBoardAction;
+
+type PlayerAttackAction = {
+  type: PlayerAttackType;
+  payload: {
+    coords: Coordinates;
+  };
+};
+
+type OpponentAttackAction = {
+  type: OpponentAttackType;
+  payload: {
+    coords: Coordinates;
+  };
+};
 
 type PlayerTurnAction = {
   type: PlayerTurnType;
+  payload: null;
 };
 
-export type OpponentTurnAction = {
+type OpponentTurnAction = {
   type: OpponentTurnType;
+  payload: null;
 };
 
-export type FlipTurnsAction = {
-  type: FlipTurnsType;
-};
-
-export type DisableBothAction = {
-  type: DisableBothType;
-};
-
-export type PlayerAttackTurnAction = {
-  type: PlayerAttackTurnType;
-};
-export type OpponentAttackTurnAction = {
-  type: OpponentAttackTurnType;
+type DisableBoardAction = {
+  type: DisableBoardType;
+  payload: null;
 };
 
 // useReducers action types
