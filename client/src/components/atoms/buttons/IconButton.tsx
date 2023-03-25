@@ -1,11 +1,11 @@
 import { ComponentProps } from 'react';
 
-interface IButton_Props extends ComponentProps<'button'> {
+export interface IconButtonProps extends ComponentProps<'button'> {
   icon: React.ReactNode;
-  className?: string
+  className?: string;
 }
 
-const IconButton = ({ icon, className, ...props }: IButton_Props) => {
+const IconButton = ({ icon, className, ...props }: IconButtonProps) => {
   return (
     <button
       className={`${className} text-indigo-500 duration-200 hover:scale-110`}

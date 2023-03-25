@@ -1,9 +1,11 @@
-interface ILabel_Props extends React.ComponentProps<"label"> {
+import { ComponentProps } from "react";
+
+export interface LabelProps extends ComponentProps<'label'> {
   children: React.ReactNode;
   className?: string;
 }
 
-const Label = ({ children, className, ...props }: ILabel_Props) => {
+const Label = ({ children, className, ...props }: LabelProps) => {
   return (
     <label className={`${className} text-xs text-slate-500`} {...props}>
       {children}

@@ -1,7 +1,10 @@
-interface IInput_Props extends React.ComponentProps<'input'> {
+import { ComponentProps } from 'react';
+
+export interface InputProps extends ComponentProps<'input'> {
   className?: string;
 }
-const Input = ({ className, ...props }: IInput_Props) => {
+
+const Input = ({ className, ...props }: InputProps) => {
   return (
     <>
       <input

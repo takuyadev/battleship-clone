@@ -1,9 +1,9 @@
-import InputLabel from '@components/molecules/form/InputLabel';
-import Button from '@components/atoms/buttons/Button';
-import RadioField from '@components/molecules/form/RadioField';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { IConfig, IGame } from '@models/interfaces';
+import InputLabel from '@components/molecules/form/InputLabel';
+import RadioField from '@components/molecules/form/RadioField';
+import Button from '@components/atoms/buttons/Button';
 import { HiOutlineGlobe, HiDesktopComputer, HiUserGroup } from 'react-icons/hi';
+import { Config } from '@models/_index';
 
 // Radio field data
 const GAMEFORMAT_OPTIONS = [
@@ -28,9 +28,9 @@ const GAMEFORMAT_OPTIONS = [
 ];
 
 interface IGameOptions {
-  setConfig: Dispatch<SetStateAction<IConfig>>;
+  setConfig: Dispatch<SetStateAction<Config>>;
   onComplete: Function;
-  config: IConfig;
+  config: Config;
 }
 
 const GameOptions = ({ setConfig, onComplete, config }: IGameOptions) => {

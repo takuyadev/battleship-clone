@@ -1,21 +1,21 @@
-import { Coordinates } from '@models/types';
+import { Coordinate } from '@models/types.common';
 
 export const generateCoordinates = (
   height: number,
   isRotated: boolean,
-  { x, y }: Coordinates
+  { x, y }: Coordinate
 ) => {
   let result = [];
 
   if (isRotated) {
     for (let i = 0; i < height; i++) {
-      result.push({ x, y: y - i, isHit: false });
+      result.push({ coords: { x, y: y - i }, isHit: false });
     }
   }
 
   if (!isRotated) {
     for (let i = 0; i < height; i++) {
-      result.push({ y, x: x - i, isHit: false });
+      result.push({ coords: { y, x: x - i }, isHit: false });
     }
   }
 

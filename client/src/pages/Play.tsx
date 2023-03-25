@@ -4,6 +4,7 @@ import GameOptions from '@components/organisms/app/GameOptions';
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '@context/GameContext';
+import { OnOffEnum } from '@hooks/models/_index';
 
 const Play = () => {
   const [showOptions, setShowOptions] = useOnOff(true);
@@ -12,12 +13,12 @@ const Play = () => {
 
   // On complete, clear options off the page
   const onComplete = () => {
-    setShowOptions({ type: 'off' });
+    setShowOptions({ type: OnOffEnum.OFF });
   };
 
   // Reset options on page load back
   useEffect(() => {
-    setShowOptions({ type: 'on' });
+    setShowOptions({ type: OnOffEnum.ON });
   }, []);
 
   // Navigate to selected page
@@ -31,9 +32,9 @@ const Play = () => {
     <div className='flex flex-col items-center justify-center w-full h-full'>
       {showOptions && (
         <GameOptions
+          config={config}
           setConfig={setConfig}
           onComplete={onComplete}
-          config={config}
         />
       )}
 

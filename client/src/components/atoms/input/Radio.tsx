@@ -1,14 +1,19 @@
 import { ComponentProps } from 'react';
-import { HiOutlineGlobe } from 'react-icons/hi';
 
-interface IRadioButton_Props extends ComponentProps<'input'> {
+export interface RadioProps extends ComponentProps<'input'> {
   title: string;
   description: string;
   id: string;
-  icon: React.ReactNode
+  icon: React.ReactNode;
 }
 
-const Radio = ({ title, description, id, icon, ...props }: IRadioButton_Props) => {
+const Radio = ({
+  title,
+  description,
+  id,
+  icon,
+  ...props
+}: RadioProps) => {
   return (
     <>
       <input id={id} type='radio' className='hidden peer' {...props} />

@@ -1,23 +1,14 @@
 import EditBoard from '@components/organisms/app/EditBoard';
-import Button from '@components/atoms/buttons/Button';
 import { GameContext } from '@context/GameContext';
 import { useContext, useEffect, useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import { isAllShipsPlaced } from '@utils/index';
 import LocalBoard from '@components/organisms/app/LocalBoard';
+import Button from '@components/atoms/buttons/Button';
+import { OnOffEnum } from '@hooks/models/_index';
 
 const Local = () => {
-  const {
-    playerBoard,
-    setPlayerBoard,
-    playerShips,
-    setPlayerShips,
-    opponentBoard,
-    setOpponentBoard,
-    opponentShips,
-    setOpponentShips,
-    config,
-  } = useContext(GameContext);
+  const { player, opponent, config } = useContext(GameContext);
   const [isEdit, setIsEdit] = useState('player');
   const [isDone, setIsDone] = useOnOff(false);
 
@@ -26,17 +17,21 @@ const Local = () => {
 
   useEffect(() => {
     if (isEdit === 'player') {
-      const condition = isAllShipsPlaced(playerShips);
-      return condition ? setIsDone({ type: 'on' }) : setIsDone({ type: 'off' });
+      const condition = isAllShipsPlaced(player.ships);
+      return condition
+        ? setIsDone({ type: OnOffEnum.ON })
+        : setIsDone({ type: OnOffEnum.OFF });
     }
 
     if (isEdit === 'opponent') {
-      const condition = isAllShipsPlaced(opponentShips);
-      return condition ? setIsDone({ type: 'on' }) : setIsDone({ type: 'off' });
+      const condition = isAllShipsPlaced(player.ships);
+      return condition
+        ? setIsDone({ type: OnOffEnum.ON })
+        : setIsDone({ type: OnOffEnum.OFF });
     }
 
-    setIsDone({ type: 'off' });
-  }, [playerBoard, opponentBoard, isEdit]);
+    setIsDone({ type: OnOffEnum.OFF });
+  }, [player.board, opponent.board, isEdit]);
 
   return (
     <div className='flex flex-col items-center'>
@@ -48,10 +43,10 @@ const Local = () => {
       {isEdit === 'player' && (
         <>
           <EditBoard
-            board={playerBoard}
-            setBoard={setPlayerBoard}
-            ships={playerShips}
-            setShips={setPlayerShips}
+            board={player.board}
+            setBoard={player.setBoard}
+            ships={player.ships}
+            setShips={player.setShips}
             boardSize={config.boardSize}
           />
           <Button
@@ -66,13 +61,12 @@ const Local = () => {
       {isEdit === 'opponent' && (
         <>
           <EditBoard
-            board={opponentBoard}
-            setBoard={setOpponentBoard}
-            ships={opponentShips}
-            setShips={setOpponentShips}
+            board={opponent.board}
+            setBoard={opponent.setBoard}
+            ships={opponent.ships}
+            setShips={opponent.setShips}
             boardSize={config.boardSize}
           />
-
           <div className='flex gap-4'>
             <Button
               className='mt-8'
@@ -91,18 +85,7 @@ const Local = () => {
         </>
       )}
 
-      {isEdit === 'end' && (
-        <LocalBoard
-          playerBoard={playerBoard}
-          playerShips={playerShips}
-          setPlayerBoard={setPlayerBoard}
-          setPlayerShips={setPlayerShips}
-          opponentShips={opponentShips}
-          setOpponentShips={setOpponentShips}
-          opponentBoard={opponentBoard}
-          setOpponentBoard={setOpponentBoard}
-        />
-      )}
+      {isEdit === 'end' && <LocalBoard player={player} opponent={opponent} />}
     </div>
   );
 };

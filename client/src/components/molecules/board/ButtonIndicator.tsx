@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import Button from '@components/atoms/buttons/Button';
 
-interface IButtonIndicator_Props extends ComponentProps<'button'> {
+export interface ButtonIndicatorProps extends ComponentProps<'button'> {
   isPlaced: boolean;
   text?: string;
   icon?: React.ReactNode;
@@ -12,17 +12,15 @@ const ButtonIndicator = ({
   text,
   icon,
   ...props
-}: IButtonIndicator_Props) => {
+}: ButtonIndicatorProps) => {
+
+  // Update class based on color indicator
+  const indicatorColor = isPlaced ? 'bg-green-500' : 'bg-red-500';
+
   return (
-    <div className='flex flex-col items-center '>
-      <div
-        className={`${
-          isPlaced
-            ? 'bg-green-500 shadow-lg shadow-green-500'
-            : 'bg-red-500 shadow-red-500'
-        } duration-200 w-2 h-2 rounded-full `}
-      />
-      <Button  text={text ? text : ''} icon={icon && icon} {...props} />
+    <div className='flex flex-col items-center'>
+      <div className={`${indicatorColor} duration-200 w-2 h-2 rounded-full`} />
+      <Button text={text ? text : ''} icon={icon && icon} {...props} />
     </div>
   );
 };

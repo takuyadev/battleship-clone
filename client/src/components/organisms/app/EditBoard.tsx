@@ -1,21 +1,21 @@
-import GridBoard from '@components/molecules/board/GridBoard';
+import { useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import { isShipInBoundaries } from '@utils/index';
-import { Coordinates, IBoard } from '@models/types';
-import { useState } from 'react';
-import { IShips, ShipAction, BoardAction } from '@models/interfaces';
+import { BoardEnum, OnOffEnum, ShipsEnum } from '@hooks/models/_index';
+import { Coordinate, Board, SetBoard, SetShips, Ships } from '@models/_index';
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { FaExclamationCircle } from 'react-icons/fa';
 import { BsArrowLeftCircle } from 'react-icons/bs';
-import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
-import Card from '@components/atoms/ui/Card';
 import IconButton from '@components/atoms/buttons/IconButton';
+import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
+import GridBoard from '@components/molecules/board/GridBoard';
+import Card from '@components/atoms/ui/Card';
 
 interface IEdit_Board {
-  board: IBoard;
-  setBoard: React.Dispatch<BoardAction>;
-  ships: IShips[];
-  setShips: React.Dispatch<ShipAction>;
+  board: Board;
+  setBoard: SetBoard;
+  ships: Ships;
+  setShips: SetShips;
   boardSize: number;
 }
 
@@ -30,7 +30,7 @@ const EditBoard = ({
   const [currentShipSize, setCurrentShipSize] = useState(5);
 
   // Place ship while the game is in edit mode
-  const placeShip = ({ x, y }: Coordinates) => {
+  const placeShip = ({ x, y }: Coordinate) => {
     // Check if ship can be placed onto the board
     const checkBoard = isShipInBoundaries(
       board,
@@ -45,7 +45,7 @@ const EditBoard = ({
 
     // Select current iteration of the ship to be replaced
     const {
-      coordinates: prevCoords,
+      coords: prevCoords,
       height: prevHeight,
       isPlaced: prevIsPlaced,
       isRotated: prevIsRotated,
@@ -54,7 +54,7 @@ const EditBoard = ({
     // Update isplaced to true, if it is not placed yet
     if (!prevIsPlaced) {
       setShips({
-        type: 'update-placed',
+        type: ShipsEnum.UPDATE_PLACED,
         payload: { height: currentShipSize },
       });
     }
@@ -62,9 +62,9 @@ const EditBoard = ({
     // Only remove if ship has been placed
     if (prevIsPlaced) {
       setBoard({
-        type: 'remove-ship',
+        type: BoardEnum.REMOVE_SHIP,
         payload: {
-          coords: prevCoords[0],
+          coords: prevCoords[0].coords,
           options: {
             height: prevHeight,
             isRotated: prevIsRotated,
@@ -76,7 +76,7 @@ const EditBoard = ({
     // Always add ship regardless of previous checks
     // Add ship to the board with new settings
     setBoard({
-      type: 'add-ship',
+      type: BoardEnum.ADD_SHIP,
       payload: {
         coords: { x, y },
         options: { height: currentShipSize, isRotated },
@@ -85,13 +85,13 @@ const EditBoard = ({
 
     // Edit rotation after ship has been removed
     setShips({
-      type: 'rotate-ship',
+      type: ShipsEnum.ROTATE_SHIP,
       payload: { height: currentShipSize, isRotated },
     });
 
     // Update coordinates
     setShips({
-      type: 'update-coordinates',
+      type: ShipsEnum.UPDATE_COORDINATES,
       payload: {
         height: currentShipSize,
         coords: { x, y },
@@ -118,9 +118,9 @@ const EditBoard = ({
             className='text-rose-500'
             icon={<FaExclamationCircle size={42} />}
             onClick={() => {
-              setShips({ type: 'initialize-ships', payload: null });
+              setShips({ type: ShipsEnum.INITIALIZE_SHIPS, payload: null });
               setBoard({
-                type: 'initialize-board',
+                type: BoardEnum.INITIALIZE_BOARD,
                 payload: {
                   boardSize,
                 },
@@ -131,7 +131,7 @@ const EditBoard = ({
           <IconButton
             icon={<IoMdRefreshCircle size={48} />}
             onClick={() => {
-              setIsRotated({ type: 'flip' });
+              setIsRotated({ type: OnOffEnum.FLIP });
             }}
           />
         </div>

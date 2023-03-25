@@ -1,4 +1,6 @@
-interface IButton_Props extends React.ComponentProps<'button'> {
+import { ComponentProps } from 'react';
+
+export interface GridButtonProps extends ComponentProps<'button'> {
   text: string;
   status: number;
   className?: string;
@@ -11,8 +13,7 @@ const GridButton = ({
   status,
   className,
   ...props
-}: IButton_Props) => {
-
+}: GridButtonProps) => {
   // Depending on UI status, change the style of the tile
   const selectClass = (status: number) => {
     if (status === 0) {

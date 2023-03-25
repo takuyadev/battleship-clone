@@ -1,15 +1,15 @@
-// ? TypeScript Interfaces
-import { IBoard } from '@models/types';
-import Board from '@components/atoms/ui/Board';
+import { Board } from '@models/types.common';
+import BoardUI from '@components/atoms/ui/Board';
 import GridButton from '@components/atoms/buttons/GridButton';
 
-const ALPHABET = 'ABCDEFHIJK'.split('');
+const ALPHABET = 'ABCDEFHIJK';
 
-interface IGridBoard_Props {
-  board: IBoard;
+export interface GridBoardProps {
+  board: Board;
   onClick: (x: number, y: number) => void;
   isTurn?: boolean;
 }
+
 /*
   BOARD LEGEND
   1 === ship is there
@@ -18,29 +18,34 @@ interface IGridBoard_Props {
   -2 === ship was there, and has been hit
 */
 
-const GridBoard = ({ board, isTurn = false, onClick }: IGridBoard_Props) => {
+const GridBoard = ({ board, isTurn = false, onClick }: GridBoardProps) => {
+  const boardSize = board.length;
+
   return (
-    <Board size={board.length}>
+    <BoardUI size={boardSize}>
       {board &&
-        board.map((arr, x) => (
+        board.map((col, x) => (
           <div key={x} className='flex gap-2 justify-between'>
-            {arr.map((num, y) => {
-              const tileName = ALPHABET[y] + (x + 1);
+            {col.map((row, y) => {
+              // Ex. A1, A2, J3... etc.
+              const markNumber = ALPHABET[y] + (x + 1);
+
               return (
                 <GridButton
                   key={y}
-                  className={`${isTurn ? 'pointer-events-none' : ''}`}
-                  text={tileName}
-                  status={num}
+                  className={`${isTurn && 'pointer-events-none'}`}
+                  status={row}
                   disabled={isTurn}
+                  text={markNumber}
                   onClick={() => {
-                    onClick(x, y)}}
+                    onClick(x, y);
+                  }}
                 />
               );
             })}
           </div>
         ))}
-    </Board>
+    </BoardUI>
   );
 };
 

@@ -1,13 +1,14 @@
-import { OnOffAction } from '@models/interfaces';
 import { useReducer } from 'react';
+import { OnOffAction } from './models/types/types.onoff';
+import { OnOffEnum } from './models/_index';
 
 const reducer = (state: boolean, action: OnOffAction) => {
   switch (action.type) {
-    case 'on':
+    case OnOffEnum.ON:
       return true;
-    case 'off':
+    case OnOffEnum.OFF:
       return false;
-    case 'flip':
+    case OnOffEnum.FLIP:
       return !state;
     default:
       return state;

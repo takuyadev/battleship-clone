@@ -20,6 +20,7 @@ export const { ROWS, COLUMNS } = BOARD_SIZE;
 // A Submarine, which is 3 tiles long
 // A Destroyer, which is 2 tiles long
 
+
 export const SHIPS = [
   {
     name: 'Destroyer',
@@ -43,4 +44,4 @@ export const SHIPS = [
   },
 ];
 
-export const TURN_DELAY = 5;
+export const TURN_DELAY = 3000;

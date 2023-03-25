@@ -1,13 +1,16 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
-interface IBoard_Props {
+export interface BoardProps extends ComponentProps<'div'> {
   children: React.ReactNode;
-  size: number
+  size: number;
 }
 
-const Board = ({ children, size }: IBoard_Props): JSX.Element => {
+const Board = ({ children, ...props }: BoardProps): JSX.Element => {
   return (
-    <div className={`flex flex-col gap-2 w-fit p-2 bg-indigo-50 rounded-lg overflow-hidden`}>
+    <div
+      className={`flex flex-col gap-2 p-2 w-fit bg-indigo-50 rounded-lg overflow-hidden`}
+      {...props}
+    >
       {children}
     </div>
   );

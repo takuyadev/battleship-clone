@@ -1,7 +1,7 @@
-import { IShips } from '@models/interfaces';
-import { INewShip } from '@models/interfaces';
+import { NewShip } from '@models/types.common';
+import { Ships } from '@models/types.common';
 
-export const generateShips = (ships: INewShip[], count: number): IShips[] => {
+export const generateShips = (ships: NewShip[], count: number): Ships => {
   return ships.map(({ name, height }) => ({
     name: name,
     height: height,

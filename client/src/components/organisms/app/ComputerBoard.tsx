@@ -1,16 +1,14 @@
 import GridBoard from '@components/molecules/board/GridBoard';
-import { IGameBoard } from '@models/interfaces';
+import { Game } from '@models/types.common';
 
-const ComputerBoard = ({
-  playerBoard,
-  setPlayerBoard,
-  opponentBoard,
-  setOpponentBoard,
-}: IGameBoard) => {
+const ComputerBoard = ({ player, opponent }: Game) => {
   return (
     <div className='flex flex-col md:flex-row gap-8'>
-      <GridBoard board={playerBoard} onClick={(x: number, y: number) => {}} />
-      <GridBoard board={opponentBoard} onClick={(x: number, y: number) => {}} />
+      <GridBoard board={player.board} onClick={(x: number, y: number) => {}} />
+      <GridBoard
+        board={opponent.board}
+        onClick={(x: number, y: number) => {}}
+      />
     </div>
   );
 };

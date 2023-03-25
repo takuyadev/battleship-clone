@@ -1,18 +1,17 @@
-import React from 'react';
-import NavLinks from '@components/atoms/buttons/NavLinks';
+import NavLink from '@components/atoms/navigation/NavLink';
 
 const NavBar = () => {
   return (
     <nav>
       <ul className='flex gap-4 '>
         <li className='font-body text-slate-500 tracking-wide test-sm'>
-          <NavLinks text='About ' to='/about' />
+          <NavLink text='About ' to='/about' />
         </li>
         <li className='font-body text-slate-500 tracking-wide test-sm'>
-          <NavLinks text='How to Play' to='/howtoplay' />
+          <NavLink text='How to Play' to='/howtoplay' />
         </li>
         <li className='font-body text-slate-500 tracking-wide test-sm'>
-          <NavLinks text='Play' to='/play' />
+          <NavLink text='Play' to='/play' />
         </li>
       </ul>
     </nav>

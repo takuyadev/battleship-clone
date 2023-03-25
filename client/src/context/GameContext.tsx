@@ -1,40 +1,47 @@
 import { createContext, useEffect, useState } from 'react';
+import { BoardSize, GameFormat } from '@models/enum.common';
 import { useBoard } from '@hooks/useBoard';
 import { useShips } from '@hooks/useShips';
-import { useOnOff } from '@hooks/useOnOff';
-import { IConfig, IGameContext } from '@models/interfaces';
-const GameContext = createContext<IGameContext>();
+import { Config } from '@models/types.common';
+import { GameContextInterface } from './model/interfaces.context';
+import { ShipsEnum, BoardEnum } from '@hooks/models/_index';
 
-const GAME_FORM: IConfig = {
-  gameFormat: 'local',
-  boardSize: 10,
+const GameContext = createContext<GameContextInterface>();
+
+const GAME_FORM: Config = {
+  gameFormat: GameFormat.LOCAL,
+  boardSize: BoardSize.XL,
 };
 
 const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [playerBoard, setPlayerBoard] = useBoard({ x: 10, y: 10 });
+  const [playerBoard, setPlayerBoard] = useBoard({
+    x: BoardSize.XL,
+    y: BoardSize.XL,
+  });
   const [playerShips, setPlayerShips] = useShips();
-  const [opponentBoard, setOpponentBoard] = useBoard({ x: 10, y: 10 });
+  const [opponentBoard, setOpponentBoard] = useBoard({
+    x: BoardSize.XL,
+    y: BoardSize.XL,
+  });
   const [opponentShips, setOpponentShips] = useShips();
-
-  const [showBoard, setShowBoard] = useOnOff(false);
   const [config, setConfig] = useState(GAME_FORM);
 
   useEffect(() => {
     setPlayerBoard({
-      type: 'initialize-board',
+      type: BoardEnum.INITIALIZE_BOARD,
       payload: { boardSize: config.boardSize },
     });
     setOpponentBoard({
-      type: 'initialize-board',
+      type: BoardEnum.INITIALIZE_BOARD,
       payload: { boardSize: config.boardSize },
     });
 
     setPlayerShips({
-      type: 'initialize-ships',
+      type: ShipsEnum.INITIALIZE_SHIPS,
       payload: null,
     });
     setOpponentShips({
-      type: 'initialize-ships',
+      type: ShipsEnum.INITIALIZE_SHIPS,
       payload: null,
     });
   }, [config]);
@@ -42,17 +49,19 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <GameContext.Provider
       value={{
+        player: {
+          board: playerBoard,
+          setBoard: setPlayerBoard,
+          ships: playerShips,
+          setShips: setPlayerShips,
+        },
+        opponent: {
+          board: opponentBoard,
+          setBoard: setOpponentBoard,
+          ships: opponentShips,
+          setShips: setOpponentShips,
+        },
         config,
-        playerBoard,
-        setPlayerBoard,
-        playerShips,
-        setPlayerShips,
-        opponentBoard,
-        setOpponentBoard,
-        opponentShips,
-        setOpponentShips,
-        showBoard,
-        setShowBoard,
         setConfig,
       }}
     >

@@ -17,10 +17,10 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
+    "module": "ES6",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmit": true,
     "baseUrl": "./src",
     "jsx": "react-jsx",
@@ -43,26 +43,17 @@
       "@utils/*": [
         "utils/*"
       ],
-      "@src/*": [
-        "src/*"
-      ],
       "@pages/*": [
         "pages/*"
       ],
       "@context/*": [
         "context/*"
       ],
-      "@/*": [
-        "/*"
-      ],
-      "@game/*": [
-        "game/*"
+      "@src/*": [
+        "src/*"
       ]
     }
   },
-  "include": [
-    "src"
-  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
