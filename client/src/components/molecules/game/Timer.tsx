@@ -13,7 +13,7 @@ const Timer = ({ seconds, setShow }: TimerProps) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCount((prevCount) => prevCount + 1);
-      setPercentage((prev) => prev - 100 / seconds);
+      setPercentage((prev) => prev - 100 / (seconds / 1000));
     }, 1000);
 
     const timeoutId = setTimeout(
@@ -23,7 +23,7 @@ const Timer = ({ seconds, setShow }: TimerProps) => {
         setPercentage(100);
         clearInterval(intervalId);
       },
-      seconds * 1000 + 1000
+      seconds + 1000
     );
 
     return () => {

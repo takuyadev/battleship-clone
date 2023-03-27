@@ -18,3 +18,7 @@ export enum Mark {
   MARKED_EMPTY = -1,
   MARKED_PLACED = -2,
 }
+
+export enum TurnDelay {
+  SHORT = 3000,
+}

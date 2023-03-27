@@ -1,9 +1,9 @@
-import { Coordinates, BoardOptions, IBoard } from '@models/types';
+import { Board, BoardOption, Coordinate } from '@models/types.common';
 
 export const isShipInBoundaries = (
-  board: IBoard,
-  coords: Coordinates,
-  options: BoardOptions
+  board: Board,
+  coords: Coordinate,
+  options: BoardOption
 ) => {
   let result = true;
   const { isRotated, height } = options;

@@ -1,6 +1,6 @@
-import { IBoard } from '@models/types';
+import { Board } from "@models/types.common";
 
-export const rotateBoard = (board: IBoard): IBoard => {
+export const rotateBoard = (board: Board): Board => {
   const rotatedBoard = [...board];
 
   for (let i = 0; i < rotatedBoard.length; i++) {

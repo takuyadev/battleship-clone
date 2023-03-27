@@ -1,16 +1,15 @@
-import { IShips } from '@models/interfaces';
-import { Coordinates } from '@models/types';
+import { Ships } from '@models/types.common';
+import { Coordinate } from '@models/types.common';
 
-export const updateShipByCoords = (ships: IShips[], { x, y }: Coordinates) => {
+export const updateShipByCoords = (ships: Ships, { x, y }: Coordinate) => {
   const newShips = [...ships];
   for (const ship of ships) {
-    for (const coord of ship.coordinates) {
-      const { x: currX, y: currY } = coord;
+    for (const tile of ship.coords) {
+      const { x: currX, y: currY } = tile.coords;
 
-      if (x === currX && y === currY && !coord.isHit) {
-        console.log(ship)
+      if (x === currX && y === currY && !tile.isHit) {
         ship.hitCount++;
-        coord.isHit = true;
+        tile.isHit = true;
         return newShips;
       }
     }

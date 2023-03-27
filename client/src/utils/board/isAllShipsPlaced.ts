@@ -1,6 +1,6 @@
-import { IShips } from '@models/interfaces';
+import { Ships } from "@models/types.common";
 
-export const isAllShipsPlaced = (ships: IShips[]) => {
+export const isAllShipsPlaced = (ships: Ships) => {
   for (const ship of ships) {
     if (!ship.isPlaced) {
       return false;
