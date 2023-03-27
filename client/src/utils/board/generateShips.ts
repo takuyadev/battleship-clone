@@ -1,13 +1,14 @@
+import { BoardSize } from '@models/enum.common';
 import { NewShip } from '@models/types.common';
 import { Ships } from '@models/types.common';
 
-export const generateShips = (ships: NewShip[], count: number): Ships => {
+export const generateShips = (ships: NewShip[]): Ships => {
   return ships.map(({ name, height }) => ({
     name: name,
     height: height,
     isPlaced: false,
     isRotated: false,
     hitCount: 0,
-    coordinates: []
+    coords: []
   }));
 };

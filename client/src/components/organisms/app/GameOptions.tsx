@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import InputLabel from '@components/molecules/form/InputLabel';
 import RadioField from '@components/molecules/form/RadioField';
 import Button from '@components/atoms/buttons/Button';
@@ -11,19 +11,19 @@ const GAMEFORMAT_OPTIONS = [
     title: 'Local',
     description: 'Play Locally',
     id: 'local',
-    icon: <HiUserGroup size={24}/>,
+    icon: <HiUserGroup size={24} />,
   },
   {
     title: 'Online',
     description: 'Play online',
     id: 'online',
-    icon: <HiOutlineGlobe size={24}/>,
+    icon: <HiOutlineGlobe size={24} />,
   },
   {
     title: 'Computer',
     description: 'Play AI',
     id: 'computer',
-    icon: <HiDesktopComputer size={24}/>,
+    icon: <HiDesktopComputer size={24} />,
   },
 ];
 

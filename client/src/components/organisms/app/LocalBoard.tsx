@@ -1,5 +1,5 @@
 import GridBoard from '@components/molecules/board/GridBoard';
-import ShipList from '@components/molecules/board/ShipList';
+import ShipList from '@components/molecules/game/ShipList';
 import { HiX } from 'react-icons/hi';
 import { useGame } from '@hooks/useGame';
 import Confetti from 'react-confetti';

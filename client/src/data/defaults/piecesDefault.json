@@ -4,7 +4,7 @@
       "height": 1,
       "isPlaced": false,
       "isRotated": false,
-      "coordinates": {
+      "coords": {
         "x": -1,
         "y": -1
       }
@@ -13,7 +13,7 @@
       "height": 2,
       "isPlaced": false,
       "isRotated": false,
-      "coordinates": {
+      "coords": {
         "x": -1,
         "y": -1
       }
@@ -22,7 +22,7 @@
       "height": 3,
       "isPlaced": false,
       "isRotated": false,
-      "coordinates": {
+      "coords": {
         "x": -1,
         "y": -1
       }
@@ -31,7 +31,7 @@
       "height": 4,
       "isPlaced": false,
       "isRotated": false,
-      "coordinates": {
+      "coords": {
         "x": -1,
         "y": -1
       }
@@ -40,7 +40,7 @@
       "height": 5,
       "isPlaced": false,
       "isRotated": false,
-      "coordinates": {
+      "coords": {
         "x": -1,
         "y": -1
       }

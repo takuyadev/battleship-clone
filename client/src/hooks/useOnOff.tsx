@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { OnOffAction } from './models/types/types.onoff';
+import type { OnOffAction } from './models/types/types.onoff';
 import { OnOffEnum } from './models/_index';
 
 const reducer = (state: boolean, action: OnOffAction) => {
