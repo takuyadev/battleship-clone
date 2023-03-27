@@ -116,7 +116,7 @@ const useGame = ({ player, opponent }: GameParameter) => {
     // Wait before before allowing opponent to attack
     setTimeout(() => {
       dispatch({ type: GameEnum.OPPONENT_TURN, payload: null });
-    }, TURN_DELAY);
+    }, TURN_DELAY + 1000);
   };
 
   // Action to occur when opponent attaaks
@@ -127,7 +127,7 @@ const useGame = ({ player, opponent }: GameParameter) => {
     // Wait before before allowing player to attack
     setTimeout(() => {
       dispatch({ type: GameEnum.PLAYER_TURN, payload: null });
-    }, TURN_DELAY);
+    }, TURN_DELAY + 1000);
   };
 
   // Condition to hide board from player

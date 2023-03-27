@@ -44,4 +44,4 @@ export const SHIPS = [
   },
 ];
 
-export const TURN_DELAY = 3000;
+export const TURN_DELAY = 5000;

@@ -1,7 +1,6 @@
 const Loading = ({ percentage }: { percentage: number }) => {
-  console.log(percentage);
   return (
-    <svg style={{ rotate: '-90deg' }} viewBox='0 0 100 100'>
+    <svg className="w-64 min-w-3xl" style={{ rotate: '-90deg' }} viewBox='0 0 100 100'>
       <circle
         className='duration-200'
         style={{
@@ -9,7 +8,7 @@ const Loading = ({ percentage }: { percentage: number }) => {
           strokeDasharray: 315,
         }}
         strokeLinecap='round'
-        stroke='red'
+        stroke='#6366f1'
         fill='none'
         cx='50'
         cy='50'

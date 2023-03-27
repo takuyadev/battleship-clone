@@ -1,5 +1,6 @@
+import { Dispatch, useState, useEffect, SetStateAction } from 'react';
 import Loading from '@components/atoms/ui/Loading/Loading';
-import React, { Dispatch, useState, useEffect, SetStateAction } from 'react';
+import Popup from '@components/atoms/ui/Popup';
 
 export interface TimerProps {
   seconds: number;
@@ -16,15 +17,12 @@ const Timer = ({ seconds, setShow }: TimerProps) => {
       setPercentage((prev) => prev - 100 / (seconds / 1000));
     }, 1000);
 
-    const timeoutId = setTimeout(
-      () => {
-        setCount(0);
-        setShow(false);
-        setPercentage(100);
-        clearInterval(intervalId);
-      },
-      seconds + 1000
-    );
+    const timeoutId = setTimeout(() => {
+      setCount(0);
+      setShow(false);
+      setPercentage(100);
+      clearInterval(intervalId);
+    }, seconds + 1000);
 
     return () => {
       clearInterval(intervalId);
@@ -33,12 +31,11 @@ const Timer = ({ seconds, setShow }: TimerProps) => {
   }, [seconds]);
 
   return (
-    <div className='relative w-48 h-48'>
-      <p className='absolute font-bold text-xl left-[calc(50%-6px)] top-[calc(50%-15px)]'>
-        {count}
-      </p>
+    <Popup>
+      <p className='absolute z-30 font-bold text-white text-5xl'>{count}</p>
       <Loading percentage={percentage} />
-    </div>
+      <p className="absolute bottom-1/4 text-white text-lg">Switching, please turn away from the screen!</p>
+    </Popup>
   );
 };
 

@@ -25,10 +25,10 @@ const LocalBoard = ({ player, opponent }: Game) => {
 
   return (
     <div className='flex'>
+      {show && <Timer seconds={seconds} setShow={setShow} />}
       {isWin && (
         <Confetti width={window.innerWidth} height={window.innerHeight} />
       )}
-      {show && <Timer seconds={seconds} setShow={setShow} />}
       <div className='flex flex-col md:flex-row gap-8 items-center'>
         <ShipList ships={player.ships} />
         <GridBoard
