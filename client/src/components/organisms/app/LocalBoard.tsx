@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import Confetti from 'react-confetti';
+import { useState } from 'react';
 import { useGame } from '@hooks/useGame';
+import Confetti from 'react-confetti';
+import Timer from '@components/molecules/game/Timer';
+import Log from '@components/molecules/game/Log';
 import GridBoard from '@components/molecules/board/GridBoard';
 import ShipList from '@components/molecules/game/ShipList';
-import { Game, Messages } from '@models/types.common';
-import Timer from '@components/molecules/game/Timer';
-import { TURN_DELAY } from '@data/constants';
-import Log from '@components/molecules/game/Log';
 import { GameEnum } from '@hooks/models/_index';
+import { Game, PlayerEnum } from '@models/_index';
+import { TURN_DELAY } from '@data/constants';
 
 const LocalBoard = ({ player, opponent }: Game) => {
   const [seconds, setSeconds] = useState(0);
@@ -17,20 +17,20 @@ const LocalBoard = ({ player, opponent }: Game) => {
     isWin,
     hideBoard,
     playerTurn,
-    opponentTurn,
     listenForWin,
     dispatch,
-    messages
+    messages,
   } = useGame({ player, opponent });
 
-  // Start timer component
+  // Start and show timer component
   const startTimer = () => {
     setShow(true);
     setSeconds(TURN_DELAY);
   };
 
+  // Activate turn, based on type provided in playerTurn
   const opponentAttack = (x: number, y: number) => {
-    opponentTurn({ x, y });
+    playerTurn(PlayerEnum.OPPONENT, { x, y });
     setTimeout(() => {
       dispatch({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
@@ -38,7 +38,7 @@ const LocalBoard = ({ player, opponent }: Game) => {
   };
 
   const playerAttack = (x: number, y: number) => {
-    playerTurn({ x, y });
+    playerTurn(PlayerEnum.PLAYER, { x, y });
     setTimeout(() => {
       dispatch({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
@@ -55,22 +55,31 @@ const LocalBoard = ({ player, opponent }: Game) => {
         <Confetti width={window.innerWidth} height={window.innerHeight} />
       )}
       <div className='grid grid-cols-2 2xl:grid-cols-4 gap-4'>
-        <ShipList ships={player.ships} direction="left" />
+        <ShipList
+          className='order-3 2xl:order-1'
+          ships={player.ships}
+          direction='left'
+        />
         <GridBoard
-          board={hideBoard('player')}
+          className='2xl:order-2'
+          board={hideBoard(PlayerEnum.PLAYER)}
           isTurn={game.player.isTurn}
           onClick={opponentAttack}
         />
         <GridBoard
-          board={hideBoard('opponent')}
+          className='2xl:order-3'
+          board={hideBoard(PlayerEnum.OPPONENT)}
           isTurn={game.opponent.isTurn}
           onClick={playerAttack}
         />
-        <ShipList ships={opponent.ships} direction="right" />
+        <ShipList
+          className='order-4 2xl:order-4'
+          ships={opponent.ships}
+          direction='right'
+        />
       </div>
-      <div className="h-full">
-      <Log data={messages} />
-
+      <div className='h-full'>
+        <Log data={messages} />
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ export enum TurnDelay {
   SHORT = 3000,
 }
 
-export enum Player {
+export enum PlayerEnum {
   PLAYER = "player",
   OPPONENT = "opponent"
 }

@@ -1,6 +1,7 @@
-import { IBoard } from "@models/types";
+import { Board } from '@models/types.common';
 
-const selectMove = (board: IBoard): number[] => {
+// Selects random move 
+const selectMove = (board: Board): number[] => {
   const x = Math.floor(Math.random() * 10);
   const y = Math.floor(Math.random() * 10);
 

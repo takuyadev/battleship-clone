@@ -5,5 +5,4 @@ export enum BoardEnum {
   REMOVE_SHIP = 'remove-ship',
   INITIALIZE_BOARD = 'initialize-board',
   UPDATE_BOARD = 'update-board',
-  ROTATE_BOARD = 'rotate-board',
 }

@@ -7,6 +7,7 @@ export interface GridBoardProps {
   board: Board;
   onClick: (x: number, y: number) => void;
   isTurn?: boolean;
+  className?: string;
 }
 
 /*
@@ -17,18 +18,22 @@ export interface GridBoardProps {
   -2 === ship was there, and has been hit
 */
 
-const GridBoard = ({ board, isTurn = false, onClick }: GridBoardProps) => {
+const GridBoard = ({
+  board,
+  isTurn = false,
+  onClick,
+  className,
+}: GridBoardProps) => {
   const boardSize = board.length;
 
   return (
-    <BoardUI size={boardSize}>
+    <BoardUI className={className} size={boardSize}>
       {board &&
         board.map((col, x) => (
           <div key={x} className='w-full flex gap-1 justify-center'>
             {col.map((row, y) => {
               // Ex. A1, A2, J3... etc.
               const markNumber = ALPHABET[y] + (x + 1);
-
               return (
                 <GridButton
                   key={y}

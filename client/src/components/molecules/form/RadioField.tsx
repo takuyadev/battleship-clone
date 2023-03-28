@@ -12,11 +12,12 @@ export interface RadioFieldProps {
   name: string;
   options: FormOptions[];
   onChange: (e: ChangeEvent, key: string, value: string) => void;
+  className?: string;
 }
 
-const RadioField = ({ onChange, name, options }: RadioFieldProps) => {
+const RadioField = ({ onChange, name, options, className }: RadioFieldProps) => {
   return (
-    <fieldset className='w-full'>
+    <fieldset className={`${className && className} w-full`}>
       <ul className='grid w-full gap-4 md:grid-cols-3'>
         {options.map(({ title, description, id, icon }: FormOptions, i) => (
           <li key={i}>

@@ -3,11 +3,10 @@ import {
   generateBoard,
   updateTile,
   isTilePlaced,
-  getSetBoard,
-} from '@utils/index';
+  updateShipOnBoard
+} from '@utils/_index';
 import { Coordinate } from '@models/types.common';
 import { MARKED_PLACED, MARKED_EMPTY } from '@data/constants';
-import { rotateBoard } from '@utils/board/rotateBoard';
 import { BoardAction, BoardEnum } from './models/_index';
 import { Board } from '@models/types.common';
 
@@ -19,22 +18,20 @@ const reducer = (state: Board, { type, payload }: BoardAction) => {
 
     // Place ship based on location, and options (height) provided
     case BoardEnum.REMOVE_SHIP:
-      const removedBoard = getSetBoard(state, payload.coords, {
+      const removedBoard = updateShipOnBoard(state, payload.coords, {
         ...payload.options,
         isRemove: true,
       });
 
       return removedBoard;
 
+    // Add ship to 
     case BoardEnum.ADD_SHIP:
-      const addedBoard = getSetBoard(state, payload.coords, {
+      const addedBoard = updateShipOnBoard(state, payload.coords, {
         ...payload.options,
         isRemove: false,
       });
       return addedBoard;
-
-    case BoardEnum.ROTATE_BOARD:
-      return rotateBoard(state);
 
     // Update tile based on coordinates provided and mark you want to add
     case BoardEnum.UPDATE_TILE:

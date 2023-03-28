@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
-import { isShipInBoundaries } from '@utils/index';
+import { isShipInBoard } from '@utils/_index';
 import { BoardEnum, OnOffEnum, ShipsEnum } from '@hooks/models/_index';
 import { Coordinate, Board, SetBoard, SetShips, Ships } from '@models/_index';
 import { IoMdRefreshCircle } from 'react-icons/io';
@@ -32,7 +32,7 @@ const EditBoard = ({
   // Place ship while the game is in edit mode
   const placeShip = ({ x, y }: Coordinate) => {
     // Check if ship can be placed onto the board
-    const checkBoard = isShipInBoundaries(
+    const checkBoard = isShipInBoard(
       board,
       { x, y },
       { height: currentShipSize, isRotated }

@@ -3,11 +3,16 @@ import { Messages } from '@models/types.common';
 
 export interface LogProps {
   data: Messages;
+  className?: string;
 }
 
-const Log = ({ data }: LogProps): JSX.Element => {
+const Log = ({ data, className }: LogProps): JSX.Element => {
   return (
-    <section className='flex flex-col bg-slate-50 border-2 border-slate-100 rounded-lg'>
+    <section
+      className={`${
+        className && className
+      } flex flex-col bg-slate-50 border-2 border-slate-100 rounded-lg`}
+    >
       <div className='flex flex-col rounded-lg overflow-auto h-96'>
         {data.map(({ message, icon }) => (
           <Message message={message} icon={icon} />

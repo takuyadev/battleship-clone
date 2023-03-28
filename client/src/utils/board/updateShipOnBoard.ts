@@ -1,6 +1,7 @@
 import { Board, Coordinate, BoardOption } from '@models/types.common';
 
-export const getSetBoard = (
+// Sets the boar
+export const updateShipOnBoard = (
   board: Board,
   coords: Coordinate,
   options: BoardOption

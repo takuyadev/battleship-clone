@@ -1,8 +1,8 @@
 import { createPortal } from 'react-dom';
 
 export interface PopupProps {
-  className?: string;
   children: React.ReactNode;
+  className?: string;
 }
 
 const Popup = ({ className, children}: PopupProps) => {

@@ -7,6 +7,7 @@ export interface InputLabelProps extends ComponentProps<'input'> {
   name: string;
   htmlFor: string;
   icons?: React.ReactNode;
+  className?: string;
 }
 
 const InputLabel = ({
@@ -14,10 +15,11 @@ const InputLabel = ({
   name,
   htmlFor,
   icons,
+  className,
   ...props
 }: InputLabelProps) => {
   return (
-    <div className='transition-all relative w-full'>
+    <div className={`${className && className} transition-all relative w-full`}>
       <Input
         {...props}
         className='peer/input ease-out w-full pt-5 pb-1 px-[0.75em]'

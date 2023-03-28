@@ -7,8 +7,7 @@ export type BoardAction =
   | RemoveShipAction
   | UpdateTileAction
   | InitializeBoardAction
-  | AttackTileAction
-  | RotateBoardAction;
+  | AttackTileAction;
 
 // Action types
 type AddShipAction = {
@@ -47,9 +46,4 @@ type InitializeBoardAction = {
   payload: {
     boardSize: number;
   };
-};
-
-type RotateBoardAction = {
-  type: BoardEnum.ROTATE_BOARD;
-  payload: null;
 };

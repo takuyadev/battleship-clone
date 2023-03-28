@@ -5,7 +5,7 @@ import Button from '@components/atoms/buttons/Button';
 import { HiOutlineGlobe, HiDesktopComputer, HiUserGroup } from 'react-icons/hi';
 import { Config } from '@models/_index';
 
-// Radio field data
+// Options for selecting either local, online, or against computer
 const GAMEFORMAT_OPTIONS = [
   {
     title: 'Local',

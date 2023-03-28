@@ -1,8 +1,13 @@
 import { useReducer, useState, useEffect } from 'react';
-import { Messages } from '@models/types.common';
-import { hideShips, isBoardLose, isTilePlaced } from '@utils/index';
-import { ALPHABET, TURN_DELAY } from '@data/constants';
-import { GiSpikyExplosion, GiSinkingShip } from 'react-icons/gi';
+import { TURN_DELAY } from '@data/constants';
+import { Coordinate, Board, Messages, PlayerEnum, Ship } from '@models/_index';
+import {
+  hideShips,
+  isBoardLose,
+  isTilePlaced,
+  findShipWithCoords,
+  createMessages,
+} from '@utils/_index';
 import {
   GameState,
   GameAction,
@@ -11,9 +16,6 @@ import {
   GameEnum,
   ShipsEnum,
 } from './models/_index';
-import { Coordinate, Board } from '@models/types.common';
-import { Player } from '@models/enum.common';
-import { isShipDestroyed } from '@utils/game/getShipByCoords';
 
 // This hook depends on useBoard and useShip hook; but allows for the reuse of game logic across multiple pages, including settimeout functions.
 const reducer = (state: GameState, { type, payload }: GameAction) => {
@@ -60,19 +62,19 @@ const reducer = (state: GameState, { type, payload }: GameAction) => {
       state.player.isHide = true;
       return { ...state };
 
-    case 'disable-board':
+    case GameEnum.DISABLE_BOARD:
       state.opponent.isTurn = true;
       state.player.isTurn = true;
       return { ...state };
 
-    case 'player-turn':
+    case GameEnum.PLAYER_TURN:
       state.opponent.isTurn = false;
       state.opponent.isHide = true;
       state.player.isTurn = true;
       state.player.isHide = false;
       return { ...state };
 
-    case 'opponent-turn':
+    case GameEnum.OPPONENT_TURN:
       state.player.isTurn = false;
       state.player.isHide = true;
       state.opponent.isTurn = true;
@@ -125,63 +127,64 @@ const useGame = ({ player, opponent }: GameParameter) => {
     }, [game]);
   };
 
-  const createMessages = (
-    type: Player,
-    hitOrMiss: boolean,
-    isDestroyed: boolean,
-    { x, y }: Coordinate
-  ): Messages => {
-    let result = [];
-    const username = type === 'player' ? 'Player 1' : 'Player 2';
+  // Action to occur when selected player attacks
+  const playerTurn = (type: PlayerEnum, { x, y }: Coordinate) => {
+    let attack = () => {};
+    let switchTurn = () => {};
+    let hitOrMiss: boolean = false;
+    let ship: Ship | null = null;
 
-    if (isDestroyed) {
-      const message = {
-        icon: <GiSinkingShip />,
-        message: `${username} has sunk a ship!`,
+    // If type is Player, then set methods for player's turn
+    if (type === PlayerEnum.PLAYER) {
+      attack = () =>
+        dispatch({
+          type: GameEnum.PLAYER_ATTACK,
+          payload: { coords: { x, y } },
+        });
+      switchTurn = () => {
+        dispatch({ type: GameEnum.OPPONENT_TURN, payload: null });
       };
-      result.push(message);
+      hitOrMiss = isTilePlaced(opponent.board, { x, y });
+      ship = findShipWithCoords(opponent.ships, { x, y });
     }
 
-    const message = {
-      icon: <GiSpikyExplosion />,
-      message: `${username} shoots at ${ALPHABET[y]}${x + 1} and is a ${
-        hitOrMiss ? 'hit' : 'miss'
-      }!`,
-    };
-    result.push(message);
+    // Else, (if opponent), set methods for opponent's turn
+    if (type === PlayerEnum.OPPONENT) {
+      attack = () => {
+        dispatch({
+          type: GameEnum.OPPONENT_ATTACK,
+          payload: { coords: { x, y } },
+        });
+        switchTurn = () => {
+          dispatch({
+            type: GameEnum.PLAYER_TURN,
+            payload: null,
+          });
+        };
+      };
+      hitOrMiss = isTilePlaced(player.board, { x, y });
+      ship = findShipWithCoords(player.ships, { x, y });
+    }
 
-    return result;
-  };
-
-  // Action to occur when  player attacks
-  const playerTurn = ({ x, y }: Coordinate) => {
-    dispatch({ type: GameEnum.PLAYER_ATTACK, payload: { coords: { x, y } } });
+    // Attack, then disable the board to prevent user from clicking more than once
+    attack();
     dispatch({ type: GameEnum.DISABLE_BOARD, payload: null });
 
-    const hitOrMiss = isTilePlaced(opponent.board, { x, y });
-    const ship = isShipDestroyed(opponent.ships, { x, y });
-    const messages = createMessages(Player.PLAYER, hitOrMiss, ship, { x, y });
+    // Set Messages based on previous requirements
+    const messages = createMessages(PlayerEnum.PLAYER, hitOrMiss, ship, {
+      x,
+      y,
+    });
     setMessages((prev) => [...messages, ...prev]);
 
     // Wait before before allowing opponent to attack
     setTimeout(() => {
-      dispatch({ type: GameEnum.OPPONENT_TURN, payload: null });
-    }, TURN_DELAY + 4000);
-  };
+      switchTurn();
 
-  // Action to occur when opponent attaaks
-  const opponentTurn = ({ x, y }: Coordinate) => {
-    dispatch({ type: GameEnum.OPPONENT_ATTACK, payload: { coords: { x, y } } });
-    dispatch({ type: GameEnum.DISABLE_BOARD, payload: null });
-
-    const hitOrMiss = isTilePlaced(player.board, { x, y });
-    const ship = isShipDestroyed(player.ships, { x, y });
-    const messages = createMessages(Player.OPPONENT, hitOrMiss, ship, { x, y });
-    setMessages((prev) => [...messages, ...prev]);
-
-    // Wait before before allowing player to attack
-    setTimeout(() => {
-      dispatch({ type: GameEnum.PLAYER_TURN, payload: null });
+      // ? Explanation of Magic #
+      // Additional time that is added to:
+      // 1. Prevent countdown from immediately ending at 5seconds (give buffer, better UX)
+      // 2. Allow user to see their hit on the board before giving the other person turn
     }, TURN_DELAY + 4000);
   };
 
@@ -199,7 +202,6 @@ const useGame = ({ player, opponent }: GameParameter) => {
     dispatch,
     hideBoard,
     playerTurn,
-    opponentTurn,
     listenForWin,
     messages,
     setMessages,

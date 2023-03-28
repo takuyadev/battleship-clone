@@ -1,11 +1,8 @@
 import { useReducer } from 'react';
-import { generateShips } from '@utils/board/generateShips';
-import { generateCoordinates } from '@utils/board/generateCoordinates';
-import { updateShipByCoords } from '@utils/board/updateShipByCoords';
-import { ShipAction } from './models/types/types.ships';
-import { Ships } from '@models/types.common';
+import { generateShips,  updateShipByCoords, generateCoordinates } from '@utils/_index'
+import { ShipsEnum, ShipAction } from './models/_index';
 import { SHIPS } from '@data/constants';
-import { ShipsEnum } from './models/_index';
+import { Ships } from '@models/types.common';
 
 const reducer = (state: Ships, { type, payload }: ShipAction) => {
   switch (type) {

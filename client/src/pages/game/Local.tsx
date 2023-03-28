@@ -2,7 +2,7 @@ import EditBoard from '@components/organisms/app/EditBoard';
 import { GameContext } from '@context/GameContext';
 import { useContext, useEffect, useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
-import { isAllShipsPlaced } from '@utils/index';
+import { isAllShipsPlaced } from '@utils/_index';
 import LocalBoard from '@components/organisms/app/LocalBoard';
 import Button from '@components/atoms/buttons/Button';
 import { OnOffEnum } from '@hooks/models/_index';

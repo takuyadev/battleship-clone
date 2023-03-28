@@ -1,6 +1,15 @@
-const Loading = ({ percentage }: { percentage: number }) => {
+interface Loading {
+  percentage: number;
+  className?: string;
+}
+
+const Loading = ({ percentage, className }: Loading) => {
   return (
-    <svg className="w-64 min-w-3xl" style={{ rotate: '-90deg' }} viewBox='0 0 100 100'>
+    <svg
+      className={`${className && className} w-64 min-w-3xl`}
+      style={{ rotate: '-90deg' }}
+      viewBox='0 0 100 100'
+    >
       <circle
         className='duration-200'
         style={{
