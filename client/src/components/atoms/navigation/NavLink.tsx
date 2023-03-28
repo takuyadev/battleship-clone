@@ -4,7 +4,7 @@ export interface NavLinkProps extends LinkProps {
   to: string;
   text: string;
   active?: boolean;
-  className: string;
+  className?: string;
 }
 
 const NavLink = ({ text, to, active = false, className }: NavLinkProps) => {

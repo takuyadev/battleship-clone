@@ -3,12 +3,10 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import '@assets/globals.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Play from '@pages/Play';
+import Game from '@pages/Game';
 import About from '@pages/About';
 import HowToPlay from '@pages/HowToPlay';
-import Computer from '@pages/game/Computer';
 import Local from '@pages/game/Local';
-import Online from '@pages/game/Online';
 import { GameContextProvider } from '@context/GameContext';
 
 const router = createBrowserRouter([
@@ -17,24 +15,13 @@ const router = createBrowserRouter([
     path: '/',
     children: [
       {
-        path: 'play',
-        element: <Play />,
-        children: [
-          {
-            path: 'computer',
-            element: <Computer />,
-          },
-          {
-            path: 'local',
-            element: <Local />,
-          },
-          {
-            path: 'online',
-            element: <Online />,
-          },
-        ],
+        path: 'game',
+        element: <Game />,
       },
-
+      {
+        path: 'game/local',
+        element: <Local />,
+      },
       {
         path: 'about',
         element: <About />,

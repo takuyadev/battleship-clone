@@ -13,7 +13,7 @@ const ShipList = ({ ships, direction, className }: ShipListProps) => {
         className && className
       } flex border-slate-100 border-2 rounded-lg flex-col gap-4 font-display font-bold text-slate-700 bg-slate-50 p-4`}
     >
-      {ships.map((ship) => {
+      {ships.map((ship, i) => {
         return (
           <div
             className={`${
@@ -21,10 +21,12 @@ const ShipList = ({ ships, direction, className }: ShipListProps) => {
                 ? 'flex-row text-right'
                 : 'flex-row-reverse '
             } flex justify-between gap-8 `}
+            key={i}
           >
             <p
               className={`${
-                ship.hitCount === ship.height && 'line-through'} px-4 py-2 text-slate-600 bg-slate-100 rounded-lg flex-1`}
+                ship.hitCount === ship.height && 'line-through'
+              } px-4 py-2 text-slate-600 bg-slate-100 rounded-lg flex-1`}
             >
               {ship.name}
             </p>

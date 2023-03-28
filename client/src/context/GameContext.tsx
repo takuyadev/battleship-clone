@@ -1,12 +1,11 @@
-import { createContext, useEffect, useState } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { BoardSize, GameFormat } from '@models/enum.common';
-import { useBoard } from '@hooks/useBoard';
-import { useShips } from '@hooks/useShips';
+import { useGame } from '@hooks/useGame';
 import { Config } from '@models/types.common';
 import { GameContextInterface } from './model/interfaces.context';
 import { ShipsEnum, BoardEnum } from '@hooks/models/_index';
 
-const GameContext = createContext<GameContextInterface>();
+const GameContext = createContext<GameContextInterface>({});
 
 const GAME_FORM: Config = {
   gameFormat: GameFormat.LOCAL,
@@ -14,54 +13,59 @@ const GAME_FORM: Config = {
 };
 
 const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [playerBoard, setPlayerBoard] = useBoard({
-    x: BoardSize.XL,
-    y: BoardSize.XL,
-  });
-  const [playerShips, setPlayerShips] = useShips();
-  const [opponentBoard, setOpponentBoard] = useBoard({
-    x: BoardSize.XL,
-    y: BoardSize.XL,
-  });
-  const [opponentShips, setOpponentShips] = useShips();
   const [config, setConfig] = useState(GAME_FORM);
+  const {
+    game,
+    player,
+    opponent,
+    isWin,
+    messages,
+    playerTurn,
+    setMessages,
+    hideBoard,
+    listenForWin,
+    setGame,
+  } = useGame({ x: 10, y: 10 });
 
   useEffect(() => {
-    setPlayerBoard({
+    player.setBoard({
       type: BoardEnum.INITIALIZE_BOARD,
       payload: { boardSize: config.boardSize },
     });
-    setOpponentBoard({
+    opponent.setBoard({
       type: BoardEnum.INITIALIZE_BOARD,
       payload: { boardSize: config.boardSize },
     });
 
-    setPlayerShips({
+    player.setShips({
       type: ShipsEnum.INITIALIZE_SHIPS,
       payload: null,
     });
-    setOpponentShips({
+    opponent.setShips({
       type: ShipsEnum.INITIALIZE_SHIPS,
       payload: null,
     });
   }, [config]);
 
+  useEffect(() => {
+    console.log(opponent.board)
+    console.log(opponent.ships)
+  }, [player.board, opponent.board]);
+
   return (
     <GameContext.Provider
       value={{
-        player: {
-          board: playerBoard,
-          setBoard: setPlayerBoard,
-          ships: playerShips,
-          setShips: setPlayerShips,
-        },
-        opponent: {
-          board: opponentBoard,
-          setBoard: setOpponentBoard,
-          ships: opponentShips,
-          setShips: setOpponentShips,
-        },
+        game,
         config,
+        player,
+        opponent,
+        isWin,
+        messages,
+        playerTurn,
+        setMessages,
+        hideBoard,
+        listenForWin,
+        setGame,
         setConfig,
       }}
     >

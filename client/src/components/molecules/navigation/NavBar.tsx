@@ -11,7 +11,7 @@ const NavBar = () => {
           <NavLink text='How to Play' to='/howtoplay' />
         </li>
         <li className='font-body text-slate-500 tracking-wide test-sm'>
-          <NavLink text='Play' to='/play' />
+          <NavLink text='Play' to='/game' />
         </li>
       </ul>
     </nav>

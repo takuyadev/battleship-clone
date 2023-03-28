@@ -1,27 +1,30 @@
-import { useState } from 'react';
-import { useGame } from '@hooks/useGame';
+import { useContext, useState } from 'react';
 import Confetti from 'react-confetti';
 import Timer from '@components/molecules/game/Timer';
 import Log from '@components/molecules/game/Log';
 import GridBoard from '@components/molecules/board/GridBoard';
 import ShipList from '@components/molecules/game/ShipList';
 import { GameEnum } from '@hooks/models/_index';
-import { Game, PlayerEnum } from '@models/_index';
+import { PlayerEnum } from '@models/_index';
 import { TURN_DELAY } from '@data/constants';
+import { AnimatePresence } from 'framer-motion';
+import { GameContext } from '@context/GameContext';
 
-const LocalBoard = ({ player, opponent }: Game) => {
-  const [seconds, setSeconds] = useState(0);
-  const [show, setShow] = useState(false);
-  const [name, setName] = useState("Player 1")
+const LocalBoard = () => {
   const {
     game,
-    isWin,
-    hideBoard,
+    player,
+    opponent,
     playerTurn,
+    setGame,
     listenForWin,
-    dispatch,
+    hideBoard,
+    isWin,
     messages,
-  } = useGame({ player, opponent });
+  } = useContext(GameContext);
+  const [seconds, setSeconds] = useState(0);
+  const [show, setShow] = useState(false);
+  const [name, setName] = useState('Player 1');
 
   // Start and show timer component
   const startTimer = () => {
@@ -32,19 +35,18 @@ const LocalBoard = ({ player, opponent }: Game) => {
   // Activate turn, based on type provided in playerTurn
   const opponentAttack = (x: number, y: number) => {
     playerTurn(PlayerEnum.OPPONENT, { x, y });
-    setName("Player 2")
+    setName('Player 2');
     setTimeout(() => {
-      dispatch({ type: GameEnum.HIDE_BOARDS, payload: null });
+      setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
     }, 3000);
-
   };
 
   const playerAttack = (x: number, y: number) => {
     playerTurn(PlayerEnum.PLAYER, { x, y });
-    setName("Player 1")
+    setName('Player 1');
     setTimeout(() => {
-      dispatch({ type: GameEnum.HIDE_BOARDS, payload: null });
+      setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
     }, 3000);
   };
@@ -54,7 +56,9 @@ const LocalBoard = ({ player, opponent }: Game) => {
 
   return (
     <div className='flex flex-col gap-4 w-full h-full'>
-      {show && <Timer name={name} seconds={seconds} setShow={setShow} />}
+      <AnimatePresence>
+        {show && <Timer name={name} seconds={seconds} setShow={setShow} />}
+      </AnimatePresence>
       {isWin && (
         <Confetti width={window.innerWidth} height={window.innerHeight} />
       )}

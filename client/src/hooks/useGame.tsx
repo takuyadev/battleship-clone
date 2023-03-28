@@ -1,5 +1,6 @@
 import { useReducer, useState, useEffect } from 'react';
 import { TURN_DELAY } from '@data/constants';
+import { useShips } from './useShips';
 import { Coordinate, Board, Messages, PlayerEnum, Ship } from '@models/_index';
 import {
   hideShips,
@@ -11,11 +12,11 @@ import {
 import {
   GameState,
   GameAction,
-  GameParameter,
   BoardEnum,
   GameEnum,
   ShipsEnum,
 } from './models/_index';
+import { useBoard } from './useBoard';
 
 // This hook depends on useBoard and useShip hook; but allows for the reuse of game logic across multiple pages, including settimeout functions.
 const reducer = (state: GameState, { type, payload }: GameAction) => {
@@ -86,30 +87,34 @@ const reducer = (state: GameState, { type, payload }: GameAction) => {
   }
 };
 
-const useGame = ({ player, opponent }: GameParameter) => {
+const useGame = ({ x, y }: Coordinate) => {
+  const [playerShips, setPlayerShips] = useShips();
+  const [playerBoard, setPlayerBoard] = useBoard({ x, y });
+  const [opponentShips, setOpponentShips] = useShips();
+  const [opponentBoard, setOpponentBoard] = useBoard({ x, y });
   const [isWin, setIsWin] = useState<string | null>(null);
   const [messages, setMessages] = useState<Messages>([]);
-  const [game, dispatch] = useReducer(reducer, {
+  const [game, setGame] = useReducer(reducer, {
     player: {
-      setShips: player.setShips,
-      setBoard: player.setBoard,
+      setShips: setPlayerShips,
+      setBoard: setPlayerBoard,
       isTurn: true,
       isHide: false,
     },
     opponent: {
-      setShips: opponent.setShips,
-      setBoard: opponent.setBoard,
+      setShips: setOpponentShips,
+      setBoard: setOpponentBoard,
       isTurn: false,
       isHide: true,
     },
     replay: {
       player: {
-        board: [...player.board],
-        ships: [...player.ships],
+        board: [...playerBoard],
+        ships: [...playerShips],
       },
       opponent: {
-        board: [...opponent.board],
-        ships: [...opponent.ships],
+        board: [...opponentBoard],
+        ships: [...opponentShips],
       },
       moves: [],
     },
@@ -118,10 +123,10 @@ const useGame = ({ player, opponent }: GameParameter) => {
   // Listens to game does not have any more selectable tiles
   const listenForWin = () => {
     useEffect(() => {
-      if (isBoardLose(player.board)) {
+      if (isBoardLose(playerBoard)) {
         setIsWin('opponent');
       }
-      if (isBoardLose(opponent.board)) {
+      if (isBoardLose(opponentBoard)) {
         setIsWin('player');
       }
     }, [game]);
@@ -137,38 +142,38 @@ const useGame = ({ player, opponent }: GameParameter) => {
     // If type is Player, then set methods for player's turn
     if (type === PlayerEnum.PLAYER) {
       attack = () =>
-        dispatch({
+        setGame({
           type: GameEnum.PLAYER_ATTACK,
           payload: { coords: { x, y } },
         });
       switchTurn = () => {
-        dispatch({ type: GameEnum.OPPONENT_TURN, payload: null });
+        setGame({ type: GameEnum.OPPONENT_TURN, payload: null });
       };
-      hitOrMiss = isTilePlaced(opponent.board, { x, y });
-      ship = findShipWithCoords(opponent.ships, { x, y });
+      hitOrMiss = isTilePlaced(opponentBoard, { x, y });
+      ship = findShipWithCoords(opponentShips, { x, y });
     }
 
     // Else, (if opponent), set methods for opponent's turn
     if (type === PlayerEnum.OPPONENT) {
       attack = () => {
-        dispatch({
+        setGame({
           type: GameEnum.OPPONENT_ATTACK,
           payload: { coords: { x, y } },
         });
         switchTurn = () => {
-          dispatch({
+          setGame({
             type: GameEnum.PLAYER_TURN,
             payload: null,
           });
         };
       };
-      hitOrMiss = isTilePlaced(player.board, { x, y });
-      ship = findShipWithCoords(player.ships, { x, y });
+      hitOrMiss = isTilePlaced(playerBoard, { x, y });
+      ship = findShipWithCoords(playerShips, { x, y });
     }
 
     // Attack, then disable the board to prevent user from clicking more than once
     attack();
-    dispatch({ type: GameEnum.DISABLE_BOARD, payload: null });
+    setGame({ type: GameEnum.DISABLE_BOARD, payload: null });
 
     // Set Messages based on previous requirements
     const messages = createMessages(type, hitOrMiss, ship, {
@@ -191,19 +196,31 @@ const useGame = ({ player, opponent }: GameParameter) => {
   // Condition to hide board from player
   const hideBoard = (name: 'opponent' | 'player'): Board => {
     if (name === 'player') {
-      return game.player.isHide ? hideShips(player.board) : player.board;
+      return game.player.isHide ? hideShips(playerBoard) : playerBoard;
     }
-    return game.opponent.isHide ? hideShips(opponent.board) : opponent.board;
+    return game.opponent.isHide ? hideShips(opponentBoard) : opponentBoard;
   };
 
   return {
     game,
+    player: {
+      setShips: setPlayerShips,
+      setBoard: setPlayerBoard,
+      ships: playerShips,
+      board: playerBoard,
+    },
+    opponent: {
+      setShips: setOpponentShips,
+      setBoard: setOpponentBoard,
+      ships: opponentShips,
+      board: opponentBoard,
+    },
     isWin,
-    dispatch,
-    hideBoard,
+    messages,
     playerTurn,
     listenForWin,
-    messages,
+    setGame,
+    hideBoard,
     setMessages,
   };
 };

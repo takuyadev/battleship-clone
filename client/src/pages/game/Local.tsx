@@ -35,7 +35,6 @@ const Local = () => {
 
   return (
     <div className='flex flex-col items-center w-full'>
-
       {isEdit === 'player' && (
         <>
           <EditBoard
@@ -81,7 +80,7 @@ const Local = () => {
         </>
       )}
 
-      {isEdit === 'end' && <LocalBoard player={player} opponent={opponent} />}
+      {isEdit === 'end' && <LocalBoard />}
     </div>
   );
 };
