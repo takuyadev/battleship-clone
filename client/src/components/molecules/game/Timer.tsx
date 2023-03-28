@@ -3,12 +3,13 @@ import Loading from '@components/atoms/ui/Loading';
 import Popup from '@components/atoms/ui/Popup';
 
 export interface TimerProps {
+  name: string;
   seconds: number;
   setShow: Dispatch<SetStateAction<boolean>>;
-  className?: string
+  className?: string;
 }
 
-const Timer = ({ seconds, setShow, className }: TimerProps) => {
+const Timer = ({ name, seconds, setShow, className }: TimerProps) => {
   const [count, setCount] = useState(0);
   const [percentage, setPercentage] = useState(100);
 
@@ -35,7 +36,10 @@ const Timer = ({ seconds, setShow, className }: TimerProps) => {
     <Popup className={`${className && className}`}>
       <p className='absolute z-30 font-bold text-white text-5xl'>{count}</p>
       <Loading percentage={percentage} />
-      <p className="absolute bottom-1/4 text-white text-lg">Switching, please turn away from the screen!</p>
+      
+      <p className='absolute bottom-1/4 text-white text-2xl'>
+        <b>{name}</b>, please turn away from the screen!
+      </p>
     </Popup>
   );
 };

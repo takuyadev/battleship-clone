@@ -12,6 +12,7 @@ import { TURN_DELAY } from '@data/constants';
 const LocalBoard = ({ player, opponent }: Game) => {
   const [seconds, setSeconds] = useState(0);
   const [show, setShow] = useState(false);
+  const [name, setName] = useState("Player 1")
   const {
     game,
     isWin,
@@ -31,14 +32,17 @@ const LocalBoard = ({ player, opponent }: Game) => {
   // Activate turn, based on type provided in playerTurn
   const opponentAttack = (x: number, y: number) => {
     playerTurn(PlayerEnum.OPPONENT, { x, y });
+    setName("Player 2")
     setTimeout(() => {
       dispatch({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
     }, 3000);
+
   };
 
   const playerAttack = (x: number, y: number) => {
     playerTurn(PlayerEnum.PLAYER, { x, y });
+    setName("Player 1")
     setTimeout(() => {
       dispatch({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
@@ -50,30 +54,30 @@ const LocalBoard = ({ player, opponent }: Game) => {
 
   return (
     <div className='flex flex-col gap-4 w-full h-full'>
-      {show && <Timer seconds={seconds} setShow={setShow} />}
+      {show && <Timer name={name} seconds={seconds} setShow={setShow} />}
       {isWin && (
         <Confetti width={window.innerWidth} height={window.innerHeight} />
       )}
-      <div className='grid grid-cols-2 2xl:grid-cols-4 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4'>
         <ShipList
-          className='order-3 2xl:order-1'
+          className='order-2 md:order-3 2xl:order-1'
           ships={player.ships}
           direction='left'
         />
         <GridBoard
-          className='2xl:order-2'
+          className='order-1 md:order-1 2xl:order-2'
           board={hideBoard(PlayerEnum.PLAYER)}
           isTurn={game.player.isTurn}
           onClick={opponentAttack}
         />
         <GridBoard
-          className='2xl:order-3'
+          className='order-3 md:order-2 2xl:order-3'
           board={hideBoard(PlayerEnum.OPPONENT)}
           isTurn={game.opponent.isTurn}
           onClick={playerAttack}
         />
         <ShipList
-          className='order-4 2xl:order-4'
+          className='order-4 md:order-4 2xl:order-4'
           ships={opponent.ships}
           direction='right'
         />

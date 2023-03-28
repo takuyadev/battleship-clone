@@ -23,7 +23,8 @@ const ShipList = ({ ships, direction, className }: ShipListProps) => {
             } flex justify-between gap-8 `}
           >
             <p
-              className={`px-4 py-2 text-slate-600 bg-slate-100 rounded-lg flex-1`}
+              className={`${
+                ship.hitCount === ship.height && 'line-through'} px-4 py-2 text-slate-600 bg-slate-100 rounded-lg flex-1`}
             >
               {ship.name}
             </p>

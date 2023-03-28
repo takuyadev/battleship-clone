@@ -37,7 +37,7 @@ const GridButton = ({
     <button
       className={`${selectClass(
         status
-      )} ${className} flex items-center justify-center text-sm w-full h-10 font-body ease-out duration-200 rounded-lg shadow-inner `}
+      )} ${className} max-w-[3em] flex items-center justify-center text-sm w-full h-10 font-body ease-out duration-200 rounded-lg shadow-inner `}
       {...props}
     >
       {text && text}
