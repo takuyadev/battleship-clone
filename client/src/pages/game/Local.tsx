@@ -34,11 +34,7 @@ const Local = () => {
   }, [player.board, opponent.board, isEdit]);
 
   return (
-    <div className='flex flex-col items-center'>
-      <h1 className='font-display text-xl mb-2'>Setting up for {isEdit}</h1>
-      <h1 className='text-center text-sm text-slate-400 mb-4'>
-        Don't let the other person peek!
-      </h1>
+    <div className='flex flex-col items-center w-full'>
 
       {isEdit === 'player' && (
         <>

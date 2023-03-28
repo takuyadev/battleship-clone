@@ -13,7 +13,8 @@ export type GameAction =
   | OpponentAttackAction
   | PlayerTurnAction
   | OpponentTurnAction
-  | DisableBoardAction;
+  | DisableBoardAction
+  | HideBoardsAction
 
 type PlayerAttackAction = {
   type: GameEnum.PLAYER_ATTACK
@@ -41,5 +42,10 @@ type OpponentTurnAction = {
 
 type DisableBoardAction = {
   type: GameEnum.DISABLE_BOARD;
+  payload: null;
+};
+
+type HideBoardsAction = {
+  type: GameEnum.HIDE_BOARDS;
   payload: null;
 };

@@ -5,6 +5,7 @@ const TILE = {
   MARKED_PLACED: -2,
 };
 
+export const ALPHABET = 'ABCDEFHIJK';
 export const { PLACED, EMPTY, MARKED_EMPTY, MARKED_PLACED } = TILE;
 export const SHIPS_COUNT = 5;
 
@@ -19,7 +20,6 @@ export const { ROWS, COLUMNS } = BOARD_SIZE;
 // A Cruiser, which is 3 tiles long
 // A Submarine, which is 3 tiles long
 // A Destroyer, which is 2 tiles long
-
 
 export const SHIPS = [
   {

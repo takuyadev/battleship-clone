@@ -1,11 +1,13 @@
 export interface MessageProps extends React.ComponentProps<'p'> {
-  children: React.ReactNode;
+  message: string;
+  icon: React.ReactNode;
 }
 
-const Message = ({ children, ...props }: MessageProps): JSX.Element => {
+const Message = ({ message, icon, ...props }: MessageProps): JSX.Element => {
   return (
-    <p className='p-4 rounded-lg even:bg-slate-200 ' {...props}>
-      {children}
+    <p className='p-4 text-slate-700 rounded-lg even:bg-slate-100' {...props}>
+      {icon}
+      {message}
     </p>
   );
 };

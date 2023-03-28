@@ -5,9 +5,9 @@ import Wave from 'react-wavify';
 
 function App(): JSX.Element {
   return (
-    <div className='flex flex-col gap-12'>
+    <div className='flex flex-col gap-4'>
       <Header />
-      <main className='z-10'>
+      <main className='z-10 pb-24 mx-8'>
         <Outlet />
       </main>
       <Footer />
@@ -16,7 +16,7 @@ function App(): JSX.Element {
         className='absolute bottom-0  z-0 w-screen h-1/2'
         paused={false}
         options={{
-          height: 10,
+          height: 20,
           amplitude: 20,
           speed: 0.15,
           points: 3,

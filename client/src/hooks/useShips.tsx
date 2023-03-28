@@ -4,13 +4,13 @@ import { generateCoordinates } from '@utils/board/generateCoordinates';
 import { updateShipByCoords } from '@utils/board/updateShipByCoords';
 import { ShipAction } from './models/types/types.ships';
 import { Ships } from '@models/types.common';
-import { SHIPS, SHIPS_COUNT } from '@data/constants';
+import { SHIPS } from '@data/constants';
 import { ShipsEnum } from './models/_index';
 
 const reducer = (state: Ships, { type, payload }: ShipAction) => {
   switch (type) {
     case ShipsEnum.INITIALIZE_SHIPS:
-      return generateShips(SHIPS, SHIPS_COUNT);
+      return generateShips(SHIPS);
 
     case ShipsEnum.UPDATE_PLACED:
       state[payload.height - 1].isPlaced = true;
@@ -42,7 +42,7 @@ const reducer = (state: Ships, { type, payload }: ShipAction) => {
 const useShips = () => {
   const [state, dispatch] = useReducer(
     reducer,
-    generateShips(SHIPS, SHIPS_COUNT)
+    generateShips(SHIPS)
   );
 
   return [state, dispatch] as const;

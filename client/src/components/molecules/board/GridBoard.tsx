@@ -1,8 +1,7 @@
 import { Board } from '@models/types.common';
+import { ALPHABET } from '@data/constants';
 import BoardUI from '@components/atoms/ui/Board';
 import GridButton from '@components/atoms/buttons/GridButton';
-
-const ALPHABET = 'ABCDEFHIJK';
 
 export interface GridBoardProps {
   board: Board;
@@ -25,7 +24,7 @@ const GridBoard = ({ board, isTurn = false, onClick }: GridBoardProps) => {
     <BoardUI size={boardSize}>
       {board &&
         board.map((col, x) => (
-          <div key={x} className='flex gap-2 justify-between'>
+          <div key={x} className='w-full flex gap-1 justify-center'>
             {col.map((row, y) => {
               // Ex. A1, A2, J3... etc.
               const markNumber = ALPHABET[y] + (x + 1);

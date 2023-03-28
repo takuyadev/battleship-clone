@@ -49,6 +49,11 @@ export interface NewShip {
 
 // Board related types
 export type Board = number[][];
+export type Message = {
+  icon: React.ReactNode;
+  message: string;
+};;
+export type Messages = Message[]
 export type Attack = { coords: Coordinate; isHit: boolean };
 export type Coordinate = { x: number; y: number };
 export type Coordinates = Coordinate[];

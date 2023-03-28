@@ -1,7 +1,7 @@
-import { IBoard, Coordinates } from '@models/types';
 import { PLACED } from '@data/constants';
+import { Board, Coordinate} from '@models/types.common';
 
-export const isTilePlaced = (board: IBoard, coords: Coordinates) => {
+export const isTilePlaced = (board: Board, coords: Coordinate) => {
   const { x, y } = coords;
 
   if (board[x][y] !== PLACED) {

@@ -22,3 +22,8 @@ export enum Mark {
 export enum TurnDelay {
   SHORT = 3000,
 }
+
+export enum Player {
+  PLAYER = "player",
+  OPPONENT = "opponent"
+}

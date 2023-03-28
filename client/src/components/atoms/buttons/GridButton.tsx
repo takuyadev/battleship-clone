@@ -17,19 +17,19 @@ const GridButton = ({
   // Depending on UI status, change the style of the tile
   const selectClass = (status: number) => {
     if (status === 0) {
-      return `bg-indigo-100 text-indigo-200 hover:bg-indigo-300 hover:text-indigo-600`;
+      return `bg-slate-100 text-slate-200 hover:bg-indigo-300 hover:text-indigo-600`;
     }
 
     if (status === 1) {
-      return 'bg-indigo-300 hover:text-indigo-300 text-indigo-900 hover:bg-indigo-900 hover:text-slate-300';
+      return 'bg-indigo-300 hover:text-indigo-300 text-indigo-500 hover:bg-indigo-900 hover:text-slate-300';
     }
 
     if (status === -1) {
-      return 'bg-indigo-50 text-indigo-100 pointer-events-none';
+      return 'bg-slate-200 text-slate-50 pointer-events-none';
     }
 
     if (status === -2) {
-      return 'bg-rose-200 pointer-events-none';
+      return 'bg-rose-200 text-rose-500 pointer-events-none';
     }
   };
 
@@ -37,7 +37,7 @@ const GridButton = ({
     <button
       className={`${selectClass(
         status
-      )} ${className} flex items-center justify-center text-sm w-10 h-10 font-body p-3 ease-out duration-200 font-bold rounded-lg shadow-inner `}
+      )} ${className} flex items-center justify-center text-sm w-full h-10 font-body ease-out duration-200 rounded-lg shadow-inner `}
       {...props}
     >
       {text && text}
