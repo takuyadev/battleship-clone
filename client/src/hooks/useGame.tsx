@@ -171,7 +171,7 @@ const useGame = ({ player, opponent }: GameParameter) => {
     dispatch({ type: GameEnum.DISABLE_BOARD, payload: null });
 
     // Set Messages based on previous requirements
-    const messages = createMessages(PlayerEnum.PLAYER, hitOrMiss, ship, {
+    const messages = createMessages(type, hitOrMiss, ship, {
       x,
       y,
     });
