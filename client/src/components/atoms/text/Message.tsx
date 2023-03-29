@@ -4,7 +4,6 @@ export interface MessageProps extends React.ComponentProps<'p'> {
   message: string;
   icon: React.ReactNode;
   className?: string;
-  key?: number | string;
 }
 
 const showAnimation = {
@@ -27,7 +26,6 @@ const Message = ({
 }: MessageProps): JSX.Element => {
   return (
     <motion.div
-      key={key}
       variants={showAnimation}
       initial={'initial'}
       animate={'animate'}

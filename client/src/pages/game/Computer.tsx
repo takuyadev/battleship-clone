@@ -17,10 +17,11 @@ const Computer = () => {
   };
 
   return (
-    <div>
+    <div className='flex flex-col items-center w-full'>
       {isEdit && (
         <>
           <EditBoard
+            playerName={player.name}
             board={player.board}
             setBoard={player.setBoard}
             setShips={player.setShips}

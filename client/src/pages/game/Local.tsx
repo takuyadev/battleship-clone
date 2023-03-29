@@ -35,7 +35,7 @@ const Local = () => {
   }, [player.board, opponent.board, isEdit]);
 
   return (
-    <div className='flex flex-col items-center w-full'>
+    <div className='flex justify-center w-full'>
       <AnimatePresence>
         {isEdit === 'player' && (
           <motion.div
@@ -43,19 +43,17 @@ const Local = () => {
             transition={{ ease: [0.65, 0, 0.35, 1], duration: 2 }}
             initial={{
               x: '100vw',
-              position: 'absolute',
             }}
             animate={{
               x: '0%',
-              position: 'absolute',
             }}
             exit={{
               x: '-100vw',
-              position: 'absolute',
+              position: "absolute"
             }}
           >
             <EditBoard
-              playerName={game.player.name}
+              playerName={player.name}
               board={player.board}
               setBoard={player.setBoard}
               ships={player.ships}
@@ -77,19 +75,18 @@ const Local = () => {
             transition={{ ease: [0.65, 0, 0.35, 1], duration: 2 }}
             initial={{
               x: '100vw',
-              position: 'absolute',
             }}
             animate={{
               x: '0%',
-              position: 'absolute',
             }}
             exit={{
-              position: 'absolute',
               x: '-100vw',
+              position: "absolute"
+
             }}
           >
             <EditBoard
-              playerName={game.opponent.name}
+              playerName={opponent.name}
               board={opponent.board}
               setBoard={opponent.setBoard}
               ships={opponent.ships}

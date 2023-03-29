@@ -179,10 +179,6 @@ const useGame = ({ x, y }: Coordinate) => {
     setComputerMoves(generateBoardForAI(config.boardSize));
   }, [config]);
 
-  useEffect(() => {
-    console.log(seconds);
-  }, [seconds]);
-
   // Listens to game does not have any more selectable tiles
   const listenForWin = () => {
     useEffect(() => {
@@ -329,12 +325,14 @@ const useGame = ({ x, y }: Coordinate) => {
   return {
     game,
     player: {
+      name: game.player.name,
       setShips: setPlayerShips,
       setBoard: setPlayerBoard,
       ships: playerShips,
       board: playerBoard,
     },
     opponent: {
+      name: game.player.name,
       setShips: setOpponentShips,
       setBoard: setOpponentBoard,
       ships: opponentShips,
