@@ -11,7 +11,8 @@ import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
 import GridBoard from '@components/molecules/board/GridBoard';
 import Card from '@components/atoms/ui/Card';
 
-interface IEdit_Board {
+interface EditBoardProps {
+  playerName: string;
   board: Board;
   setBoard: SetBoard;
   ships: Ships;
@@ -20,22 +21,30 @@ interface IEdit_Board {
 }
 
 const EditBoard = ({
+  playerName,
   board,
   setBoard,
   ships,
   setShips,
   boardSize,
-}: IEdit_Board): JSX.Element => {
+}: EditBoardProps): JSX.Element => {
   const [isRotated, setIsRotated] = useOnOff(false);
-  const [currentShipSize, setCurrentShipSize] = useState(5);
+  const [currentShipId, setCurrentId] = useState(4);
 
   // Place ship while the game is in edit mode
   const placeShip = ({ x, y }: Coordinate) => {
+    // Select current iteration of the ship to be replaced
+    const ship = ships[currentShipId]
+
+    if (!ship) {
+      return false;
+    }
+
     // Check if ship can be placed onto the board
     const checkBoard = isShipInBoard(
       board,
       { x, y },
-      { height: currentShipSize, isRotated }
+      { height: ship.height, isRotated }
     );
 
     // If ship cannot be placed, don't do anything
@@ -43,19 +52,18 @@ const EditBoard = ({
       return false;
     }
 
-    // Select current iteration of the ship to be replaced
     const {
       coords: prevCoords,
       height: prevHeight,
       isPlaced: prevIsPlaced,
       isRotated: prevIsRotated,
-    } = ships[currentShipSize - 1];
+    } = ship;
 
     // Update isplaced to true, if it is not placed yet
     if (!prevIsPlaced) {
       setShips({
         type: ShipsEnum.UPDATE_PLACED,
-        payload: { height: currentShipSize },
+        payload: { id: ship.id },
       });
     }
 
@@ -79,21 +87,21 @@ const EditBoard = ({
       type: BoardEnum.ADD_SHIP,
       payload: {
         coords: { x, y },
-        options: { height: currentShipSize, isRotated },
+        options: { height: ship.height, isRotated },
       },
     });
 
     // Edit rotation after ship has been removed
     setShips({
       type: ShipsEnum.ROTATE_SHIP,
-      payload: { height: currentShipSize, isRotated },
+      payload: { id: ship.id, isRotated },
     });
 
     // Update coordinates
     setShips({
       type: ShipsEnum.UPDATE_COORDINATES,
       payload: {
-        height: currentShipSize,
+        id: ship.id,
         coords: { x, y },
       },
     });
@@ -101,6 +109,9 @@ const EditBoard = ({
 
   return (
     <div className='flex flex-col gap-8 items-center'>
+      <h2 className='font-display text-3xl text-slate-500 '>
+        {playerName}'s board
+      </h2>
       <GridBoard
         board={board}
         onClick={({ x, y }: Coordinate) => placeShip({ x, y })}
@@ -137,17 +148,27 @@ const EditBoard = ({
         </div>
       </div>
 
-      <Card>
-        {ships.map((ship, i) => {
-          return (
-            <ButtonIndicator
-              key={i}
-              onClick={() => setCurrentShipSize(ship.height)}
-              isPlaced={ship.isPlaced}
-              text={`${ship.name} (${ship.height})`}
-            />
-          );
-        })}
+      <Card className='flex-col'>
+        <div className='flex gap-4'>
+          {ships.map((ship, i) => {
+            return (
+              <ButtonIndicator
+                key={i}
+                onClick={() => setCurrentId(ship.id)}
+                isPlaced={ship.isPlaced}
+                text={`${ship.name} (${ship.height})`}
+              />
+            );
+          })}
+        </div>
+        <div className='relative w-full bg-indigo-200 h-2 rounded-lg'>
+          <div
+            style={{
+              left: `${100 / (ships.length / currentShipId)}%`,
+            }}
+            className={`duration-200 absolute w-[20%] h-2 bg-indigo-500 rounded-lg`}
+          ></div>
+        </div>
       </Card>
     </div>
   );

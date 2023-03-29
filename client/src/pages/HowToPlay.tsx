@@ -1,8 +1,10 @@
-import React from 'react'
+import PageTransition from '@components/atoms/ui/PageTransition'
 
 const HowToPlay = () => {
   return (
-    <div>HowToPlay</div>
+    <PageTransition>
+      How To Play
+    </PageTransition>
   )
 }
 

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import PageTransition from '@components/atoms/ui/PageTransition';
 
 const About = () => {
   return (
-    <div>
-      <button>asdas</button>
-    </div>
+   <PageTransition>
+    About
+   </PageTransition>
   );
 };
 

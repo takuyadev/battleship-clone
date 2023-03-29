@@ -6,9 +6,10 @@ import { isAllShipsPlaced } from '@utils/_index';
 import LocalBoard from '@components/organisms/app/LocalBoard';
 import Button from '@components/atoms/buttons/Button';
 import { OnOffEnum } from '@hooks/models/_index';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Local = () => {
-  const { player, opponent, config } = useContext(GameContext);
+  const { game, player, opponent, config } = useContext(GameContext);
   const [isEdit, setIsEdit] = useState('player');
   const [isDone, setIsDone] = useOnOff(false);
 
@@ -24,7 +25,7 @@ const Local = () => {
     }
 
     if (isEdit === 'opponent') {
-      const condition = isAllShipsPlaced(player.ships);
+      const condition = isAllShipsPlaced(opponent.ships);
       return condition
         ? setIsDone({ type: OnOffEnum.ON })
         : setIsDone({ type: OnOffEnum.OFF });
@@ -35,50 +36,84 @@ const Local = () => {
 
   return (
     <div className='flex flex-col items-center w-full'>
-      {isEdit === 'player' && (
-        <>
-          <EditBoard
-            board={player.board}
-            setBoard={player.setBoard}
-            ships={player.ships}
-            setShips={player.setShips}
-            boardSize={config.boardSize}
-          />
-          <Button
-            className='mt-8'
-            disabled={!isDone}
-            onClick={onPlayerEdit}
-            text='Next'
-          />
-        </>
-      )}
-
-      {isEdit === 'opponent' && (
-        <>
-          <EditBoard
-            board={opponent.board}
-            setBoard={opponent.setBoard}
-            ships={opponent.ships}
-            setShips={opponent.setShips}
-            boardSize={config.boardSize}
-          />
-          <div className='flex gap-4'>
-            <Button
-              className='mt-8'
-              onClick={() => {
-                setIsEdit('player');
-              }}
-              text='Go back'
+      <AnimatePresence>
+        {isEdit === 'player' && (
+          <motion.div
+            key='player'
+            transition={{ ease: [0.65, 0, 0.35, 1], duration: 2 }}
+            initial={{
+              x: '100vw',
+              position: 'absolute',
+            }}
+            animate={{
+              x: '0%',
+              position: 'absolute',
+            }}
+            exit={{
+              x: '-100vw',
+              position: 'absolute',
+            }}
+          >
+            <EditBoard
+              playerName={game.player.name}
+              board={player.board}
+              setBoard={player.setBoard}
+              ships={player.ships}
+              setShips={player.setShips}
+              boardSize={config.boardSize}
             />
             <Button
               className='mt-8'
               disabled={!isDone}
-              onClick={onOpponentEdit}
-              text='Finish'
+              onClick={onPlayerEdit}
+              text='Next'
             />
-          </div>
-        </>
-      )}
+          </motion.div>
+        )}
+
+        {isEdit === 'opponent' && (
+          <motion.div
+            key='opponent'
+            transition={{ ease: [0.65, 0, 0.35, 1], duration: 2 }}
+            initial={{
+              x: '100vw',
+              position: 'absolute',
+            }}
+            animate={{
+              x: '0%',
+              position: 'absolute',
+            }}
+            exit={{
+              position: 'absolute',
+              x: '-100vw',
+            }}
+          >
+            <EditBoard
+              playerName={game.opponent.name}
+              board={opponent.board}
+              setBoard={opponent.setBoard}
+              ships={opponent.ships}
+              setShips={opponent.setShips}
+              boardSize={config.boardSize}
+            />
+            <div className='flex gap-4'>
+              <Button
+                className='mt-8'
+                onClick={() => {
+                  setIsEdit('player');
+                }}
+                text='Go back'
+              />
+              <Button
+                className='mt-8'
+                disabled={!isDone}
+                onClick={onOpponentEdit}
+                text='Finish'
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {isEdit === 'end' && <LocalBoard />}
     </div>

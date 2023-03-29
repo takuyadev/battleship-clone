@@ -1,7 +1,8 @@
-import {useContext } from 'react';
-import GameOptions from '@components/organisms/app/GameOptions';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '@context/GameContext';
+import GameOptions from '@components/organisms/app/GameOptions';
+import PageTransition from '@components/atoms/ui/PageTransition';
 
 const Game = () => {
   const { config, setConfig } = useContext(GameContext);
@@ -12,13 +13,13 @@ const Game = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center w-full h-full'>
+    <PageTransition>
       <GameOptions
         config={config}
         setConfig={setConfig}
         onComplete={onComplete}
       />
-    </div>
+    </PageTransition>
   );
 };
 

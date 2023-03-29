@@ -24,7 +24,7 @@ export const { ROWS, COLUMNS } = BOARD_SIZE;
 export const SHIPS = [
   {
     name: 'Destroyer',
-    height: 1,
+    height: 2,
   },
   {
     name: 'Submarine',

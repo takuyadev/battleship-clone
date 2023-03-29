@@ -24,21 +24,21 @@ type UpdateHitCountAction = {
 type UpdatePlacedAction = {
   type: ShipsEnum.UPDATE_PLACED;
   payload: {
-    height: number;
+    id: number;
   };
 };
 
 type UpdateCoordinatesAction = {
   type: ShipsEnum.UPDATE_COORDINATES;
   payload: {
-    height: number;
+    id: number;
     coords: Coordinate;
   };
 };
 
 type RotateShipAction = {
   type: ShipsEnum.ROTATE_SHIP;
-  payload: { height: number; isRotated: boolean };
+  payload: { id: number; isRotated: boolean };
 };
 
 // Action Type

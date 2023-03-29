@@ -2,7 +2,7 @@ import React from 'react'
 
 const Online = () => {
   return (
-    <div>Online</div>
+    <>Online</>
   )
 }
 

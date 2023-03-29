@@ -1,15 +1,8 @@
-import { useState, useEffect, createContext } from 'react';
+import { createContext } from 'react';
 import { useGame } from '@hooks/useGame';
-import { BoardSize, GameFormat, Config } from '@models/_index';
-import { BoardEnum, ShipsEnum } from '@hooks/models/_index';
 import { GameContextInterface } from './model/interfaces.context';
 
 const GameContext = createContext<GameContextInterface>({});
-
-const GAME_FORM: Config = {
-  gameFormat: GameFormat.LOCAL,
-  boardSize: BoardSize.XL,
-};
 
 const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
   const {
@@ -34,7 +27,6 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
     playerAttack,
     attackAgainstComputer,
   } = useGame({ x: 10, y: 10 });
-
 
   return (
     <GameContext.Provider

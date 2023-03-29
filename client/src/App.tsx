@@ -1,14 +1,17 @@
 import { Outlet } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Header from '@components/organisms/_general/Header';
 import Footer from '@components/organisms/_general/Footer';
 import Wave from 'react-wavify';
 
 function App(): JSX.Element {
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 overflow-x-hidden'>
       <Header />
-      <main className='z-10 pb-24 mx-8'>
-        <Outlet />
+      <main className='flex justify-center align-center z-10 pb-24 mx-8'>
+        <AnimatePresence>
+          <Outlet />
+        </AnimatePresence>
       </main>
       <Footer />
       <Wave

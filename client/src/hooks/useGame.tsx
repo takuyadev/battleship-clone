@@ -21,6 +21,7 @@ import {
 } from './models/_index';
 import { useBoard } from './useBoard';
 import { filterCoordinates } from '@utils/ai/filterCoordinate';
+import { TurnDelay } from '@models/enum.common';
 
 // This hook depends on useBoard and useShip hook; but allows for the reuse of game logic across multiple pages, including settimeout functions.
 const reducer = (state: GameState, { type, payload }: GameAction) => {
@@ -113,12 +114,11 @@ const useGame = ({ x, y }: Coordinate) => {
   );
 
   // Set state for timer, or loading for other opponent to move
-  const [loading, setLoading] = useState(false);
-  const [seconds, setSeconds] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [seconds, setSeconds] = useState(TurnDelay.SWITCH);
 
-  // Display state of current user
+  // Set configurations for the game
   const [config, setConfig] = useState(GAME_FORM);
-  const [currentName, setCurrentName] = useState('');
 
   // State for determining win or loss
   const [isWin, setIsWin] = useState<string | null>(null);
@@ -155,6 +155,9 @@ const useGame = ({ x, y }: Coordinate) => {
     },
   });
 
+  // Display state of current user
+  const [currentName, setCurrentName] = useState(game.opponent.name);
+
   // If any configurations changes, then should set to new configuration
   useEffect(() => {
     setPlayerBoard({
@@ -175,6 +178,10 @@ const useGame = ({ x, y }: Coordinate) => {
     });
     setComputerMoves(generateBoardForAI(config.boardSize));
   }, [config]);
+
+  useEffect(() => {
+    console.log(seconds);
+  }, [seconds]);
 
   // Listens to game does not have any more selectable tiles
   const listenForWin = () => {
@@ -256,7 +263,7 @@ const useGame = ({ x, y }: Coordinate) => {
   // When opponent attacks player, run this method
   const opponentAttack = ({ x, y }: Coordinate) => {
     playerTurn(PlayerEnum.OPPONENT, { x, y });
-    setCurrentName(game.player.name);
+    setCurrentName(game.opponent.name);
     setTimeout(() => {
       setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
@@ -266,7 +273,7 @@ const useGame = ({ x, y }: Coordinate) => {
   // When player attacks opponent, run this method
   const playerAttack = ({ x, y }: Coordinate) => {
     playerTurn(PlayerEnum.PLAYER, { x, y });
-    setCurrentName(game.opponent.name);
+    setCurrentName(game.player.name);
     setTimeout(() => {
       setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();

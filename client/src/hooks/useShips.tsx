@@ -1,5 +1,9 @@
 import { useReducer } from 'react';
-import { generateShips,  updateShipByCoords, generateCoordinates } from '@utils/_index'
+import {
+  generateShips,
+  updateShipByCoords,
+  generateCoordinates,
+} from '@utils/_index';
 import { ShipsEnum, ShipAction } from './models/_index';
 import { SHIPS } from '@data/constants';
 import { Ships } from '@models/types.common';
@@ -10,17 +14,17 @@ const reducer = (state: Ships, { type, payload }: ShipAction) => {
       return generateShips(SHIPS);
 
     case ShipsEnum.UPDATE_PLACED:
-      state[payload.height - 1].isPlaced = true;
+      state[payload.id].isPlaced = true;
       return state;
 
     case ShipsEnum.UPDATE_COORDINATES:
-      const { height, coords } = payload;
+      const { id, coords } = payload;
       const newCoords = generateCoordinates(
-        height,
-        state[payload.height - 1].isRotated,
+        state[id].height,
+        state[id].isRotated,
         coords
       );
-      state[payload.height - 1].coords = [...newCoords];
+      state[id].coords = [...newCoords];
       return state;
 
     case ShipsEnum.UPDATE_HITCOUNT:
@@ -28,7 +32,7 @@ const reducer = (state: Ships, { type, payload }: ShipAction) => {
       return newState;
 
     case ShipsEnum.ROTATE_SHIP:
-      state[payload.height - 1].isRotated = payload.isRotated;
+      state[payload.id].isRotated = payload.isRotated;
       return state;
 
     default:
@@ -37,10 +41,7 @@ const reducer = (state: Ships, { type, payload }: ShipAction) => {
 };
 
 const useShips = () => {
-  const [state, dispatch] = useReducer(
-    reducer,
-    generateShips(SHIPS)
-  );
+  const [state, dispatch] = useReducer(reducer, generateShips(SHIPS));
 
   return [state, dispatch] as const;
 };
