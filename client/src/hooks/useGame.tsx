@@ -177,6 +177,8 @@ const useGame = ({ x, y }: Coordinate) => {
       payload: null,
     });
     setComputerMoves(generateBoardForAI(config.boardSize));
+    setMessages([]);
+    setGame({ type: GameEnum.PLAYER_TURN, payload: null });
   }, [config]);
 
   // Listens to game does not have any more selectable tiles
@@ -294,7 +296,7 @@ const useGame = ({ x, y }: Coordinate) => {
     }, 3000);
   };
 
-  // Computer Attacks
+  // Computer methods
   const computerTurn = () => {
     const selectedMove = selectMove(computerMoves);
     const hitOrMiss = isTilePlaced(playerBoard, selectedMove);
@@ -303,8 +305,9 @@ const useGame = ({ x, y }: Coordinate) => {
       type: GameEnum.OPPONENT_ATTACK,
       payload: { coords: selectedMove },
     });
-    const filteredMoves = filterCoordinates(computerMoves, selectedMove);
-    setComputerMoves(filteredMoves);
+
+    // Add new messages to list based on hit
+    setComputerMoves(filterCoordinates(computerMoves, selectedMove));
     const messages = createMessages(
       PlayerEnum.OPPONENT,
       hitOrMiss,
@@ -314,6 +317,10 @@ const useGame = ({ x, y }: Coordinate) => {
     setMessages((prev) => [...messages, ...prev]);
   };
 
+  const computerPlaceShips = () => {
+    
+  }
+
   // Condition to hide board from player
   const hideBoard = (name: 'opponent' | 'player'): Board => {
     if (name === 'player') {
@@ -322,6 +329,7 @@ const useGame = ({ x, y }: Coordinate) => {
     return game.opponent.isHide ? hideShips(opponentBoard) : opponentBoard;
   };
 
+  // Return all methods for game logic
   return {
     game,
     player: {

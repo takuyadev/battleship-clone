@@ -13,7 +13,7 @@ const Game = () => {
   };
 
   return (
-    <PageTransition>
+    <PageTransition className="flex items-center h-[80vh]">
       <GameOptions
         config={config}
         setConfig={setConfig}

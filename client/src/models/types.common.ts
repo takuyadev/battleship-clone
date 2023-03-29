@@ -33,6 +33,7 @@ export type SetShips = Dispatch<ShipAction>;
 
 // Ship related types
 export type Ship = {
+  id: number,
   name: string;
   height: number;
   isPlaced: boolean;

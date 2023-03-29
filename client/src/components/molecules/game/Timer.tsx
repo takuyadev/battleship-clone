@@ -14,26 +14,38 @@ const Timer = ({ name, seconds, setShow, className }: TimerProps) => {
   const [percentage, setPercentage] = useState(100);
 
   useEffect(() => {
+    // Keep counter going down from provided seconds
     const intervalId = setInterval(() => {
       setCount((prevCount) => prevCount + 1);
       setPercentage((prev) => prev - 100 / (seconds / 1000));
     }, 1000);
 
+    // Clears the counting interval first, so it stops at 5
+    const countId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, seconds);
+
+
+    // After 1 second, clear screen for smoother transition
     const timeoutId = setTimeout(() => {
-      setCount(0);
       setShow(false);
       setPercentage(100);
-      clearInterval(intervalId);
     }, seconds + 1000);
 
     return () => {
       clearInterval(intervalId);
       clearTimeout(timeoutId);
+      clearTimeout(countId);
     };
   }, [seconds]);
 
   return (
-    <Popup className={`${className && className}`}>
+    
+    // Set count back to 0 on animation end
+    <Popup
+      onAnimationEnd={() => setCount(0)}
+      className={`${className && className}`}
+    >
       <p className='absolute z-30 font-bold text-white text-5xl'>{count}</p>
       <Loading percentage={percentage} />
 

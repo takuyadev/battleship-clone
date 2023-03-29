@@ -1,21 +1,23 @@
-import EditBoard from '@components/organisms/app/EditBoard';
-import { GameContext } from '@context/GameContext';
 import { useContext, useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { GameContext } from '@context/GameContext';
 import { useOnOff } from '@hooks/useOnOff';
 import { isAllShipsPlaced } from '@utils/_index';
+import { OnOffEnum } from '@hooks/models/_index';
+import { slideLeft } from '@data/anim';
+import EditBoard from '@components/organisms/app/EditBoard';
 import LocalBoard from '@components/organisms/app/LocalBoard';
 import Button from '@components/atoms/buttons/Button';
-import { OnOffEnum } from '@hooks/models/_index';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const Local = () => {
-  const { game, player, opponent, config } = useContext(GameContext);
+  const { player, opponent, config } = useContext(GameContext);
   const [isEdit, setIsEdit] = useState('player');
   const [isDone, setIsDone] = useOnOff(false);
 
   const onPlayerEdit = () => setIsEdit('opponent');
   const onOpponentEdit = () => setIsEdit('end');
 
+  // Listens to is edit, and determines if they can proceed to next step
   useEffect(() => {
     if (isEdit === 'player') {
       const condition = isAllShipsPlaced(player.ships);
@@ -40,17 +42,12 @@ const Local = () => {
         {isEdit === 'player' && (
           <motion.div
             key='player'
-            transition={{ ease: [0.65, 0, 0.35, 1], duration: 2 }}
-            initial={{
-              x: '100vw',
-            }}
-            animate={{
-              x: '0%',
-            }}
-            exit={{
-              x: '-100vw',
-              position: "absolute"
-            }}
+            className='flex flex-col gap-2'
+            // @ts-ignore -- typescript bug with framer-motion
+            variants={slideLeft}
+            animate='animate'
+            initial='initial'
+            exit='exit'
           >
             <EditBoard
               playerName={player.name}
@@ -72,18 +69,12 @@ const Local = () => {
         {isEdit === 'opponent' && (
           <motion.div
             key='opponent'
-            transition={{ ease: [0.65, 0, 0.35, 1], duration: 2 }}
-            initial={{
-              x: '100vw',
-            }}
-            animate={{
-              x: '0%',
-            }}
-            exit={{
-              x: '-100vw',
-              position: "absolute"
-
-            }}
+            className='flex flex-col gap-2'
+            // @ts-ignore -- typescript bug with framer-motion; no noticeable bug
+            variants={slideLeft}
+            animate='animate'
+            initial='initial'
+            exit='exit'
           >
             <EditBoard
               playerName={opponent.name}
@@ -93,7 +84,7 @@ const Local = () => {
               setShips={opponent.setShips}
               boardSize={config.boardSize}
             />
-            <div className='flex gap-4'>
+            <div className='flex justify-between gap-2'>
               <Button
                 className='mt-8'
                 onClick={() => {

@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence} from 'framer-motion';
 import Header from '@components/organisms/_general/Header';
 import Footer from '@components/organisms/_general/Footer';
 import Wave from 'react-wavify';

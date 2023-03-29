@@ -1,10 +1,16 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { fadeIn } from '@data/anim';
 import { motion } from 'framer-motion';
 
-const PageTransition = ({ children }: { children: React.ReactNode }) => {
+interface PageTransitionProps {
+  children: ReactNode;
+  className?: string;
+}
+
+const PageTransition = ({ children, className }: PageTransitionProps) => {
   return (
     <motion.section
+      className={className}
       variants={fadeIn}
       initial='initial'
       animate='animate'

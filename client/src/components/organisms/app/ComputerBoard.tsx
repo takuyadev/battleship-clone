@@ -1,7 +1,7 @@
-import GridBoard from '@components/molecules/board/GridBoard';
+import { useContext } from 'react';
 import { GameContext } from '@context/GameContext';
 import { PlayerEnum } from '@models/enum.common';
-import { useContext } from 'react';
+import GridBoard from '@components/molecules/board/GridBoard';
 import ShipList from '@components/molecules/game/ShipList';
 import Log from '@components/molecules/game/Log';
 
