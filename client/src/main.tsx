@@ -8,6 +8,7 @@ import About from '@pages/About';
 import HowToPlay from '@pages/HowToPlay';
 import Local from '@pages/game/Local';
 import { GameContextProvider } from '@context/GameContext';
+import Computer from '@pages/game/Computer';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: 'game/local',
         element: <Local />,
+      },
+      {
+        path: 'game/computer',
+        element: <Computer />,
       },
       {
         path: 'about',

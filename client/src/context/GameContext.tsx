@@ -1,9 +1,8 @@
 import { useState, useEffect, createContext } from 'react';
-import { BoardSize, GameFormat } from '@models/enum.common';
 import { useGame } from '@hooks/useGame';
-import { Config } from '@models/types.common';
+import { BoardSize, GameFormat, Config } from '@models/_index';
+import { BoardEnum, ShipsEnum } from '@hooks/models/_index';
 import { GameContextInterface } from './model/interfaces.context';
-import { ShipsEnum, BoardEnum } from '@hooks/models/_index';
 
 const GameContext = createContext<GameContextInterface>({});
 
@@ -13,44 +12,29 @@ const GAME_FORM: Config = {
 };
 
 const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [config, setConfig] = useState(GAME_FORM);
   const {
     game,
     player,
     opponent,
     isWin,
     messages,
+    currentName,
+    seconds,
+    config,
+    setConfig,
+    loading,
+    setLoading,
+    setSeconds,
     playerTurn,
     setMessages,
     hideBoard,
     listenForWin,
     setGame,
+    opponentAttack,
+    playerAttack,
+    attackAgainstComputer,
   } = useGame({ x: 10, y: 10 });
 
-  useEffect(() => {
-    player.setBoard({
-      type: BoardEnum.INITIALIZE_BOARD,
-      payload: { boardSize: config.boardSize },
-    });
-    opponent.setBoard({
-      type: BoardEnum.INITIALIZE_BOARD,
-      payload: { boardSize: config.boardSize },
-    });
-
-    player.setShips({
-      type: ShipsEnum.INITIALIZE_SHIPS,
-      payload: null,
-    });
-    opponent.setShips({
-      type: ShipsEnum.INITIALIZE_SHIPS,
-      payload: null,
-    });
-  }, [config]);
-
-  useEffect(() => {
-    console.log(opponent.board)
-    console.log(opponent.ships)
-  }, [player.board, opponent.board]);
 
   return (
     <GameContext.Provider
@@ -59,14 +43,22 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
         config,
         player,
         opponent,
-        isWin,
         messages,
+        isWin,
+        currentName,
+        seconds,
+        loading,
+        setLoading,
         playerTurn,
         setMessages,
         hideBoard,
         listenForWin,
         setGame,
         setConfig,
+        setSeconds,
+        opponentAttack,
+        playerAttack,
+        attackAgainstComputer,
       }}
     >
       {children}

@@ -1,11 +1,11 @@
-import { Board } from '@models/types.common';
+import { Board, Coordinate } from '@models/types.common';
 import { ALPHABET } from '@data/constants';
 import BoardUI from '@components/atoms/ui/Board';
 import GridButton from '@components/atoms/buttons/GridButton';
 
 export interface GridBoardProps {
   board: Board;
-  onClick: (x: number, y: number) => void;
+  onClick: ({x, y}: Coordinate) => void;
   isTurn?: boolean;
   className?: string;
 }
@@ -42,7 +42,7 @@ const GridBoard = ({
                   disabled={isTurn}
                   text={markNumber}
                   onClick={() => {
-                    onClick(x, y);
+                    onClick({x, y});
                   }}
                 />
               );

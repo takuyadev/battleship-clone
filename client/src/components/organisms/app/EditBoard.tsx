@@ -103,7 +103,7 @@ const EditBoard = ({
     <div className='flex flex-col gap-8 items-center'>
       <GridBoard
         board={board}
-        onClick={(x: number, y: number) => placeShip({ x, y })}
+        onClick={({ x, y }: Coordinate) => placeShip({ x, y })}
       />
       <div className='flex flex-col gap-2 items-center'>
         <BsArrowLeftCircle

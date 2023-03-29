@@ -20,10 +20,12 @@ export enum Mark {
 }
 
 export enum TurnDelay {
-  SHORT = 3000,
+  HIT = 3000,
+  SWITCH = 5000,
+  BUFFER = 1000,
 }
 
 export enum PlayerEnum {
-  PLAYER = "player",
-  OPPONENT = "opponent"
+  PLAYER = 'player',
+  OPPONENT = 'opponent',
 }

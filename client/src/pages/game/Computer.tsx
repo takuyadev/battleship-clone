@@ -7,7 +7,7 @@ import ComputerBoard from '@components/organisms/app/ComputerBoard';
 import { OnOffEnum } from '@hooks/models/_index';
 
 const Computer = () => {
-  const { player, opponent, config } = useContext(GameContext);
+  const { player, config } = useContext(GameContext);
   const [isEdit, setIsEdit] = useOnOff(true);
 
   const onFinishEdit = () => {
@@ -31,7 +31,7 @@ const Computer = () => {
         </>
       )}
 
-      {!isEdit && <ComputerBoard player={player} opponent={opponent} />}
+      {!isEdit && <ComputerBoard />}
     </div>
   );
 };

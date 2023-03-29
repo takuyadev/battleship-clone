@@ -2,6 +2,7 @@ import { Coordinate, SetBoard, SetShips } from '@models/_index';
 import { GameEnum } from '../enum/enum.game';
 
 export type PlayerGameState = {
+  name: string;
   setShips: SetShips;
   setBoard: SetBoard;
   isTurn: boolean;

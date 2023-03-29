@@ -36,7 +36,7 @@ const Timer = ({ name, seconds, setShow, className }: TimerProps) => {
     <Popup className={`${className && className}`}>
       <p className='absolute z-30 font-bold text-white text-5xl'>{count}</p>
       <Loading percentage={percentage} />
-      
+
       <p className='absolute bottom-1/4 text-white text-2xl'>
         <b>{name}</b>, please turn away from the screen!
       </p>
