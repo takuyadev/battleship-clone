@@ -6,14 +6,12 @@ import { ALPHABET } from '@data/constants';
 // Creates messages
 export const createMessages = (
   type: PlayerEnum,
+  username: string,
   hitOrMiss: boolean,
   ship: Ship | null,
   { x, y }: Coordinate
 ): Messages => {
   let result = [];
-
-  // Choose player number based on type provided "player" | "opponent"
-  const username = type === PlayerEnum.PLAYER ? 'Player 1' : 'Player 2';
 
   // If ship exists andhas been destroyed, add additional sink message to message list
   if (ship) {

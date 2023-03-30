@@ -1,6 +1,7 @@
-import { Board, Coordinates, Ships } from './types.common';
+import { Board, Coordinates, Leaderboard, Ships } from './types.common';
 
 export interface Replay {
+  boardSize: number;
   player: {
     board: Board;
     ships: Ships;
@@ -10,4 +11,9 @@ export interface Replay {
     ships: Ships;
   };
   moves: Coordinates;
+}
+
+export interface LeaderboardGet {
+  success: boolean;
+  data: Leaderboard[];
 }

@@ -20,9 +20,9 @@ export enum Mark {
 }
 
 export enum TurnDelay {
-  HIT = 3000,
-  SWITCH = 5000,
-  BUFFER = 1000,
+  HIT = 3000, // 3000
+  SWITCH = 5000, // 5000
+  BUFFER = 1000, // 1000
 }
 
 export enum PlayerEnum {

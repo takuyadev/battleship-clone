@@ -1,6 +1,7 @@
 import { Dispatch, useState, useEffect, SetStateAction } from 'react';
 import Loading from '@components/atoms/ui/Loading';
 import Popup from '@components/atoms/ui/Popup';
+import { TurnDelay } from '@models/enum.common';
 
 export interface TimerProps {
   name: string;
@@ -23,24 +24,22 @@ const Timer = ({ name, seconds, setShow, className }: TimerProps) => {
     // Clears the counting interval first, so it stops at 5
     const countId = setTimeout(() => {
       clearInterval(intervalId);
-    }, seconds);
-
+      setShow(false);
+    }, seconds + TurnDelay.BUFFER);
 
     // After 1 second, clear screen for smoother transition
-    const timeoutId = setTimeout(() => {
-      setShow(false);
+    const loadingId = setTimeout(() => {
       setPercentage(100);
-    }, seconds + 1000);
+    }, seconds + TurnDelay.BUFFER + 250);
 
     return () => {
       clearInterval(intervalId);
-      clearTimeout(timeoutId);
+      clearTimeout(loadingId);
       clearTimeout(countId);
     };
   }, [seconds]);
 
   return (
-    
     // Set count back to 0 on animation end
     <Popup
       onAnimationEnd={() => setCount(0)}

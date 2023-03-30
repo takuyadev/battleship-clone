@@ -1,5 +1,5 @@
 import { BoardSize, GameFormat, Mark, PlayerEnum } from './enum.common';
-import type { Replay } from './interfaces.common';
+import type { Replay, LeaderboardGet } from './interfaces.common';
 import type {
   Game,
   Player,
@@ -16,7 +16,8 @@ import type {
   SetBoard,
   SetShips,
   Message,
-  Messages
+  Messages,
+  Leaderboard
 } from './types.common';
 
 export {
@@ -40,5 +41,6 @@ export {
   SetShips,
   PlayerEnum,
   Message,
-  Messages
+  Messages,
+  LeaderboardGet
 };

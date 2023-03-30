@@ -10,5 +10,8 @@ export enum GameEnum {
   PLAYER_ATTACK = 'player-attack',
   OPPONENT_ATTACK = 'opponent-attack',
   DISABLE_BOARD = 'disable-board',
-  HIDE_BOARDS = 'hide-boards'
+  HIDE_BOARDS = 'hide-boards',
+  SHOW_BOARDS = 'show-boards',
+  UPDATE_PLAYER_NAME = 'update-player-name',
+  UPDATE_OPPONENT_NAME = 'update-opponent-name',
 }

@@ -1,12 +1,16 @@
 import { createPortal } from 'react-dom';
-import { motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 export interface PopupProps {
   children: React.ReactNode;
   className?: string;
-  onAnimationEnd: React.AnimationEventHandler<HTMLDivElement>
+  onAnimationEnd?: React.AnimationEventHandler<HTMLDivElement>;
 }
 
-const Popup = ({ className, children, onAnimationEnd }: PopupProps) => {
+const Popup = ({
+  className,
+  children,
+  onAnimationEnd = () => {},
+}: PopupProps) => {
   return createPortal(
     <motion.div
       onAnimationEnd={onAnimationEnd}

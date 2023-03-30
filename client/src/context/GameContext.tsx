@@ -14,8 +14,9 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
     currentName,
     seconds,
     config,
-    setConfig,
     loading,
+    turnCount,
+    setConfig,
     setLoading,
     setSeconds,
     playerTurn,
@@ -23,9 +24,11 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
     hideBoard,
     listenForWin,
     setGame,
+    setGameOver,
     opponentAttack,
     playerAttack,
     attackAgainstComputer,
+    showBoardEnd,
   } = useGame({ x: 10, y: 10 });
 
   return (
@@ -40,17 +43,20 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
         currentName,
         seconds,
         loading,
+        turnCount,
         setLoading,
         playerTurn,
         setMessages,
         hideBoard,
         listenForWin,
+        setGameOver,
         setGame,
         setConfig,
         setSeconds,
         opponentAttack,
         playerAttack,
         attackAgainstComputer,
+        showBoardEnd,
       }}
     >
       {children}

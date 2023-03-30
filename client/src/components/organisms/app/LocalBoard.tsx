@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useContext } from 'react';
 import { GameContext } from '@context/GameContext';
 import Confetti from 'react-confetti';
@@ -7,6 +8,9 @@ import GridBoard from '@components/molecules/board/GridBoard';
 import ShipList from '@components/molecules/game/ShipList';
 import { PlayerEnum } from '@models/_index';
 import { AnimatePresence } from 'framer-motion';
+import Button from '@components/atoms/buttons/Button';
+import { useNavigate } from 'react-router-dom';
+import Popup from '@components/atoms/ui/Popup';
 
 const LocalBoard = () => {
   const {
@@ -17,16 +21,35 @@ const LocalBoard = () => {
     seconds,
     loading,
     setLoading,
+    turnCount,
     playerAttack,
-    opponentAttack,
     listenForWin,
+    opponentAttack,
     hideBoard,
     isWin,
     messages,
+    showBoardEnd,
   } = useContext(GameContext);
 
-  // useEffect listener for win condition
+  const navigate = useNavigate();
+
   listenForWin();
+
+  const finishGame = async () => {
+    await axios.post('http://localhost:5000/leaderboard', {
+      turnCount: turnCount,
+      username: game.player.name,
+    });
+    navigate('/game');
+  };
+
+  const showBoard = async () => {
+    await axios.post('http://localhost:5000/leaderboard', {
+      turnCount: turnCount,
+      username: game.player.name,
+    });
+    showBoardEnd();
+  };
 
   return (
     <div className='flex flex-col gap-4 w-full h-full'>
@@ -35,9 +58,20 @@ const LocalBoard = () => {
           <Timer name={currentName} seconds={seconds} setShow={setLoading} />
         )}
       </AnimatePresence>
-      {isWin && (
-        <Confetti width={window.innerWidth} height={window.innerHeight} />
-      )}
+      <AnimatePresence>
+        {isWin && (
+          <Popup className='h-screen w-screen bg-black opacity-90 flex justify-center items-center gap-4 flex-col'>
+            <h1 className='text-white text-xl font-bold font-display'>
+              {isWin} wins the game!
+            </h1>
+            <div>
+              <Button text='See board' onClick={showBoard}></Button>
+              <Button text='Finish' onClick={finishGame}></Button>
+            </div>
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          </Popup>
+        )}
+      </AnimatePresence>
       <div className='grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4'>
         <ShipList
           className='order-2 md:order-3 2xl:order-1'

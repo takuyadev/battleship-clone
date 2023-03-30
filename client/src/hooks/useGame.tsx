@@ -1,5 +1,4 @@
 import { useReducer, useState, useEffect } from 'react';
-import { TURN_DELAY } from '@data/constants';
 import { useShips } from './useShips';
 import { BoardSize, GameFormat, Config, Coordinates } from '@models/_index';
 import { Coordinate, Board, Messages, PlayerEnum, Ship } from '@models/_index';
@@ -27,7 +26,6 @@ import { TurnDelay } from '@models/enum.common';
 const reducer = (state: GameState, { type, payload }: GameAction) => {
   let x = 0;
   let y = 0;
-
   if (payload) {
     x = payload.coords.x;
     y = payload.coords.y;
@@ -35,6 +33,14 @@ const reducer = (state: GameState, { type, payload }: GameAction) => {
 
   switch (type) {
     // Attacks on coordinate provided, no other side effects
+    case GameEnum.UPDATE_PLAYER_NAME:
+      state.player.name = payload.name;
+      return { ...state };
+
+    case GameEnum.UPDATE_OPPONENT_NAME:
+      state.opponent.name = payload.name;
+      return { ...state };
+
     case GameEnum.PLAYER_ATTACK:
       state.opponent.setBoard({
         type: BoardEnum.ATTACK_TILE,
@@ -68,6 +74,11 @@ const reducer = (state: GameState, { type, payload }: GameAction) => {
     case GameEnum.HIDE_BOARDS:
       state.opponent.isHide = true;
       state.player.isHide = true;
+      return { ...state };
+
+    case GameEnum.SHOW_BOARDS:
+      state.opponent.isHide = false;
+      state.player.isHide = false;
       return { ...state };
 
     // Disables both sides boards
@@ -107,6 +118,7 @@ const useGame = ({ x, y }: Coordinate) => {
   const [playerBoard, setPlayerBoard] = useBoard({ x, y });
   const [opponentShips, setOpponentShips] = useShips();
   const [opponentBoard, setOpponentBoard] = useBoard({ x, y });
+  const [turnCount, setTurnCount] = useState(0);
 
   // State for checking which tiles the computer has already hit
   const [computerMoves, setComputerMoves] = useState<Coordinates>(
@@ -122,6 +134,7 @@ const useGame = ({ x, y }: Coordinate) => {
 
   // State for determining win or loss
   const [isWin, setIsWin] = useState<string | null>(null);
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   // Log message list
   const [messages, setMessages] = useState<Messages>([]);
@@ -130,6 +143,8 @@ const useGame = ({ x, y }: Coordinate) => {
   const [game, setGame] = useReducer(reducer, {
     player: {
       name: 'Player 1',
+      board: playerBoard,
+      ships: playerShips,
       setShips: setPlayerShips,
       setBoard: setPlayerBoard,
       isTurn: true,
@@ -137,12 +152,15 @@ const useGame = ({ x, y }: Coordinate) => {
     },
     opponent: {
       name: 'Player 2',
+      board: opponentBoard,
+      ships: opponentShips,
       setShips: setOpponentShips,
       setBoard: setOpponentBoard,
       isTurn: false,
       isHide: true,
     },
     replay: {
+      boardSize: GAME_FORM.boardSize,
       player: {
         board: [...playerBoard],
         ships: [...playerShips],
@@ -158,39 +176,75 @@ const useGame = ({ x, y }: Coordinate) => {
   // Display state of current user
   const [currentName, setCurrentName] = useState(game.opponent.name);
 
+  // Sets up for updaing current name when game starts
+  useEffect(() => {
+    setCurrentName(game.opponent.name);
+  }, [game.opponent.name]);
+
   // If any configurations changes, then should set to new configuration
   useEffect(() => {
-    setPlayerBoard({
+    game.player.setBoard({
       type: BoardEnum.INITIALIZE_BOARD,
       payload: { boardSize: config.boardSize },
     });
-    setOpponentBoard({
+    game.opponent.setBoard({
       type: BoardEnum.INITIALIZE_BOARD,
       payload: { boardSize: config.boardSize },
     });
-    setPlayerShips({
+    game.player.setShips({
       type: ShipsEnum.INITIALIZE_SHIPS,
       payload: null,
     });
-    setOpponentShips({
+    game.opponent.setShips({
       type: ShipsEnum.INITIALIZE_SHIPS,
       payload: null,
     });
-    setComputerMoves(generateBoardForAI(config.boardSize));
     setMessages([]);
+    setComputerMoves(generateBoardForAI(config.boardSize));
     setGame({ type: GameEnum.PLAYER_TURN, payload: null });
+    setIsWin(null);
+    setLoading(true);
+    setGameOver(false);
+    setGame({
+      type: GameEnum.UPDATE_PLAYER_NAME,
+      payload: {
+        name: 'Player 1',
+        coords: { x: 0, y: 0 },
+      },
+    });
+    setGame({
+      type: GameEnum.UPDATE_OPPONENT_NAME,
+      payload: {
+        name: 'Player 2',
+        coords: { x: 0, y: 0 },
+      },
+    });
   }, [config]);
 
   // Listens to game does not have any more selectable tiles
   const listenForWin = () => {
     useEffect(() => {
-      if (isBoardLose(playerBoard)) {
-        setIsWin('opponent');
-      }
-      if (isBoardLose(opponentBoard)) {
-        setIsWin('player');
+      if (!gameOver) {
+        if (isBoardLose(playerBoard)) {
+          setIsWin(game.opponent.name);
+          setLoading(false);
+        }
+        if (isBoardLose(opponentBoard)) {
+          setIsWin(game.player.name);
+          setLoading(false);
+        }
       }
     }, [game]);
+  };
+
+  // Show board at the end of the game
+  const showBoardEnd = () => {
+    setGameOver(true);
+    setIsWin(null);
+    setLoading(false);
+    setConfig(GAME_FORM);
+    setGame({ type: GameEnum.DISABLE_BOARD, payload: null });
+    setGame({ type: GameEnum.SHOW_BOARDS, payload: null });
   };
 
   // Action to occur when selected player attacks
@@ -199,6 +253,7 @@ const useGame = ({ x, y }: Coordinate) => {
     let switchTurn = () => {};
     let hitOrMiss: boolean = false;
     let ship: Ship | null = null;
+    let username = '';
 
     // If type is Player, then set methods for player's turn
     if (type === PlayerEnum.PLAYER) {
@@ -212,6 +267,7 @@ const useGame = ({ x, y }: Coordinate) => {
       };
       hitOrMiss = isTilePlaced(opponentBoard, { x, y });
       ship = findShipWithCoords(opponentShips, { x, y });
+      username = game.player.name;
     }
 
     // Else, (if opponent), set methods for opponent's turn
@@ -230,6 +286,7 @@ const useGame = ({ x, y }: Coordinate) => {
       };
       hitOrMiss = isTilePlaced(playerBoard, { x, y });
       ship = findShipWithCoords(playerShips, { x, y });
+      username = game.opponent.name;
     }
 
     // Attack, then disable the board to prevent user from clicking more than once
@@ -237,8 +294,9 @@ const useGame = ({ x, y }: Coordinate) => {
     setGame({ type: GameEnum.DISABLE_BOARD, payload: null });
 
     // Set Messages based on previous requirements
-    const messages = createMessages(type, hitOrMiss, ship, { x, y });
+    const messages = createMessages(type, username, hitOrMiss, ship, { x, y });
     setMessages((prev) => [...messages, ...prev]);
+    setTurnCount((prev) => prev + 1);
 
     // Wait before before allowing opponent to attack
     setTimeout(() => {
@@ -248,14 +306,14 @@ const useGame = ({ x, y }: Coordinate) => {
       // Additional time that is added to:
       // 1. Prevent countdown from immediately ending at 5 seconds (give buffer, better UX) + 1000ms
       // 2. Allow user to see their hit on the board before giving the other person turn + 3000ms
-    }, TURN_DELAY + 4000);
+    }, TurnDelay.SWITCH + TurnDelay.HIT + TurnDelay.BUFFER);
   };
 
   // LOCAL PLAY METHODS
   // Start and show timer component
   const startTimer = () => {
     setLoading(true);
-    setSeconds(TURN_DELAY);
+    setSeconds(TurnDelay.SWITCH);
   };
 
   // When opponent attacks player, run this method
@@ -265,17 +323,18 @@ const useGame = ({ x, y }: Coordinate) => {
     setTimeout(() => {
       setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
-    }, 3000);
+    }, TurnDelay.HIT);
   };
 
   // When player attacks opponent, run this method
   const playerAttack = ({ x, y }: Coordinate) => {
     playerTurn(PlayerEnum.PLAYER, { x, y });
+    console.log(game.player.name, game.opponent.name);
     setCurrentName(game.player.name);
     setTimeout(() => {
       setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
       startTimer();
-    }, 3000);
+    }, TurnDelay.HIT);
   };
 
   // COMPUTER PLAY METHODS
@@ -285,15 +344,21 @@ const useGame = ({ x, y }: Coordinate) => {
 
     const hitOrMiss = isTilePlaced(opponentBoard, { x, y });
     const ship = findShipWithCoords(opponentShips, { x, y });
-    const messages = createMessages(PlayerEnum.PLAYER, hitOrMiss, ship, {
-      x,
-      y,
-    });
+    const messages = createMessages(
+      PlayerEnum.PLAYER,
+      game.player.name,
+      hitOrMiss,
+      ship,
+      {
+        x,
+        y,
+      }
+    );
     setMessages((prev) => [...messages, ...prev]);
     setTimeout(() => {
       computerTurn();
       setGame({ type: GameEnum.PLAYER_TURN, payload: null });
-    }, 3000);
+    }, TurnDelay.HIT);
   };
 
   // Computer methods
@@ -310,6 +375,7 @@ const useGame = ({ x, y }: Coordinate) => {
     setComputerMoves(filterCoordinates(computerMoves, selectedMove));
     const messages = createMessages(
       PlayerEnum.OPPONENT,
+      game.opponent.name,
       hitOrMiss,
       ship,
       selectedMove
@@ -317,9 +383,7 @@ const useGame = ({ x, y }: Coordinate) => {
     setMessages((prev) => [...messages, ...prev]);
   };
 
-  const computerPlaceShips = () => {
-    
-  }
+  const computerPlaceShips = () => {};
 
   // Condition to hide board from player
   const hideBoard = (name: 'opponent' | 'player'): Board => {
@@ -340,7 +404,7 @@ const useGame = ({ x, y }: Coordinate) => {
       board: playerBoard,
     },
     opponent: {
-      name: game.player.name,
+      name: game.opponent.name,
       setShips: setOpponentShips,
       setBoard: setOpponentBoard,
       ships: opponentShips,
@@ -352,8 +416,10 @@ const useGame = ({ x, y }: Coordinate) => {
     loading,
     seconds,
     config,
+    turnCount,
     playerTurn,
     computerTurn,
+    setGameOver,
     listenForWin,
     setGame,
     setConfig,
@@ -364,6 +430,7 @@ const useGame = ({ x, y }: Coordinate) => {
     attackAgainstComputer,
     playerAttack,
     opponentAttack,
+    showBoardEnd,
   };
 };
 

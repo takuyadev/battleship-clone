@@ -8,6 +8,9 @@ const NavBar = () => {
           <NavLink text='About ' to='/about' />
         </li>
         <li className='font-body text-slate-500 tracking-wide test-sm'>
+          <NavLink text='Leaderboard ' to='/leaderboard' />
+        </li>
+        <li className='font-body text-slate-500 tracking-wide test-sm'>
           <NavLink text='How to Play' to='/howtoplay' />
         </li>
         <li className='font-body text-slate-500 tracking-wide test-sm'>

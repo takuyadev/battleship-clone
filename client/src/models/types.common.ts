@@ -28,12 +28,17 @@ export type Config = {
   boardSize: number;
 };
 
+export type Leaderboard = {
+  username: string;
+  turnCount: number;
+};
+
 export type SetBoard = Dispatch<BoardAction>;
 export type SetShips = Dispatch<ShipAction>;
 
 // Ship related types
 export type Ship = {
-  id: number,
+  id: number;
   name: string;
   height: number;
   isPlaced: boolean;
@@ -53,8 +58,8 @@ export type Board = number[][];
 export type Message = {
   icon: React.ReactNode;
   message: string;
-};;
-export type Messages = Message[]
+};
+export type Messages = Message[];
 export type Attack = { coords: Coordinate; isHit: boolean };
 export type Coordinate = { x: number; y: number };
 export type Coordinates = Coordinate[];

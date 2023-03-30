@@ -9,6 +9,7 @@ import HowToPlay from '@pages/HowToPlay';
 import Local from '@pages/game/Local';
 import { GameContextProvider } from '@context/GameContext';
 import Computer from '@pages/game/Computer';
+import Leaderboard from '@pages/Leaderboard';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'howtoplay',
         element: <HowToPlay />,
+      },
+      {
+        path: 'leaderboard',
+        element: <Leaderboard />,
       },
     ],
   },

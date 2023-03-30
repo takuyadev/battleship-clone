@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import { isShipInBoard } from '@utils/_index';
 import { BoardEnum, OnOffEnum, ShipsEnum } from '@hooks/models/_index';
@@ -10,6 +10,7 @@ import IconButton from '@components/atoms/buttons/IconButton';
 import ButtonIndicator from '@components/molecules/board/ButtonIndicator';
 import GridBoard from '@components/molecules/board/GridBoard';
 import Card from '@components/atoms/ui/Card';
+import InputLabel from '@components/molecules/form/InputLabel';
 
 interface EditBoardProps {
   playerName: string;
@@ -18,6 +19,7 @@ interface EditBoardProps {
   ships: Ships;
   setShips: SetShips;
   boardSize: number;
+  setName: ChangeEventHandler<HTMLInputElement>;
 }
 
 const EditBoard = ({
@@ -27,6 +29,7 @@ const EditBoard = ({
   ships,
   setShips,
   boardSize,
+  setName,
 }: EditBoardProps): JSX.Element => {
   const [isRotated, setIsRotated] = useOnOff(false);
   const [currentShipId, setCurrentId] = useState(4);
@@ -34,7 +37,7 @@ const EditBoard = ({
   // Place ship while the game is in edit mode
   const placeShip = ({ x, y }: Coordinate) => {
     // Select current iteration of the ship to be replaced
-    const ship = ships[currentShipId]
+    const ship = ships[currentShipId];
 
     if (!ship) {
       return false;
@@ -112,6 +115,14 @@ const EditBoard = ({
       <h2 className='font-display text-3xl text-slate-500 '>
         {playerName}'s board
       </h2>
+      <InputLabel
+        label='Change your name'
+        htmlFor='player-name'
+        name='name'
+        onChange={(e) => {
+          setName(e);
+        }}
+      />
       <GridBoard
         board={board}
         onClick={({ x, y }: Coordinate) => placeShip({ x, y })}

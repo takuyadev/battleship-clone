@@ -1,11 +1,6 @@
 import PageTransition from '@components/atoms/ui/PageTransition';
-
 const About = () => {
-  return (
-   <PageTransition>
-    About
-   </PageTransition>
-  );
+  return <PageTransition></PageTransition>;
 };
 
 export default About;
