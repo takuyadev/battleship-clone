@@ -1,6 +1,7 @@
 import { Message } from '@components/atoms/text/Message';
 import { Messages } from '@models/types.common';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { slideRight } from '@data/anim';
 
 export interface LogProps {
   data: Messages;
@@ -14,17 +15,21 @@ const Log = ({ data, className }: LogProps): JSX.Element => {
         className && className
       } flex flex-col bg-slate-50 border-2 border-slate-100 rounded-lg`}
     >
-      <div className='flex flex-col rounded-lg overflow-y-auto overflow-x-hidden h-96'>
+      <ul className='flex flex-col rounded-lg overflow-y-auto overflow-x-hidden h-96'>
         <AnimatePresence initial={false}>
           {data.map(({ message, icon }, i) => (
-            <Message
+            <motion.li
+              variants={slideRight}
+              initial='initial'
+              animate='animate'
+              className='flex gap-4 p-4 text-slate-700 rounded-lg even:bg-slate-100'
               key={`message-${data.length - i}`}
-              message={message}
-              icon={icon}
-            />
+            >
+              <Message message={message} icon={icon} />
+            </motion.li>
           ))}
         </AnimatePresence>
-      </div>
+      </ul>
     </section>
   );
 };

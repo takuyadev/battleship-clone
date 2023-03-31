@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useReducer, useState, useEffect } from 'react';
 import { useShips } from './useShips';
 import { BoardSize, GameFormat, Config, Coordinates } from '@models/_index';
@@ -9,7 +10,10 @@ import {
   findShipWithCoords,
   createMessages,
   selectMove,
-  generateBoardForAI,
+  generatePossibleMoves,
+  isShipInBoard,
+  updateShipOnBoard,
+  generateBoard,
 } from '@utils/_index';
 import {
   GameState,
@@ -21,6 +25,13 @@ import {
 import { useBoard } from './useBoard';
 import { filterCoordinates } from '@utils/ai/filterCoordinate';
 import { TurnDelay } from '@models/enum.common';
+import { placeShipRandomly } from '@utils/ai/placeShipsRandomly';
+
+// Default game configuration
+const GAME_FORM: Config = {
+  gameFormat: GameFormat.LOCAL,
+  boardSize: BoardSize.XL,
+};
 
 // This hook depends on useBoard and useShip hook; but allows for the reuse of game logic across multiple pages, including settimeout functions.
 const reducer = (state: GameState, { type, payload }: GameAction) => {
@@ -107,11 +118,6 @@ const reducer = (state: GameState, { type, payload }: GameAction) => {
   }
 };
 
-const GAME_FORM: Config = {
-  gameFormat: GameFormat.LOCAL,
-  boardSize: BoardSize.XL,
-};
-
 const useGame = ({ x, y }: Coordinate) => {
   // Player and opponent settings for board and ship location
   const [playerShips, setPlayerShips] = useShips();
@@ -122,7 +128,7 @@ const useGame = ({ x, y }: Coordinate) => {
 
   // State for checking which tiles the computer has already hit
   const [computerMoves, setComputerMoves] = useState<Coordinates>(
-    generateBoardForAI(GAME_FORM.boardSize)
+    generatePossibleMoves(GAME_FORM.boardSize)
   );
 
   // Set state for timer, or loading for other opponent to move
@@ -133,7 +139,7 @@ const useGame = ({ x, y }: Coordinate) => {
   const [config, setConfig] = useState(GAME_FORM);
 
   // State for determining win or loss
-  const [isWin, setIsWin] = useState<string | null>(null);
+  const [isWin, setIsWin] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
 
   // Log message list
@@ -200,9 +206,9 @@ const useGame = ({ x, y }: Coordinate) => {
       payload: null,
     });
     setMessages([]);
-    setComputerMoves(generateBoardForAI(config.boardSize));
+    setComputerMoves(generatePossibleMoves(config.boardSize));
     setGame({ type: GameEnum.PLAYER_TURN, payload: null });
-    setIsWin(null);
+    setIsWin(false);
     setLoading(true);
     setGameOver(false);
     setGame({
@@ -225,22 +231,20 @@ const useGame = ({ x, y }: Coordinate) => {
   const listenForWin = () => {
     useEffect(() => {
       if (!gameOver) {
-        if (isBoardLose(playerBoard)) {
-          setIsWin(game.opponent.name);
+        if (isBoardLose(playerBoard) || isBoardLose(opponentBoard)) {
+          setIsWin(true);
           setLoading(false);
-        }
-        if (isBoardLose(opponentBoard)) {
-          setIsWin(game.player.name);
-          setLoading(false);
+          endGame();
+          updateLeaderboard();
         }
       }
     }, [game]);
   };
 
   // Show board at the end of the game
-  const showBoardEnd = () => {
+  const endGame = () => {
     setGameOver(true);
-    setIsWin(null);
+    setIsWin(false);
     setLoading(false);
     setConfig(GAME_FORM);
     setGame({ type: GameEnum.DISABLE_BOARD, payload: null });
@@ -329,7 +333,6 @@ const useGame = ({ x, y }: Coordinate) => {
   // When player attacks opponent, run this method
   const playerAttack = ({ x, y }: Coordinate) => {
     playerTurn(PlayerEnum.PLAYER, { x, y });
-    console.log(game.player.name, game.opponent.name);
     setCurrentName(game.player.name);
     setTimeout(() => {
       setGame({ type: GameEnum.HIDE_BOARDS, payload: null });
@@ -349,20 +352,19 @@ const useGame = ({ x, y }: Coordinate) => {
       game.player.name,
       hitOrMiss,
       ship,
-      {
-        x,
-        y,
-      }
+      { x, y }
     );
     setMessages((prev) => [...messages, ...prev]);
     setTimeout(() => {
-      computerTurn();
+      // Activate computer attack after timeout
+      computerAttack();
       setGame({ type: GameEnum.PLAYER_TURN, payload: null });
     }, TurnDelay.HIT);
   };
 
   // Computer methods
-  const computerTurn = () => {
+  const computerAttack = () => {
+    // Select move based on all moves available
     const selectedMove = selectMove(computerMoves);
     const hitOrMiss = isTilePlaced(playerBoard, selectedMove);
     const ship = findShipWithCoords(playerShips, selectedMove);
@@ -383,7 +385,82 @@ const useGame = ({ x, y }: Coordinate) => {
     setMessages((prev) => [...messages, ...prev]);
   };
 
-  const computerPlaceShips = () => {};
+  const computerPlaceShips = () => {
+    // To prevent rerenders from messing the board, restart board on call
+    game.opponent.setBoard({
+      type: BoardEnum.INITIALIZE_BOARD,
+      payload: { boardSize: config.boardSize },
+    });
+    game.opponent.setShips({
+      type: ShipsEnum.INITIALIZE_SHIPS,
+      payload: null,
+    });
+
+    // Generate dummy board to avoid state mismatch
+    let newBoard = generateBoard(config.boardSize, config.boardSize);
+
+    // Loop through ships until all ships are placed
+    for (const ship of game.opponent.ships) {
+      let isPlaced = false;
+      const isRotated = Math.random() > 0.5;
+
+      // Try placing the ship randomly until a valid position is found
+      while (!isPlaced) {
+        const coords = placeShipRandomly(isRotated, config.boardSize, ship);
+        const isShipInBoardResult = isShipInBoard(newBoard, coords, {
+          height: ship.height,
+          isRotated,
+        });
+
+        // If the ship can be placed at these coordinates, save them and exit loop
+        if (isShipInBoardResult) {
+          setOpponentShips({
+            type: ShipsEnum.UPDATE_PLACED,
+            payload: { id: ship.id },
+          });
+
+          setOpponentBoard({
+            type: BoardEnum.ADD_SHIP,
+            payload: {
+              coords,
+              options: { height: ship.height, isRotated },
+            },
+          });
+
+          // Edit rotation after ship has been removed
+          setOpponentShips({
+            type: ShipsEnum.ROTATE_SHIP,
+            payload: { id: ship.id, isRotated },
+          });
+
+          setOpponentShips({
+            type: ShipsEnum.UPDATE_COORDINATES,
+            payload: {
+              coords,
+              id: ship.id,
+            },
+          });
+
+          // Update dummyboard with new data
+          newBoard = updateShipOnBoard(newBoard, coords, {
+            isRotated,
+            height: ship.height,
+          });
+
+          // successfully placed
+          isPlaced = true;
+        }
+      }
+    }
+  };
+
+  // Updates leaderboard on call
+  const updateLeaderboard = async () => {
+    await axios.post('http://localhost:5000/leaderboard', {
+      turnCount: turnCount,
+      username: game.player.name,
+    });
+  };
 
   // Condition to hide board from player
   const hideBoard = (name: 'opponent' | 'player'): Board => {
@@ -418,19 +495,21 @@ const useGame = ({ x, y }: Coordinate) => {
     config,
     turnCount,
     playerTurn,
-    computerTurn,
+    computerAttack,
     setGameOver,
     listenForWin,
     setGame,
+    setIsWin,
     setConfig,
     setLoading,
     hideBoard,
     setMessages,
     setSeconds,
     attackAgainstComputer,
+    computerPlaceShips,
     playerAttack,
     opponentAttack,
-    showBoardEnd,
+    updateLeaderboard,
   };
 };
 

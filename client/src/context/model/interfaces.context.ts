@@ -12,20 +12,22 @@ export interface GameContextInterface {
   loading: boolean;
   seconds: number;
   opponent: PlayerOptions;
-  isWin: string | null;
+  isWin: boolean;
   messages: Messages;
   playerTurn: Function;
   hideBoard: Function;
   turnCount: number;
   listenForWin: EffectCallback;
+  updateLeaderboard: () => void;
+  computerPlaceShips: () => void;
   playerAttack: ({ x, y }: Coordinate) => void;
   opponentAttack: ({ x, y }: Coordinate) => void;
   attackAgainstComputer: ({ x, y }: Coordinate) => void;
   setGameOver: Dispatch<SetStateAction<boolean>>;
+  setIsWin: Dispatch<SetStateAction<boolean>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSeconds: Dispatch<SetStateAction<number>>;
   setMessages: Dispatch<SetStateAction<Messages>>;
   setConfig: Dispatch<SetStateAction<Config>>;
   setGame: Dispatch<GameAction>;
-  showBoardEnd: () => void;
 }

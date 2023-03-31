@@ -7,6 +7,7 @@ import { GameEnum, OnOffEnum } from '@hooks/models/_index';
 import { slideLeft } from '@data/anim';
 import EditBoard from '@components/organisms/app/EditBoard';
 import LocalBoard from '@components/organisms/app/LocalBoard';
+import PageTransition from '@components/atoms/ui/PageTransition';
 import Button from '@components/atoms/buttons/Button';
 
 const Local = () => {
@@ -104,11 +105,7 @@ const Local = () => {
               }}
             />
             <div className='flex justify-between gap-2'>
-              <Button
-                className='mt-8'
-                onClick={onPlayerEdit}
-                text='Go back'
-              />
+              <Button className='mt-8' onClick={onPlayerEdit} text='Go back' />
               <Button
                 className='mt-8'
                 disabled={!isDone}
@@ -119,8 +116,11 @@ const Local = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {isEdit === 'end' && <LocalBoard />}
+      {!isEdit && (
+        <PageTransition className='w-full'>
+          <LocalBoard />
+        </PageTransition>
+      )}
     </div>
   );
 };

@@ -1,26 +1,31 @@
 import { createPortal } from 'react-dom';
-import { motion } from 'framer-motion';
-export interface PopupProps {
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
+import { fadeIn } from '@data/anim';
+
+export interface PopupProps extends MotionProps {
   children: React.ReactNode;
+  isShow: boolean;
   className?: string;
-  onAnimationEnd?: React.AnimationEventHandler<HTMLDivElement>;
 }
 
-const Popup = ({
-  className,
-  children,
-  onAnimationEnd = () => {},
-}: PopupProps) => {
+const Popup = ({ className = '', children, isShow, ...props }: PopupProps) => {
+  if (!isShow) {
+    return null;
+  }
+
   return createPortal(
-    <motion.div
-      onAnimationEnd={onAnimationEnd}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className={`${className} fixed flex items-center justify-center  w-screen h-screen  bg-black opacity-90 z-20 `}
-    >
-      {children}
-    </motion.div>,
+    <AnimatePresence>
+      <motion.div
+        variants={fadeIn}
+        initial='initial'
+        animate='animate'
+        exit='exit'
+        className={`${className} fixed w-screen h-screen before:bg-black before:opacity-90 z-50`}
+        {...props}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>,
     document.getElementById('popup')!
   );
 };

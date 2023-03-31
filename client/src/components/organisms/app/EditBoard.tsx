@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import {  ChangeEventHandler, useState } from 'react';
 import { useOnOff } from '@hooks/useOnOff';
 import { isShipInBoard } from '@utils/_index';
 import { BoardEnum, OnOffEnum, ShipsEnum } from '@hooks/models/_index';

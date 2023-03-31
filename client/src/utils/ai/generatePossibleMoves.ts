@@ -1,5 +1,5 @@
 // This will generate a board for assessing which
-export const generateBoardForAI = (boardSize: number) => {
+export const generatePossibleMoves = (boardSize: number) => {
   const result = [];
   for (let x = 0; x < boardSize; x++) {
     for (let y = 0; y < boardSize; y++) {

@@ -1,5 +1,4 @@
 // Framer motion animation variants
-
 export const fadeIn = {
   initial: {
     opacity: 0,
@@ -34,5 +33,16 @@ export const slideLeft = {
     x: '-100vw',
     position: 'absolute',
     transition: { ease: [0.65, 0, 0.35, 1], duration: 1 },
+  },
+};
+
+export const slideRight = {
+  initial: {
+    opacity: 0,
+    x: -100,
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
   },
 };

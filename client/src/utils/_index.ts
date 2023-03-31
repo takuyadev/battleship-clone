@@ -16,7 +16,7 @@ import { updateShipByCoords } from './ships/updateShipByCoords';
 import { updateTile } from './ships/updateTile';
 
 // AI Imports
-import { generateBoardForAI } from './ai/generateBoardForAI';
+import { generatePossibleMoves } from './ai/generatePossibleMoves';
 import { selectMove } from './ai/selectMove';
 
 // Game
@@ -35,5 +35,5 @@ export {
   generateShips,
   updateShipByCoords,
   generateCoordinates,
-  generateBoardForAI,
+  generatePossibleMoves,
 };

@@ -10,7 +10,8 @@ import ComputerBoard from '@components/organisms/app/ComputerBoard';
 import EditBoard from '@components/organisms/app/EditBoard';
 import PageTransition from '@components/atoms/ui/PageTransition';
 const Computer = () => {
-  const { player, setGame, config } = useContext(GameContext);
+  const { player, setGame, config, computerPlaceShips } =
+    useContext(GameContext);
   const [isEdit, setIsEdit] = useOnOff(true);
   const [isDone, setIsDone] = useOnOff(false);
 
@@ -26,6 +27,7 @@ const Computer = () => {
         coords: { x: 0, y: 0 },
       },
     });
+    computerPlaceShips();
   }, []);
 
   useEffect(() => {

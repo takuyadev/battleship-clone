@@ -13,27 +13,26 @@ export const updateShipOnBoard = (
   let setTile = isRemove ? 0 : 1;
   let placedBoard = [...board];
 
-  // Logic for up to down
+  // Logic for down to up
   if (!isRotated) {
     for (let i = x; i > x - height; i--) {
-      if (placedBoard[i][y] === undefined) {
+
+      if (i < 0 || placedBoard[i][y] === undefined) {
         return board;
       }
       placedBoard[i][y] = setTile;
     }
-
     return placedBoard;
   }
 
   //Logic for left to right
   if (isRotated) {
     for (let i = y; i > y - height; i--) {
-      if (placedBoard[x][i] === undefined) {
+      if (i < 0 || placedBoard[x][i] === undefined) {
         return board;
       }
       placedBoard[x][i] = setTile;
     }
-
     return placedBoard;
   }
 
