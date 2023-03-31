@@ -10,7 +10,7 @@ const Leaderboard = () => {
   useEffect(() => {
     const async = async () => {
       const res: AxiosResponse<LeaderboardGet> = await axios.get(
-        'http://localhost:8080/leaderboard'
+        `${import.meta.env.VITE_DBURL}/leaderboard`
       );
       setData(res.data.data);
     };

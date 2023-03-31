@@ -249,12 +249,6 @@ const useGame = ({ x, y }: Coordinate) => {
     }, [game]);
   };
 
-  useEffect(() => {
-    if (gameOver) {
-      endGame();
-    }
-  }, [gameOver]);
-
   // Show board at the end of the game
   const endGame = () => {
     setGameOver(true);
@@ -390,6 +384,13 @@ const useGame = ({ x, y }: Coordinate) => {
       payload: { coords: selectedMove },
     });
 
+    // Check if computer has moved after game has ended
+    useEffect(() => {
+      if (gameOver) {
+        endGame();
+      }
+    }, [gameOver, computerAttack]);
+
     // Add new messages to list based on hit
     setComputerMoves(filterCoordinates(computerMoves, selectedMove));
     const messages = createMessages(
@@ -472,10 +473,13 @@ const useGame = ({ x, y }: Coordinate) => {
 
   // Updates leaderboard on call
   const updateLeaderboard = async (username: string, turnCount: number) => {
-    await axios.post('http://localhost:8080/leaderboard', {
-      turnCount,
-      username,
-    });
+    await axios.post(
+      `${import.meta.env.VITE_DBURL}/leaderboard`,
+      {
+        turnCount,
+        username,
+      }
+    );
   };
 
   // Condition to hide board from player
