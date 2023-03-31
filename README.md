@@ -1,5 +1,10 @@
 # Battleship Clone
 
+## Links to project
+https://battleship-clone.vercel.app/ 
+
+*Leaderboard my take a few seconds to startup, since the server takes a bit to go*
+
 ## Summary
 Battleship clone built using React.js + Vite + TypeScript + React Router DOM, with a simple leaderboard to keep track of other player's scores.
 
