@@ -12,6 +12,7 @@ function App(): JSX.Element {
         <AnimatePresence>
           <Outlet />
         </AnimatePresence>
+     
       </main>
       <Footer />
       <Wave

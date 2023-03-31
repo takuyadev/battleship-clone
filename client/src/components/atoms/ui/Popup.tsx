@@ -18,7 +18,7 @@ const Popup = ({ className = '', children, isShow, ...props }: PopupProps) => {
           initial='initial'
           animate='animate'
           exit='exit'
-          className={`${className} fixed w-screen h-screen before:fixed before:w-screen before:h-screen before:bg-black before:opacity-75 z-50`}
+          className={`${className} fixed w-screen h-screen before:fixed before:w-screen before:h-screen before:bg-black before:opacity-75 z-40`}
           {...props}
         >
           {children}

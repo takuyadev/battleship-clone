@@ -5,6 +5,7 @@ interface LeaderBoard {
   turnCount: number;
 }
 
+// Leaderboard schema
 const LeaderboardSchema = new Schema<LeaderBoard>({
   turnCount: {
     type: Number,
