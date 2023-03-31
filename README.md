@@ -3,7 +3,12 @@
 
 
 ## Links to project
+
+### Project
 https://battleship-clone.vercel.app/ 
+
+### Leaderboard server
+https://battleship-leaderboards.onrender.com/leaderboard
 
 *Leaderboard my take a few seconds to startup, since the server takes a bit to go*
 
