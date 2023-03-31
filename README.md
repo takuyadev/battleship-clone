@@ -26,14 +26,16 @@ Battleship clone built using React.js + Vite + TypeScript + React Router DOM, wi
 ![Edit screen](/docs/3.png)
 
 ## Retrospect
-This was an interesting project to create, due to it being something that I was mostly uncomfortable with creating, as a base project. I'm more accustomed to creating static or semi interactive websites, but not one particular part with a focus on full interactivity, so going into this project I wasn't too sure how it would pan out. 
+This was a fun and challenging project to create, due to it being something that I was mostly uncomfortable with creating. I'm more accustomed to creating static or semi interactive websites, but not one particular part with a focus on full interactivity, so going into this project I wasn't too sure how it would pan out. 
 
-Proceeding with this project, there were several things I picked up on that I will keep in mind for future projects.
+From my learnings with this project, there were several things I picked up on that I will keep in mind for future projects.
 
 - As the file grows in size, it's extremely hard to keep track of what files goes where, and harder to keep track of utils. It sounded obvious to me, but even then being in the position inside a larger project was a whole new perspective
 - Following up, the way I structured utils and functions I thought got extremely messy in the end, with lots of functions that produced side effects. Next time, focusing more on pure functions, then testing them first would be the way to approach larger projects. Cypress + vitest / Jest / Mocha + chai is a must learn at this point.
 - TypeScript is extremely powerful, but it's incredibly important to type any crucial types, interfaces, or enums early on so you can reuse them again and again later. I'm dropping using "I_" prefixes as well, as they are ugly and not really common.
 - useEffects should be used sparingly, and should be avoided in most scenarios. Instead, try to implement a normal function to call or change states on the page, as re-renders could miss the mark.
+- Custom hooks are great, but I could definitely use less for this project. I thought it would make sense to modulate the boards and the ships, but it was probably a bad call. 
+- For small - medium projects, it's most likely better to keep interfaces close to eachother.
 
 Although this project was a challenge in terms of getting more accustomed to TypeScript, while trying to incorporate more custom hooks and overall modularity and file structure, I am happy where this project has landed, although I couldn't complete all the features. I'm hoping to come back to this project, and implement more features, such as multiplayer, additional configuration, and AI difficulty settings in the future.
  
