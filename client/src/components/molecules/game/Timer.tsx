@@ -1,50 +1,42 @@
-import { Dispatch, useState, useEffect, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import Loading from '@components/atoms/ui/Loading';
 import Popup from '@components/atoms/ui/Popup';
+import { useCountdown } from '@hooks/useCountdown';
 import { TurnDelay } from '@models/enum.common';
 
 export interface TimerProps {
   name: string;
   seconds: number;
-  setShow: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
   className?: string;
 }
 
-const Timer = ({ name, seconds, setShow, className }: TimerProps) => {
-  const [count, setCount] = useState(0);
-  const [percentage, setPercentage] = useState(100);
+const Timer = ({
+  name,
+  loading,
+  seconds,
+  className = '',
+  setLoading,
+}: TimerProps) => {
 
+  const { startTimer, count, percentage } = useCountdown({
+    duration: seconds,
+    bufferTime: TurnDelay.BUFFER,
+    onComplete: () => {
+      setLoading(false);
+    },
+  });
+
+  // If loading is true, then run timer again
   useEffect(() => {
-    // Keep counter going down from provided seconds
-    const intervalId = setInterval(() => {
-      setCount((prevCount) => prevCount + 1);
-      setPercentage((prev) => prev - 100 / (seconds / 1000));
-    }, 1000);
-
-    // Clears the counting interval first, so it stops at 5
-    const countId = setTimeout(() => {
-      clearInterval(intervalId);
-      setShow(false);
-    }, seconds + TurnDelay.BUFFER);
-
-    // After 1 second, clear screen for smoother transition
-    const loadingId = setTimeout(() => {
-      setPercentage(100);
-    }, seconds + TurnDelay.BUFFER + 250);
-
-    return () => {
-      clearInterval(intervalId);
-      clearTimeout(loadingId);
-      clearTimeout(countId);
-    };
-  }, [seconds]);
+    if (!loading) return;
+    startTimer();
+  }, [loading]);
 
   return (
     // Set count back to 0 on animation end
-    <Popup
-      onAnimationEnd={() => setCount(0)}
-      className={`${className && className}`}
-    >
+    <Popup isShow={loading} className={`${className} flex flex-col justify-center items-center`}>
       <p className='absolute z-30 font-bold text-white text-5xl'>{count}</p>
       <Loading percentage={percentage} />
 

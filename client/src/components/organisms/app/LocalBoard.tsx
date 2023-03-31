@@ -1,9 +1,7 @@
-import axios from 'axios';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '@context/GameContext';
 import { PlayerEnum } from '@models/_index';
-import { AnimatePresence } from 'framer-motion';
 import Timer from '@components/molecules/game/Timer';
 import Log from '@components/molecules/game/Log';
 import GridBoard from '@components/molecules/board/GridBoard';
@@ -28,6 +26,7 @@ const LocalBoard = () => {
     isWin,
     messages,
   } = useContext(GameContext);
+  
 
   const navigate = useNavigate();
 
@@ -35,11 +34,12 @@ const LocalBoard = () => {
 
   return (
     <div className='flex flex-col gap-4 w-full h-full'>
-      <AnimatePresence>
-        {loading && (
-          <Timer name={currentName} seconds={seconds} setShow={setLoading} />
-        )}
-      </AnimatePresence>
+      <Timer
+        name={currentName}
+        seconds={seconds}
+        loading={loading}
+        setLoading={setLoading}
+      />
       <WinScreen username={currentName} isWin={isWin}>
         <div>
           <Button text='See board' onClick={() => setIsWin(false)}></Button>

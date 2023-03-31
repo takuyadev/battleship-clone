@@ -1,4 +1,4 @@
-import type { GameParameter, GameState } from './interfaces/interfaces.game';
+import type { GameParameter, GameState} from './interfaces/interfaces.game';
 import type { OnOffAction } from './types/types.onoff';
 import type { ShipAction } from './types/types.ships';
 import type { PlayerGameState } from './types/types.game';

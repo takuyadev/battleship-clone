@@ -38,6 +38,7 @@ const Local = () => {
     setIsDone({ type: OnOffEnum.OFF });
   }, [player.board, opponent.board, isEdit]);
 
+  //
   return (
     <div className='flex justify-center w-full'>
       <AnimatePresence>
@@ -116,7 +117,7 @@ const Local = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      {!isEdit && (
+      {isEdit === 'end' && (
         <PageTransition className='w-full'>
           <LocalBoard />
         </PageTransition>

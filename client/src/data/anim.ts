@@ -23,16 +23,19 @@ export const fadeIn = {
 export const slideLeft = {
   initial: {
     x: '100vw',
+    opacity: 0,
     transition: { ease: [0.65, 0, 0.35, 1], duration: 1 },
   },
   animate: {
     x: '0%',
+    opacity: 1,
     transition: { ease: [0.65, 0, 0.35, 1], duration: 1 },
   },
   exit: {
     x: '-100vw',
     position: 'absolute',
-    transition: { ease: [0.65, 0, 0.35, 1], duration: 1 },
+    opacity: 0,
+    transition: { ease: [0.65, 0, 0.35, 1], duration: 0.5 },
   },
 };
 
