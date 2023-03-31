@@ -13,10 +13,10 @@ const WinScreen = ({ children, username, isWin }: WinScreenProps) => {
       isShow={isWin ? true : false}
       className='h-screen w-screen bg-black opacity-90 flex justify-center items-center gap-4 flex-col'
     >
-      <h1 className='text-white text-xl font-bold font-display'>
+      <h1 className='text-white text-xl font-bold font-display z-40'>
         {username} wins the game!
       </h1>
-      <div>{children}</div>
+      <div className='z-50'>{children}</div>
       <Confetti width={window.innerWidth} height={window.innerHeight} />
     </Popup>
   );

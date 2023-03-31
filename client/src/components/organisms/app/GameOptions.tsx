@@ -13,12 +13,12 @@ const GAMEFORMAT_OPTIONS = [
     id: 'local',
     icon: <HiUserGroup size={24} />,
   },
-  {
-    title: 'Online',
-    description: 'Play online',
-    id: 'online',
-    icon: <HiOutlineGlobe size={24} />,
-  },
+  // {
+  //   title: 'Online',
+  //   description: 'Play online',
+  //   id: 'online',
+  //   icon: <HiOutlineGlobe size={24} />,
+  // },
   {
     title: 'Computer',
     description: 'Play AI',
@@ -50,20 +50,25 @@ const GameOptions = ({ setConfig, onComplete, config }: IGameOptions) => {
           setConfig((prev) => ({ ...prev, [key]: value }));
         }}
       />
-      <InputLabel
-        type='number'
-        required
-        onChange={(e) =>
-          setConfig((prev) => ({
-            ...prev,
-            boardSize: Number(e.target.value),
-          }))
-        }
-        value={config.boardSize}
-        label='Board Size (6-10)'
-        htmlFor='boardSize'
-        name='boardSize'
-      />
+      {config.gameFormat !== 'computer' && (
+        <InputLabel
+          type='number'
+          required
+          min={6}
+          max={10}
+          onChange={(e) =>
+            setConfig((prev) => ({
+              ...prev,
+              boardSize: Number(e.target.value),
+            }))
+          }
+          value={config.boardSize}
+          label='Board Size (6-10)'
+          htmlFor='boardSize'
+          name='boardSize'
+        />
+      )}
+
       <Button className='w-full' type='submit' text='Next' />
     </form>
   );

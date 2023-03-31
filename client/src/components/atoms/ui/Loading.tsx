@@ -4,7 +4,6 @@ interface Loading {
 }
 
 const Loading = ({ percentage, className }: Loading) => {
-  console.log(percentage)
   return (
     <svg
       className={`${className && className} w-64 min-w-3xl`}

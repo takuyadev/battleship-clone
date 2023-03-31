@@ -17,10 +17,12 @@ const ComputerBoard = () => {
     messages,
     isWin,
     currentName,
-    setIsWin,
+    endGame,
     attackAgainstComputer,
+    listenForWin,
   } = useContext(GameContext);
 
+  listenForWin();
   const navigate = useNavigate();
 
   return (
@@ -28,8 +30,8 @@ const ComputerBoard = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4'>
         <WinScreen username={currentName} isWin={isWin}>
           <div>
-            <Button text='See board' onClick={() => setIsWin(false)}></Button>
-            <Button text='Finish' onClick={() => navigate('/game')}></Button>
+            <Button text='See board' onClick={() => endGame()}></Button>
+            <Button text='Finish' onClick={() => navigate('/')}></Button>
           </div>
         </WinScreen>
         <ShipList

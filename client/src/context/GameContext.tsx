@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import { useGame } from '@hooks/useGame';
 import { GameContextInterface } from './model/interfaces.context';
 
+//@ts-ignore
 const GameContext = createContext<GameContextInterface>({});
 
 const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -26,6 +27,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
     listenForWin,
     setGame,
     setGameOver,
+    endGame,
     computerPlaceShips,
     opponentAttack,
     playerAttack,
@@ -51,6 +53,7 @@ const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
         setGameOver,
         setGame,
         setConfig,
+        endGame,
         setSeconds,
         playerTurn,
         setMessages,

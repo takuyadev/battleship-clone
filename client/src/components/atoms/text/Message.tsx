@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 export interface MessageProps extends React.ComponentProps<'p'> {
   message: string;
   icon: React.ReactNode;

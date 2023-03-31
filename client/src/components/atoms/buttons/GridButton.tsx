@@ -14,6 +14,7 @@ const GridButton = ({
   className,
   ...props
 }: GridButtonProps) => {
+  
   // Depending on UI status, change the style of the tile
   const selectClass = (status: number) => {
     if (status === 0) {

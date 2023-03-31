@@ -18,15 +18,14 @@ const LocalBoard = () => {
     seconds,
     loading,
     setLoading,
-    setIsWin,
     playerAttack,
     listenForWin,
     opponentAttack,
+    endGame,
     hideBoard,
     isWin,
     messages,
   } = useContext(GameContext);
-  
 
   const navigate = useNavigate();
 
@@ -42,7 +41,7 @@ const LocalBoard = () => {
       />
       <WinScreen username={currentName} isWin={isWin}>
         <div>
-          <Button text='See board' onClick={() => setIsWin(false)}></Button>
+          <Button text='See board' onClick={() => endGame()}></Button>
           <Button text='Finish' onClick={() => navigate('/game')}></Button>
         </div>
       </WinScreen>

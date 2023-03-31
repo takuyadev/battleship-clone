@@ -13,12 +13,17 @@ const Game = () => {
   };
 
   return (
-    <PageTransition className="flex items-center h-[80vh]">
-      <GameOptions
-        config={config}
-        setConfig={setConfig}
-        onComplete={onComplete}
-      />
+    <PageTransition className='flex items-center h-[80vh]'>
+      <div className="flex flex-col items-center gap-4">
+        <h1 className='font-display text-2xl font-bold block'>
+          Play a quick round of battleships
+        </h1>
+        <GameOptions
+          config={config}
+          setConfig={setConfig}
+          onComplete={onComplete}
+        />
+      </div>
     </PageTransition>
   );
 };

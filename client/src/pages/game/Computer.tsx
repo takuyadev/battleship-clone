@@ -15,11 +15,8 @@ const Computer = () => {
   const [isEdit, setIsEdit] = useOnOff(true);
   const [isDone, setIsDone] = useOnOff(false);
 
+  // Setup the board for the computer
   const onFinishEdit = () => {
-    setIsEdit({ type: OnOffEnum.OFF });
-  };
-
-  useEffect(() => {
     setGame({
       type: GameEnum.UPDATE_OPPONENT_NAME,
       payload: {
@@ -28,8 +25,11 @@ const Computer = () => {
       },
     });
     computerPlaceShips();
-  }, []);
+    setIsEdit({ type: OnOffEnum.OFF });
+  };
 
+
+  // Check for condition of the board
   useEffect(() => {
     const condition = isAllShipsPlaced(player.ships);
     return condition

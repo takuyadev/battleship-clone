@@ -18,7 +18,8 @@ export interface GameContextInterface {
   hideBoard: Function;
   turnCount: number;
   listenForWin: EffectCallback;
-  updateLeaderboard: () => void;
+  endGame: () => void;
+  updateLeaderboard: (username: string, turnCount: number) => Promise<void>;
   computerPlaceShips: () => void;
   playerAttack: ({ x, y }: Coordinate) => void;
   opponentAttack: ({ x, y }: Coordinate) => void;

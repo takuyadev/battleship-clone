@@ -18,7 +18,7 @@ export interface RadioFieldProps {
 const RadioField = ({ onChange, name, options, className }: RadioFieldProps) => {
   return (
     <fieldset className={`${className && className} w-full`}>
-      <ul className='grid w-full gap-4 md:grid-cols-3'>
+      <ul className='grid w-full gap-4 md:grid-cols-2'>
         {options.map(({ title, description, id, icon }: FormOptions, i) => (
           <li key={i}>
             <Radio

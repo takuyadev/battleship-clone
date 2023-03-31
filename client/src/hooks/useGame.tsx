@@ -206,6 +206,7 @@ const useGame = ({ x, y }: Coordinate) => {
       payload: null,
     });
     setMessages([]);
+    setTurnCount(0);
     setComputerMoves(generatePossibleMoves(config.boardSize));
     setGame({ type: GameEnum.PLAYER_TURN, payload: null });
     setIsWin(false);
@@ -230,23 +231,35 @@ const useGame = ({ x, y }: Coordinate) => {
   // Listens to game does not have any more selectable tiles
   const listenForWin = () => {
     useEffect(() => {
-      if (!gameOver) {
-        if (isBoardLose(playerBoard) || isBoardLose(opponentBoard)) {
-          setIsWin(true);
-          setLoading(false);
-          endGame();
-          updateLeaderboard();
-        }
+      if (gameOver) return;
+
+      if (isBoardLose(playerBoard)) {
+        setCurrentName(game.opponent.name);
+        setIsWin(true);
+        setLoading(false);
+        updateLeaderboard(game.opponent.name, turnCount);
+      }
+
+      if (isBoardLose(opponentBoard)) {
+        setCurrentName(game.player.name);
+        setIsWin(true);
+        setLoading(false);
+        updateLeaderboard(game.player.name, turnCount);
       }
     }, [game]);
   };
 
+  useEffect(() => {
+    if (gameOver) {
+      endGame();
+    }
+  }, [gameOver]);
+
   // Show board at the end of the game
   const endGame = () => {
     setGameOver(true);
-    setIsWin(false);
     setLoading(false);
-    setConfig(GAME_FORM);
+    setIsWin(false);
     setGame({ type: GameEnum.DISABLE_BOARD, payload: null });
     setGame({ type: GameEnum.SHOW_BOARDS, payload: null });
   };
@@ -355,6 +368,7 @@ const useGame = ({ x, y }: Coordinate) => {
       { x, y }
     );
     setMessages((prev) => [...messages, ...prev]);
+    setTurnCount((prev) => prev + 1);
     setTimeout(() => {
       // Activate computer attack after timeout
       computerAttack();
@@ -364,10 +378,13 @@ const useGame = ({ x, y }: Coordinate) => {
 
   // Computer methods
   const computerAttack = () => {
+    if (gameOver) return;
     // Select move based on all moves available
     const selectedMove = selectMove(computerMoves);
     const hitOrMiss = isTilePlaced(playerBoard, selectedMove);
     const ship = findShipWithCoords(playerShips, selectedMove);
+    setTurnCount((prev) => prev + 1);
+
     setGame({
       type: GameEnum.OPPONENT_ATTACK,
       payload: { coords: selectedMove },
@@ -402,10 +419,10 @@ const useGame = ({ x, y }: Coordinate) => {
     // Loop through ships until all ships are placed
     for (const ship of game.opponent.ships) {
       let isPlaced = false;
-      const isRotated = Math.random() > 0.5;
 
       // Try placing the ship randomly until a valid position is found
       while (!isPlaced) {
+        const isRotated = Math.random() > 0.5;
         const coords = placeShipRandomly(isRotated, config.boardSize, ship);
         const isShipInBoardResult = isShipInBoard(newBoard, coords, {
           height: ship.height,
@@ -427,7 +444,6 @@ const useGame = ({ x, y }: Coordinate) => {
             },
           });
 
-          // Edit rotation after ship has been removed
           setOpponentShips({
             type: ShipsEnum.ROTATE_SHIP,
             payload: { id: ship.id, isRotated },
@@ -455,10 +471,10 @@ const useGame = ({ x, y }: Coordinate) => {
   };
 
   // Updates leaderboard on call
-  const updateLeaderboard = async () => {
-    await axios.post('http://localhost:5000/leaderboard', {
-      turnCount: turnCount,
-      username: game.player.name,
+  const updateLeaderboard = async (username: string, turnCount: number) => {
+    await axios.post('http://localhost:8080/leaderboard', {
+      turnCount,
+      username,
     });
   };
 
@@ -499,6 +515,7 @@ const useGame = ({ x, y }: Coordinate) => {
     setGameOver,
     listenForWin,
     setGame,
+    endGame,
     setIsWin,
     setConfig,
     setLoading,

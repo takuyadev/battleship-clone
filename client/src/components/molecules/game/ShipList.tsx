@@ -33,7 +33,7 @@ const ShipList = ({ ships, direction, className }: ShipListProps) => {
             <div
               className={`p-2 rounded-full ${
                 ship.hitCount === ship.height ? 'bg-rose-400' : 'bg-indigo-500'
-              }`}
+              } duration-200`}
             />
           </div>
         );

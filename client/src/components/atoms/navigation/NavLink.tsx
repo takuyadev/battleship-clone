@@ -15,7 +15,7 @@ const NavLink = ({
 }: NavLinkProps) => {
   
   // If active, then apply classes
-  const activeClass = active && 'bg-indigo-500';
+  const activeClass = active && 'bg-indigo-500 text-white';
 
   return (
     <Link
