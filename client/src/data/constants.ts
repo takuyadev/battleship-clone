@@ -28,7 +28,7 @@ export const SHIPS = [
   },
   {
     name: 'Submarine',
-    height: 2,
+    height: 3,
   },
   {
     name: 'Cruiser',
