@@ -15,7 +15,7 @@ Proceeding with this project, there were several things I picked up on that I wi
 - As the file grows in size, it's extremely hard to keep track of what files goes where, and harder to keep track of utils. It sounded obvious to me, but even then being in the position inside a larger project was a whole new perspective
 - Following up, the way I structured utils and functions I thought got extremely messy in the end, with lots of functions that produced side effects. Next time, focusing more on pure functions, then testing them first would be the way to approach larger projects. Cypress + vitest / Jest / Mocha + chai is a must learn at this point.
 - TypeScript is extremely powerful, but it's incredibly important to type any crucial types, interfaces, or enums early on so you can reuse them again and again later. I'm dropping using "I_" prefixes as well, as they are ugly and not really common.
-- useEffects should be used sparingly, and should be avoided in most scenarios.
+- useEffects should be used sparingly, and should be avoided in most scenarios. Instead, try to implement a normal function to call or change states on the page, as re-renders could miss the mark.
 
 Although this project was a challenge in terms of getting more accustomed to TypeScript, while trying to incorporate more custom hooks and overall modularity and file structure, I am happy where this project has landed, although I couldn't complete all the features. I'm hoping to come back to this project, and implement more features, such as multiplayer, additional configuration, and AI difficulty settings in the future.
  
