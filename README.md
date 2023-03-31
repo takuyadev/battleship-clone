@@ -1,5 +1,7 @@
 # Battleship Clone
 
+
+
 ## Links to project
 https://battleship-clone.vercel.app/ 
 
@@ -11,6 +13,12 @@ Battleship clone built using React.js + Vite + TypeScript + React Router DOM, wi
 - Supports local multiplayer and playing against computer
 - Focus on animations, and overall fluidity of the page
 - Tracks leaderboard and shows the best performing players
+
+## Screenshots
+
+![Edit screen](/docs/1.png)
+![Edit screen](/docs/2.png)
+![Edit screen](/docs/3.png)
 
 ## Retrospect
 This was an interesting project to create, due to it being something that I was mostly uncomfortable with creating, as a base project. I'm more accustomed to creating static or semi interactive websites, but not one particular part with a focus on full interactivity, so going into this project I wasn't too sure how it would pan out. 
